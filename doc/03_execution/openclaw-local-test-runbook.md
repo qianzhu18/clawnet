@@ -34,20 +34,37 @@ last_updated: 2026-03-25
 
 ## 建议的本机隔离方式
 
-当前先采用最低摩擦的轻隔离：
+当前不建议只用一个目录硬撑。
 
-1. 新建独立实验目录
+当前推荐最小安全边界：
+
+1. 新建单独 macOS 测试账户
+   - 例如 `clawnet-lab`
+2. 只在该账户中安装和运行 `OpenClaw`
+3. 在该账户中再使用独立实验目录
    - 例如 `~/clawnet-openclaw-lab/`
-2. 所有 `OpenClaw` 实验都在这个目录完成
-3. 只安装自己可审阅的 `ClawNet` bridge
-4. 不安装随机 `ClawHub` skill
-5. 不导入真实 webhook secret 或生产凭据
+4. 只安装自己可审阅的 `ClawNet` bridge
+5. 不安装随机 `ClawHub` skill
+6. 不导入真实 webhook secret 或生产凭据
 
-如果你后续要接更高权限数据，再升级到单独 macOS 用户或虚拟机。
+如果你后续要接更高权限数据，再升级到虚拟机。
 
 ## 推荐步骤
 
-### 步骤 1：准备局域网调试基线
+### 步骤 1：进入隔离账户
+
+先切到单独的 macOS 测试账户，例如 `clawnet-lab`。
+
+后续所有 `OpenClaw` 安装、skill 放置和 bridge 调试，都只在这个账户中进行。
+
+### 步骤 2：准备局域网调试基线
+
+这一步可以由主开发账户完成，不要求放进隔离账户。
+
+当前边界是：
+
+- `OpenClaw` 安装、skill 和 bridge：放在隔离账户
+- `ClawNet` Web 服务：可以先继续由主开发账户提供
 
 在 `ClawNet` 仓库根目录启动本地服务：
 
@@ -64,40 +81,49 @@ http://172.20.10.3:3000
 
 只有这一步成立，后面的扫码才有意义。
 
-### 步骤 2：准备实验目录
+### 步骤 3：准备实验目录
 
 ```bash
 mkdir -p ~/clawnet-openclaw-lab
 cd ~/clawnet-openclaw-lab
+git clone https://github.com/qianzhu18/clawnet.git clawnet
+cd clawnet
+git checkout spec/t029-openclaw-host-strategy
+npm install
 ```
 
-这个目录只放：
+这个 lab clone 只用于：
 
 - `OpenClaw` 实验 workspace
 - `ClawNet` 本地 skill / bridge
 - 安装与验证记录
 
-### 步骤 3：安装和启动 OpenClaw
+### 步骤 4：安装和启动 OpenClaw
 
 按 OpenClaw 官方安装和 onboarding 文档完成：
 
-- 安装 `OpenClaw`
+- 安装 `OpenClaw CLI`
 - 完成 `onboard`
 - 确认 gateway 正常
 - 能打开 dashboard / control UI
 
 当前只要求最小可运行，不要求先接通所有 channel。
 
-### 步骤 4：只使用 workspace skill
+### 步骤 5：只使用 workspace skill
 
 第一版只把 `ClawNet` 作为当前实验 workspace 的 skill 放进去，不直接改公开分发和全局市场安装路径。
+
+当前仓库里的模板固定为：
+
+- `examples/openclaw-skill/clawnet-connect-bridge/SKILL.md`
+- `examples/openclaw-skill/clawnet-connect-bridge/bridge.sh`
 
 验收点：
 
 - `OpenClaw` 能发现这个 workspace skill
 - 不需要依赖公开 `ClawHub`
 
-### 步骤 5：桥接到本地 CLI
+### 步骤 6：桥接到本地 CLI
 
 第一版 skill 只做一件事：
 
@@ -112,7 +138,14 @@ cd ~/clawnet-openclaw-lab
 - `scan_ready`
 - `agent_preview`
 
-### 步骤 6：桌面承接
+如果你要直接在隔离账户里手工跑一次模板 bridge：
+
+```bash
+cd ~/clawnet-openclaw-lab/clawnet
+CLAWNET_HOST=http://172.20.10.3:3000 ./examples/openclaw-skill/clawnet-connect-bridge/bridge.sh
+```
+
+### 步骤 7：桌面承接
 
 由宿主调用产生一次真实 pairing 后：
 
@@ -120,14 +153,14 @@ cd ~/clawnet-openclaw-lab
 2. 在桌面浏览器确认 `/connect` 显示的是本次 pairing
 3. 确认页面二维码内容与 `pair_url` 一致
 
-### 步骤 7：手机承接
+### 步骤 8：手机承接
 
 1. 手机扫码或直接打开 `pair_url`
 2. 进入 `/pair`
 3. 进入 `/app`
 4. 检查 agent 名称、来源和状态连续
 
-### 步骤 8：即时动作验证
+### 步骤 9：即时动作验证
 
 接入成功后，立即执行一次动作：
 
@@ -148,6 +181,7 @@ cd ~/clawnet-openclaw-lab
 
 - `OpenClaw` 已在本机隔离环境中可用
 - workspace skill 已被识别
+- 模板 bridge 可手工执行
 - 当前实验过程有可复跑步骤
 
 ## T031 完成定义

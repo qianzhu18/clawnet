@@ -56,6 +56,7 @@ last_updated: 2026-03-25
 - 当前阶段仍坚持“桌面端负责配置、移动端只负责体验”。
 - 进入实现前，必须同时具备：
   - SDD：`doc/03_execution/openclaw-local-host-sdd.md`
+  - TDD：`doc/03_execution/openclaw-host-tdd-plan.md`
   - Runbook：`doc/03_execution/openclaw-local-test-runbook.md`
 
 ## 安全约束
@@ -85,13 +86,14 @@ last_updated: 2026-03-25
 - skill 放置路径
 - 触发方式是 `workspace skill`、命令转发还是 webhook
 - 电脑端配置与移动端体验的边界
+- 对应 TDD 计划文件
 
 ## 依赖项
 
 - 当前 `T026` 真机扫码 demo 已通过
 - 商业化网页与 `/connect` 已存在可承接入口
 - 当前 CLI 输出字段已冻结
-- `OpenClaw` 本机隔离环境与 runbook 已建立
+- `OpenClaw` 本机隔离环境、TDD 计划与 runbook 已建立
 
 ## 未决问题
 

@@ -46,7 +46,7 @@ last_updated: 2026-03-25
 | ID | P级 | 事项 | 类型 | 完成定义 | 检测方式 | 检测状态 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T026 | P0 | 打通真机扫码的“这是我的 agent 连进来了” aha 时刻 | build | 当前 CLI 生成的 pairing 状态可以回到桌面 `/connect` 被真实还原；手机可通过局域网或公网 host 真扫进入 `/pair -> /app`；`/pair` 与 `/app` 都展示这次真实接入的 agent 身份，并给出一次立即可完成的成功动作 | 用一张非默认 `agent-card.json` 在真机模式下执行命令，检查桌面 `/connect` 的二维码是否来自本次 pairing，手机扫码后是否在 `/pair`、`/app` 看到同一 agent 名称 / 来源，并记录整条链路截图或视频 | passed | done |
-| T029 | P0 | 冻结 `OpenClaw-first` 的真实宿主接入 SDD 与隔离安全策略 | doc | 存在明确的 `F011`、`openclaw-local-host-sdd.md` 与 `openclaw-local-test-runbook.md`，写清真实宿主、隔离环境、安装方式、bridge 路径、桌面配置与移动体验边界 | 检查 `F011`、SDD、runbook、`decision-log.md` 与 `open-questions.md` 是否一致，并确认当前阶段固定为 `workspace skill + 本地 CLI bridge` | passed | done |
+| T029 | P0 | 冻结 `OpenClaw-first` 的真实宿主接入 SDD、TDD 与隔离安全策略 | doc | 存在明确的 `F011`、`openclaw-local-host-sdd.md`、`openclaw-host-tdd-plan.md` 与 `openclaw-local-test-runbook.md`，写清真实宿主、隔离环境、安装方式、bridge 路径、桌面配置与移动体验边界 | 检查 `F011`、SDD、TDD、runbook、`decision-log.md` 与 `open-questions.md` 是否一致，并确认当前阶段固定为 `workspace skill + 本地 CLI bridge` | passed | done |
 | T030 | P0 | 建立本机隔离 `OpenClaw` 测试环境并完成最小 skill 安装验证 | build | 在本机隔离环境中可启动 `OpenClaw`，并确认 `workspace skill` 或等价本地扩展方式可被宿主识别 | 按 runbook 记录安装与启动步骤，至少完成一次宿主识别 skill 的手测，并写入检测日志 | pending | todo |
 | T031 | P0 | 跑通 `OpenClaw -> ClawNet connect bridge -> /connect -> /pair -> /app` 的第一条真实宿主链路 | build | 从真实宿主侧触发后，桌面端能拿到当前 pairing，移动端能继续完成连接体验 | 对真实宿主链路执行一次完整手测；至少保留命令输出、桌面截图、移动截图或录屏摘要 | pending | todo |
 | T015 | P0 | 冻结 connect CLI 的最小参数、输出格式与默认命令写法 | doc | `F010`、本地 demo 执行文档、`/connect` 页面统一使用同一条命令和同一组输出字段 | 对照 `F010-agent-connect.md`、`local-cli-demo-execution.md`、`src/app/connect/page.tsx` 三处是否一致 | passed | done |

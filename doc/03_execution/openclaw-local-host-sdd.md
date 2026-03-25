@@ -57,22 +57,35 @@ last_updated: 2026-03-25
 
 ## 隔离环境设计
 
-当前采用“轻隔离优先”的本机测试方案：
+当前不再把“单独目录”视为充分隔离。
 
-1. 单独的测试目录
+当前推荐顺序固定为：
+
+1. 单独的 macOS 测试账户
+   - 例如 `clawnet-lab`
+   - 只在这个账户里安装和运行 `OpenClaw`
+2. 单独的测试目录
    - 例如 `~/clawnet-openclaw-lab/`
    - 只放 `OpenClaw` 相关实验文件、样例 skill 和截图证据
-2. 单独的 workspace skill
+3. 单独的 lab clone
+   - 在隔离账户里单独 clone 一份 `ClawNet`
+   - 不直接复用主工作账户下的开发目录
+4. 单独的 workspace skill
    - 只在当前实验 workspace 中可见
    - 不改公共技能市场和公开安装入口
-3. 禁止引入未知第三方 skill
+5. 禁止引入未知第三方 skill
    - 当前只安装自己可审阅的 `ClawNet` bridge
-4. 禁止绑定真实生产凭据
+6. 禁止绑定真实生产凭据
    - 不接公司数据
    - 不接真实 webhook 密钥
    - 不接个人主账号工作流
 
-如果后续需要更强隔离，再升级到“单独 macOS 用户”或虚拟机；当前 `T030/T031` 不把这一步作为前置门槛。
+原因：
+
+- `OpenClaw` 默认配置位于 `~/.openclaw/` 下
+- 只隔离目录，不足以把宿主配置和主工作账户切开
+
+如果后续需要更强隔离，再升级到虚拟机；当前 `T030/T031` 先以“单独 macOS 测试账户”作为最小安全边界。
 
 ## 安装策略
 
@@ -151,6 +164,7 @@ last_updated: 2026-03-25
 ## 目录与文件
 
 - 功能规格：`doc/03_execution/feature-specs/F011-openclaw-host-bridge.md`
+- TDD 计划：`doc/03_execution/openclaw-host-tdd-plan.md`
 - 本机测试 runbook：`doc/03_execution/openclaw-local-test-runbook.md`
 - 周任务：`doc/05_todo/todo-list.md`
 - 检测日志：`doc/05_todo/todo-verification-log.md`
@@ -161,6 +175,7 @@ last_updated: 2026-03-25
 
 - `F011` 已冻结
 - 本 SDD 已冻结
+- TDD 计划已存在
 - runbook 已写出最小可复跑步骤
 - `workspace skill` 与 `CLI bridge` 两个决策不再摇摆
 
