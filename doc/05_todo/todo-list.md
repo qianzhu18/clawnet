@@ -45,6 +45,7 @@ last_updated: 2026-03-25
 
 | ID | P级 | 事项 | 类型 | 完成定义 | 检测方式 | 检测状态 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| T026 | P0 | 打通真机扫码的“这是我的 agent 连进来了” aha 时刻 | build | 当前 CLI 生成的 pairing 状态可以回到桌面 `/connect` 被真实还原；手机可通过局域网或公网 host 真扫进入 `/pair -> /app`；`/pair` 与 `/app` 都展示这次真实接入的 agent 身份，并给出一次立即可完成的成功动作 | 用一张非默认 `agent-card.json` 在真机模式下执行命令，检查桌面 `/connect` 的二维码是否来自本次 pairing，手机扫码后是否在 `/pair`、`/app` 看到同一 agent 名称 / 来源，并记录整条链路截图或视频 | pending | doing |
 | T015 | P0 | 冻结 connect CLI 的最小参数、输出格式与默认命令写法 | doc | `F010`、本地 demo 执行文档、`/connect` 页面统一使用同一条命令和同一组输出字段 | 对照 `F010-agent-connect.md`、`local-cli-demo-execution.md`、`src/app/connect/page.tsx` 三处是否一致 | passed | done |
 | T019 | P0 | 冻结 demo mode 的最小输入字段与 URL 编码结构 | doc | 文档里明确只使用 `agent_id / name / avatar / bio / capabilities / source` 与 URL 编码或 mock payload | 检查 `F010`、本地 demo 执行文档、未决问题与决策日志是否一致 | passed | done |
 | T018 | P0 | 实现本地 `connect CLI demo mode`，让任意本地 `Node.js / claw` 目录里都能执行命令并输出二维码 | build | 在一个独立本地样例目录里运行命令后，终端能拿到 `code / URL / QR` | 在本地样例目录真实运行 CLI，并记录输出结果 | passed | done |

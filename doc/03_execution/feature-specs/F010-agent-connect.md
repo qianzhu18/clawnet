@@ -64,6 +64,21 @@ last_updated: 2026-03-25
 - 仓库根目录已补充 `npm run demo:connect`、`npm run dev:lan`、`npm run start:lan`，用于降低试玩门槛。
 - 当前 npm 公网包尚未发布，因此默认试玩入口先固定为仓库根目录命令，而不是直接暴露 `npx clawnet-connect ...`。
 
+## 当前阻塞与下一轮 P0
+
+当前真正缺的不是“链路存在”，而是“真机扫码后的 aha 时刻”：
+
+- `/connect` 仍默认渲染静态样例 pairing，而不是这次 CLI 真正生成的 pairing。
+- 如果 host 仍然是 `localhost`，手机扫码无法直接访问。
+- 因此用户现在更容易感受到“演示页能跑”，而不是“这是我的 agent 正在接入”。
+
+下一轮 P0 必须补齐：
+
+- CLI 除了输出 `pair_url` 外，还要提供一条可回到桌面 `/connect` 的当前 pairing 入口，或等价的当前 pairing 导入方式。
+- `/connect` 必须能按本次 pairing 的 `code / payload / agent_preview` 渲染二维码和身份摘要，不再只显示静态样例。
+- 真机模式必须显式要求 `dev:lan / start:lan + 非 localhost host`，不能继续把真机扫码和本机浏览器调试混成一套。
+- `/pair -> /app` 在接入成功后必须给出一次立即可完成的动作，强化“连接已经生效”的反馈。
+
 ## 体验备注
 
 - 这是 `ClawNet` 最容易掉进“工程师自嗨”的页面，必须保持产品语言。
