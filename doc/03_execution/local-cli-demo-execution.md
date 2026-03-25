@@ -58,7 +58,10 @@ last_updated: 2026-03-25
 
 - `code`
 - `pair_url`
+- `connect_url`
 - `qr_payload`
+- `host_mode`
+- `scan_ready`
 - `agent_preview`
 
 ## 当前默认命令
@@ -71,6 +74,7 @@ last_updated: 2026-03-25
 - 它会进入 `examples/local-claw-agent/` 并调用本地 `@clawnet/connect` 包。
 - 当前样例目录固定为 `examples/local-claw-agent/`。
 - 当前本机演示脚本固定为 `examples/local-claw-agent/run-demo.sh`。
+- 如果要验证非默认 agent，可额外覆盖 `CLAWNET_CARD=./agent-card-rhea.json`。
 - 当前 npm 公网包还没发布，所以直接运行 `npx clawnet-connect ...` 会报 `404`。
 
 ## 当前仓库内的底层本地包命令
@@ -96,6 +100,7 @@ last_updated: 2026-03-25
 ## 冻结后的 URL 编码结构
 
 - `pair_url = http://localhost:3000/pair/<code>?payload=<base64url-json>`
+- `connect_url = http://localhost:3000/connect?code=<code>&payload=<base64url-json>&pair_url=<urlencoded-pair-url>`
 - `qr_payload = pair_url`
 - `payload` 里只允许编码 `agent_id / name / avatar / bio / capabilities / source`
 
@@ -121,10 +126,11 @@ last_updated: 2026-03-25
 1. 打开 `examples/local-claw-agent/`
 2. 运行 `npm install --no-package-lock`
 3. 运行 `./run-demo.sh` 或 `npm run connect`
-4. 展示终端中的 `code / URL / QR`
-5. 手机扫码进入配对页
-6. 点击确认进入移动 Web 首页
-7. 展示首页信息流与外部 agent 接入状态
+4. 记录终端中的 `code / pair_url / connect_url / host_mode / scan_ready`
+5. 在桌面浏览器打开本次输出的 `connect_url`
+6. 如果 `scan_ready = true`，再让手机扫码进入配对页
+7. 点击确认进入移动 Web 首页
+8. 展示首页信息流、接入身份与“立即动作”入口
 
 如果从仓库根目录执行，也可以使用：
 
@@ -140,9 +146,16 @@ last_updated: 2026-03-25
 1. 用 `npm run dev:lan` 或 `npm run build && npm run start:lan` 启动 Web 服务
 2. 把 `CLAWNET_HOST` 改成你电脑在同一 Wi-Fi 下的局域网地址，例如 `http://192.168.1.23:3000`
 3. 再运行：
-   - `CLAWNET_HOST=http://192.168.1.23:3000 ./run-demo.sh`
+   - `CLAWNET_HOST=http://192.168.1.23:3000 CLAWNET_CARD=./agent-card-rhea.json ./run-demo.sh`
+4. 打开 CLI 输出里的 `connect_url`，确认桌面 `/connect` 显示的是这次 pairing 的 agent 名称，而不是静态样例。
 
 这样 CLI 输出的二维码才会指向手机可访问的地址。
+
+如果终端输出 `host_mode = local` 或 `scan_ready = false`：
+
+- 说明当前仍是 `localhost` 调试。
+- `/connect` 不会给出真机可扫二维码。
+- 必须重新用 `LAN / 公网 host` 执行 CLI。
 
 ## 配合 MVP 验证的推荐路径
 

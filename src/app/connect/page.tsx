@@ -4,26 +4,42 @@ import { PairingQr } from "@/components/connect/pairing-qr";
 import { MenuIcon, UserIcon } from "@/components/mobile/icons";
 import {
   buildPairingState,
+  readImportedPairing,
   defaultConnectCommand,
   demoAgentCard,
   defaultLocalPackageCommand,
   futurePublishedConnectCommand,
 } from "@/lib/connect-demo";
+import { getRequestOrigin } from "@/lib/request-origin";
 
-const samplePairing = buildPairingState(demoAgentCard);
-const pairPageHref = `/pair/${samplePairing.code}?payload=${encodeURIComponent(samplePairing.payload)}`;
-const sampleCliOutput = JSON.stringify(
-  {
-    code: samplePairing.code,
-    pair_url: samplePairing.pairUrl,
-    qr_payload: samplePairing.qrPayload,
-    agent_preview: samplePairing.agentPreview,
-  },
-  null,
-  2,
-);
+export default async function ConnectPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    code?: string | string[];
+    payload?: string | string[];
+    pair_url?: string | string[];
+  }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const requestOrigin = (await getRequestOrigin()) ?? undefined;
+  const importedPairing = readImportedPairing(resolvedSearchParams, requestOrigin);
+  const currentPairing = importedPairing ?? buildPairingState(demoAgentCard, requestOrigin);
+  const pairPageHref = `/pair/${currentPairing.code}?payload=${encodeURIComponent(currentPairing.payload)}`;
+  const currentCliOutput = JSON.stringify(
+    {
+      code: currentPairing.code,
+      pair_url: currentPairing.pairUrl,
+      connect_url: currentPairing.connectUrl,
+      qr_payload: currentPairing.qrPayload,
+      host_mode: currentPairing.hostMode,
+      scan_ready: currentPairing.scanReady,
+      agent_preview: currentPairing.agentPreview,
+    },
+    null,
+    2,
+  );
 
-export default function ConnectPage() {
   return (
     <div className="mobile-app-root min-h-screen pb-20">
       <div className="mx-auto max-w-6xl px-5 py-6 font-[family:var(--font-inter)] text-[#37352f] sm:px-8">
@@ -50,8 +66,8 @@ export default function ConnectPage() {
               <p className="mt-4 max-w-2xl text-sm leading-7 text-[#645f58]">
                 当前 npm 公网包还没发布，所以不要直接运行 <code>npx clawnet-connect</code>。第一版先在仓库根目录使用本地
                 CLI demo mode 完成接入预演。命令运行后，你会拿到固定结构的{" "}
-                <code>code / pair_url / qr_payload / agent_preview</code>
-                ；随后用手机扫描右侧二维码，进入移动 Web 表面。
+                <code>code / pair_url / connect_url / qr_payload / agent_preview</code>
+                。如果你想回到桌面承接这次 pairing，就直接打开 CLI 输出里的 <code>connect_url</code>。
               </p>
               <div className="mt-5 rounded-[1.4rem] border border-black/6 bg-[#1f1d1a] px-5 py-4 text-sm text-white shadow-[0_16px_34px_rgba(33,25,18,0.18)]">
                 <code className="break-all font-mono text-[0.9rem]">{defaultConnectCommand}</code>
@@ -66,21 +82,32 @@ export default function ConnectPage() {
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <CopyCommandButton command={defaultConnectCommand} />
                 <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
-                  配对 code · {samplePairing.code}
+                  配对 code · {currentPairing.code}
                 </span>
+                {importedPairing ? (
+                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                    已导入当前 pairing
+                  </span>
+                ) : null}
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <article className="rounded-[1.6rem] border border-black/5 bg-[rgba(255,255,255,0.8)] px-5 py-5 shadow-[0_14px_28px_rgba(45,33,22,0.05)]">
-                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">接入类型</p>
-                <h3 className="mt-3 text-[1.15rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">OpenClaw-first</h3>
-                <p className="mt-3 text-sm leading-6 text-[#645f58]">先服务有 Node.js 环境的 claw 类产品，暂不要求真实协议互联。</p>
+                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">当前 pairing</p>
+                <h3 className="mt-3 text-[1.15rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
+                  {currentPairing.agentPreview.name}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-[#645f58]">
+                  来源：{currentPairing.agentPreview.source}。{importedPairing ? "桌面页已经按这次 CLI pairing 还原。" : "当前还没导入本次 pairing，正在显示默认演示态。"}
+                </p>
               </article>
               <article className="rounded-[1.6rem] border border-black/5 bg-[rgba(255,255,255,0.8)] px-5 py-5 shadow-[0_14px_28px_rgba(45,33,22,0.05)]">
-                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">Manifest 校验</p>
-                <h3 className="mt-3 text-[1.15rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">已通过 mock 预检</h3>
-                <p className="mt-3 text-sm leading-6 text-[#645f58]">当前先展示身份摘要、站点状态和首次动作，不暴露 webhook 或 endpoint。</p>
+                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">扫码模式</p>
+                <h3 className="mt-3 text-[1.15rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
+                  {currentPairing.hostLabel}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-[#645f58]">{currentPairing.hostHint}</p>
               </article>
             </div>
 
@@ -91,35 +118,68 @@ export default function ConnectPage() {
               </h3>
               <div className="mt-4 rounded-[1.4rem] border border-dashed border-black/10 bg-[#faf8f3] px-4 py-4 text-sm leading-6 text-[#6a655e]">
                 <pre className="overflow-x-auto whitespace-pre-wrap break-all font-mono text-[0.78rem] leading-6">
-                  {sampleCliOutput}
+                  {currentCliOutput}
                 </pre>
               </div>
               <p className="mt-4 text-sm leading-6 text-[#645f58]">
                 <code>agent-card.json</code> 当前只接受{" "}
                 <code>agent_id / name / avatar / bio / capabilities / source</code>
-                六个字段。第一版的二维码 payload 直接等于 <code>pair_url</code>。
+                六个字段。`connect_url` 用来回到桌面页还原当前 pairing；真机扫码时只使用非 localhost 的 <code>pair_url</code>。
               </p>
             </div>
           </div>
 
           <div className="rounded-[2rem] border border-black/5 bg-[rgba(255,255,255,0.88)] px-6 py-6 text-center shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">Step 3</p>
-            <h2 className="mt-3 text-[1.8rem] font-semibold tracking-[-0.05em] text-[#1f1d1a]">手机扫描进入移动 Web</h2>
+            <h2 className="mt-3 text-[1.8rem] font-semibold tracking-[-0.05em] text-[#1f1d1a]">
+              {currentPairing.scanReady ? "手机扫描进入移动 Web" : "先把 host 切到真机模式"}
+            </h2>
             <p className="mt-3 text-sm leading-6 text-[#645f58]">
-              手机扫描后会先进入 `/pair/:code` 这个内部确认页，确认是哪个外部 agent 发起的配对，再进入移动首页
-              `/app`。对外分享仍统一从官网首页的 `#modes` 或当前 `/connect` 页开始。
+              当前 pairing 对应的 agent 是 <strong>{currentPairing.agentPreview.name}</strong>。{
+                currentPairing.scanReady
+                  ? "二维码会先把手机带到 `/pair/:code` 这个内部确认页，再进入 `/app`。"
+                  : "由于当前 host 仍是 localhost 调试模式，这里不再给出可让手机误扫的二维码。请按提示改用 LAN / 公网 host 后重新打开 connect_url。"
+              }
             </p>
-            <div className="mt-6 flex justify-center">
-              <PairingQr code={samplePairing.code} />
+            {currentPairing.scanReady ? (
+              <div className="mt-6 flex justify-center">
+                <PairingQr
+                  value={currentPairing.qrPayload}
+                  label={`${currentPairing.agentPreview.name} pairing QR`}
+                />
+              </div>
+            ) : (
+              <div className="mt-6 rounded-[1.5rem] border border-amber-200 bg-amber-50 px-5 py-5 text-left text-sm leading-6 text-amber-900">
+                <p className="font-semibold">当前 host：{currentPairing.hostValue}</p>
+                <p className="mt-3">
+                  真机请使用 `npm run dev:lan / start:lan`，并在运行 CLI 时覆盖：
+                  <code className="ml-1 break-all">CLAWNET_HOST=http://&lt;你的局域网IP&gt;:3000</code>
+                </p>
+              </div>
+            )}
+            <div className="mt-5 rounded-[1.3rem] border border-black/6 bg-[#fbfaf7] px-4 py-4 text-left">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#8d8881]">当前身份摘要</p>
+              <p className="mt-3 text-base font-semibold text-[#1f1d1a]">{currentPairing.agentPreview.name}</p>
+              <p className="mt-2 text-sm leading-6 text-[#645f58]">{currentPairing.agentPreview.bio}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+                  来源 · {currentPairing.agentPreview.source}
+                </span>
+                {currentPairing.agentPreview.capabilities.map((capability) => (
+                  <span
+                    key={capability}
+                    className="rounded-full border border-black/6 bg-white/80 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#7c7770]"
+                  >
+                    {capability}
+                  </span>
+                ))}
+              </div>
             </div>
-            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#8d8881]">
-              配对 code · {samplePairing.code}
-            </p>
             <Link
               href={pairPageHref}
               className="mt-6 inline-flex w-full items-center justify-center rounded-[1.4rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_18px_36px_rgba(33,25,18,0.16)]"
             >
-              模拟扫码进入
+              {currentPairing.scanReady ? "打开当前 pairing /pair" : "只在当前电脑继续打开 /pair"}
             </Link>
           </div>
         </section>

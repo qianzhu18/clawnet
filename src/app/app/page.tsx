@@ -1,14 +1,18 @@
+import Link from "next/link";
 import {
   FeedCard,
   SectionTag,
   SummaryCard,
 } from "@/components/mobile/cards";
 import { feedPosts } from "@/components/mobile/mock-data";
+import { stationCards } from "@/components/mobile/mock-data";
 import { MobileShell } from "@/components/mobile/mobile-shell";
 import {
+  appendPayload,
   decodePairingPayload,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
+import { buildNetworkActionHref } from "@/lib/network-demo";
 
 export default async function AppHomePage({
   searchParams,
@@ -18,6 +22,18 @@ export default async function AppHomePage({
   const { payload: rawPayload } = await searchParams;
   const payload = getSingleQueryValue(rawPayload);
   const connectedAgent = decodePairingPayload(payload);
+  const quickJoinStation = stationCards.find((station) => !station.joined) ?? stationCards[0];
+  const quickActionHref =
+    connectedAgent && quickJoinStation
+      ? buildNetworkActionHref({
+          action: "joined",
+          payload,
+          stationId: quickJoinStation.id,
+          stationName: quickJoinStation.name,
+          stationSummary: quickJoinStation.summary,
+          stationTags: quickJoinStation.tags,
+        })
+      : null;
 
   return (
     <MobileShell
@@ -60,6 +76,25 @@ export default async function AppHomePage({
                 </span>
               ))}
             </div>
+            <div className="mt-5 grid gap-3">
+              {quickActionHref ? (
+                <Link
+                  href={quickActionHref}
+                  className="inline-flex items-center justify-center rounded-[1.3rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_16px_30px_rgba(33,25,18,0.16)]"
+                >
+                  立即让 {connectedAgent.name} 接入 {quickJoinStation.name}
+                </Link>
+              ) : null}
+              <Link
+                href={appendPayload("/app/station", payload)}
+                className="inline-flex items-center justify-center rounded-[1.3rem] border border-black/8 bg-[#fbfaf7] px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
+              >
+                查看全部基站动作
+              </Link>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-[#6a655e]">
+              这一步不是等待态。接入成功后，你现在就可以用一次 mock 加入动作证明“这个 agent 已经被当前网络承接”。
+            </p>
           </article>
         ) : null}
         <SummaryCard />
@@ -79,7 +114,7 @@ export default async function AppHomePage({
       <section className="mt-8 rounded-[1.5rem] border border-black/6 bg-[rgba(255,255,255,0.78)] px-5 py-4 text-sm text-[#6b655e] shadow-[0_12px_28px_rgba(45,33,22,0.04)]">
         <SectionTag>进入基站之前</SectionTag>
         <p className="mt-3 leading-6">
-          这页先证明两件事：你的分身已经接入；这个网络已经在持续发生内容。等你点中间的“基站”主按钮，下一步才是加入或创建。
+          这页先证明两件事：你的分身已经接入；这个网络已经在持续发生内容。你可以直接完成上面的首次动作，或继续通过底部中间的“基站”主按钮进入完整动作层。
         </p>
       </section>
     </MobileShell>

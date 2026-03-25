@@ -45,7 +45,9 @@ last_updated: 2026-03-25
 
 | ID | P级 | 事项 | 类型 | 完成定义 | 检测方式 | 检测状态 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| T026 | P0 | 打通真机扫码的“这是我的 agent 连进来了” aha 时刻 | build | 当前 CLI 生成的 pairing 状态可以回到桌面 `/connect` 被真实还原；手机可通过局域网或公网 host 真扫进入 `/pair -> /app`；`/pair` 与 `/app` 都展示这次真实接入的 agent 身份，并给出一次立即可完成的成功动作 | 用一张非默认 `agent-card.json` 在真机模式下执行命令，检查桌面 `/connect` 的二维码是否来自本次 pairing，手机扫码后是否在 `/pair`、`/app` 看到同一 agent 名称 / 来源，并记录整条链路截图或视频 | pending | doing |
+| T026 | P0 | 打通真机扫码的“这是我的 agent 连进来了” aha 时刻 | build | 当前 CLI 生成的 pairing 状态可以回到桌面 `/connect` 被真实还原；手机可通过局域网或公网 host 真扫进入 `/pair -> /app`；`/pair` 与 `/app` 都展示这次真实接入的 agent 身份，并给出一次立即可完成的成功动作 | 用一张非默认 `agent-card.json` 在真机模式下执行命令，检查桌面 `/connect` 的二维码是否来自本次 pairing，手机扫码后是否在 `/pair`、`/app` 看到同一 agent 名称 / 来源，并记录整条链路截图或视频 | passed | done |
+| T027 | P0 | 冻结接入成功后的微播客存在感与移动 Web 首屏 UI 优化清单 | product | 明确 `/app` 在 agent 已接入后第一屏必须出现什么、哪些演示感元素应降级、即时动作该放哪里，以及微播客流与已接入状态如何共存；冻结一版最小 UI 改动清单 | 产品窗口基于 `T026` 已跑通的接入结果，产出 3-5 条明确 UI 调整项、保留项和不做项，主管拍板后进入实现 | pending | doing |
+| T028 | P0 | 实现并验证接入成功后的微播客 UI 第一轮收口 | build | `/app` 首屏在 agent 已接入时更像真实微播客产品，而不是 demo 页面；已接入状态、即时动作和信息流层级清晰，桌面与手机视口都可用 | 研发按 `T027` 冻结结果实现后，执行 `npm run lint`、`npm run build`，再由 QA 在桌面、`iPhone 13` 和真机接入模式下复核首屏层级与关键动作 | pending | todo |
 | T015 | P0 | 冻结 connect CLI 的最小参数、输出格式与默认命令写法 | doc | `F010`、本地 demo 执行文档、`/connect` 页面统一使用同一条命令和同一组输出字段 | 对照 `F010-agent-connect.md`、`local-cli-demo-execution.md`、`src/app/connect/page.tsx` 三处是否一致 | passed | done |
 | T019 | P0 | 冻结 demo mode 的最小输入字段与 URL 编码结构 | doc | 文档里明确只使用 `agent_id / name / avatar / bio / capabilities / source` 与 URL 编码或 mock payload | 检查 `F010`、本地 demo 执行文档、未决问题与决策日志是否一致 | passed | done |
 | T018 | P0 | 实现本地 `connect CLI demo mode`，让任意本地 `Node.js / claw` 目录里都能执行命令并输出二维码 | build | 在一个独立本地样例目录里运行命令后，终端能拿到 `code / URL / QR` | 在本地样例目录真实运行 CLI，并记录输出结果 | passed | done |

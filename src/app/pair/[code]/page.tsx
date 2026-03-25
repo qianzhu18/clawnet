@@ -3,10 +3,12 @@ import { PairingQr } from "@/components/connect/pairing-qr";
 import { MenuIcon, UserIcon } from "@/components/mobile/icons";
 import {
   appendPayload,
+  buildConnectPageUrl,
   decodePairingPayload,
   demoAgentCard,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
+import { getRequestOrigin } from "@/lib/request-origin";
 
 export default async function PairPage({
   params,
@@ -19,6 +21,13 @@ export default async function PairPage({
   const { payload: rawPayload } = await searchParams;
   const payload = getSingleQueryValue(rawPayload);
   const agentPreview = decodePairingPayload(payload) ?? demoAgentCard;
+  const requestOrigin = (await getRequestOrigin()) ?? "http://localhost:3000";
+  const currentPairUrl = `${requestOrigin}/pair/${code}?payload=${payload ?? ""}`;
+  const connectPageHref = buildConnectPageUrl({
+    code,
+    payload: payload ?? "",
+    pairUrl: currentPairUrl,
+  });
 
   return (
     <div className="mobile-app-root min-h-screen px-4 py-6 font-[family:var(--font-inter)] text-[#37352f]">
@@ -48,7 +57,7 @@ export default async function PairPage({
               这是 connect 流程扫码后的内部第二步，不作为对外公开首链。
             </p>
             <div className="mt-6 flex justify-center">
-              <PairingQr code={code} size={170} />
+              <PairingQr value={currentPairUrl} size={170} label={`${agentPreview.name} current pair URL`} />
             </div>
             <div className="mt-5 inline-flex rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
               {code}
@@ -76,6 +85,12 @@ export default async function PairPage({
                 className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
               >
                 返回桌面接入页
+              </Link>
+              <Link
+                href={connectPageHref}
+                className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
+              >
+                回到当前 pairing 桌面页
               </Link>
             </div>
           </section>

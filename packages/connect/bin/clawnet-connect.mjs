@@ -25,6 +25,73 @@ function buildPairCode(agentCard) {
   return `CLAW-${hash.slice(0, 6)}`;
 }
 
+function normalizeHost(host) {
+  try {
+    return new URL(host).origin;
+  } catch {
+    return "http://localhost:3000";
+  }
+}
+
+function isLoopbackHostname(hostname) {
+  const normalized = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  return normalized === "localhost" || normalized === "127.0.0.1" || normalized === "0.0.0.0" || normalized === "::1";
+}
+
+function isLanHostname(hostname) {
+  const normalized = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  const pieces = normalized.split(".").map((item) => Number(item));
+
+  if (normalized.endsWith(".local")) {
+    return true;
+  }
+
+  if (pieces.length !== 4 || pieces.some((item) => Number.isNaN(item))) {
+    return false;
+  }
+
+  if (pieces[0] === 10) {
+    return true;
+  }
+
+  if (pieces[0] === 172 && pieces[1] >= 16 && pieces[1] <= 31) {
+    return true;
+  }
+
+  return pieces[0] === 192 && pieces[1] === 168;
+}
+
+function describeHost(host) {
+  const hostValue = normalizeHost(host);
+  const hostname = new URL(hostValue).hostname;
+
+  if (isLoopbackHostname(hostname)) {
+    return {
+      host_value: hostValue,
+      host_mode: "local",
+      scan_ready: false,
+      scan_hint:
+        "当前 host 只适合本机浏览器调试。真实手机请改用 `npm run dev:lan / start:lan`，并把 `CLAWNET_HOST` 覆盖成局域网或公网地址。",
+    };
+  }
+
+  if (isLanHostname(hostname)) {
+    return {
+      host_value: hostValue,
+      host_mode: "lan",
+      scan_ready: true,
+      scan_hint: "当前二维码已经指向局域网地址，同一 Wi-Fi 下的手机可以直接扫码。",
+    };
+  }
+
+  return {
+    host_value: hostValue,
+    host_mode: "public",
+    scan_ready: true,
+    scan_hint: "当前二维码已经指向公网 host，可以直接外发给手机扫码或打开。",
+  };
+}
+
 function buildQrMatrix(input) {
   const cells = 21;
   const bits = [];
@@ -118,15 +185,20 @@ async function readAgentCard(cardPath) {
 }
 
 function buildPairingOutput(agentCard, host) {
-  const normalizedHost = host.replace(/\/$/, "");
+  const hostInfo = describeHost(host);
   const payload = Buffer.from(JSON.stringify(agentCard), "utf8").toString("base64url");
   const code = buildPairCode(agentCard);
-  const pairUrl = `${normalizedHost}/pair/${code}?payload=${payload}`;
+  const pairUrl = `${hostInfo.host_value}/pair/${code}?payload=${payload}`;
+  const connectUrl = `${hostInfo.host_value}/connect?code=${encodeURIComponent(code)}&payload=${encodeURIComponent(payload)}&pair_url=${encodeURIComponent(pairUrl)}`;
 
   return {
     code,
     pair_url: pairUrl,
+    connect_url: connectUrl,
     qr_payload: pairUrl,
+    host_mode: hostInfo.host_mode,
+    scan_ready: hostInfo.scan_ready,
+    scan_hint: hostInfo.scan_hint,
     agent_preview: agentCard,
   };
 }
@@ -153,6 +225,12 @@ async function run() {
   console.log("");
   console.log("Output:");
   console.log(JSON.stringify(output, null, 2));
+  console.log("");
+  console.log("Desktop pairing entry:");
+  console.log(output.connect_url);
+  console.log("");
+  console.log(`Host mode: ${output.host_mode}`);
+  console.log(output.scan_hint);
   console.log("");
   console.log("QR:");
   console.log(renderPseudoQr(output.qr_payload));

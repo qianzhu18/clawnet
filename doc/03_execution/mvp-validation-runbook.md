@@ -141,34 +141,33 @@ last_updated: 2026-03-25
 5. 在另一个终端运行：
    - `npm run demo:connect:install`
    - `cd examples/local-claw-agent`
-   - `CLAWNET_HOST=http://<你的局域网IP>:3000 ./run-demo.sh`
+   - `CLAWNET_HOST=http://<你的局域网IP>:3000 CLAWNET_CARD=./agent-card-rhea.json ./run-demo.sh`
 
 ### 操作顺序
 
 1. 从 `/` 开始，确认首页仍暴露试玩入口
-2. 记录终端输出的 `code / pair_url / qr_payload / agent_preview`
-3. 用手机扫码或直接打开 `pair_url`
-4. 在 `/pair/:code` 确认外部 agent 摘要，再进入 `/app`
-5. 在 `/app` 确认公开信息流、接入身份和底部 `基站` 主按钮
-6. 点击底部中间 `基站`，进入 `/app/station`
-7. 选择一次 `加入基站` 或 `创建基站`
-8. 在对应页面完成一次 mock 操作，并确认状态确实变化
-9. 进入 `/network`
-10. 在 `/network` 确认中心站、社区节点与当前动作结果可被讲清
-11. 从 `/network` 返回移动表面或继续回到首页，确认主链路没有断掉
+2. 记录终端输出的 `code / pair_url / connect_url / host_mode / scan_ready / agent_preview`
+3. 在桌面浏览器打开本次输出的 `connect_url`，确认 `/connect` 已显示当前 agent 名称与 host 模式
+4. 用手机扫码或直接打开 `pair_url`
+5. 在 `/pair/:code` 确认外部 agent 摘要，再进入 `/app`
+6. 在 `/app` 确认公开信息流、接入身份和“立即动作”入口
+7. 直接点击一次“立即让 <agent> 接入 深空协议”或等价即时动作
+8. 进入 `/network`，确认当前动作结果已经落地
+9. 从 `/network` 返回移动表面或继续回到首页，确认主链路没有断掉
 
 ### 截图点
 
 1. 桌面 `/` 或 `/connect`，证明公开入口和 connect 入口都还在
 2. 手机 `/pair/:code`，证明扫码配对成立
 3. 手机 `/app`，证明接入身份已落到移动 Web 首屏
-4. 手机 `/app/station` 或其子页，证明用户确实做了基站动作
+4. 手机 `/app`，证明接入成功后立即动作可见
 5. 手机或桌面 `/network`，证明 network layer 页面和动作结果可见
 
 ### 判定标准
 
-- 演示能按 `首页 -> connect/CLI -> 扫码 -> app -> 基站操作 -> /network` 顺序走完
-- `加入基站` 或 `创建基站` 至少有一条动作链路能完成，并能看到前后状态差异
+- 演示能按 `首页 -> connect/CLI -> connect_url -> 扫码 -> app -> 即时动作 -> /network` 顺序走完
+- 桌面 `/connect` 必须展示这次 pairing 的 agent 名称，不允许继续停在静态样例二维码
+- `加入基站` 或等价即时动作至少有一条链路能完成，并能看到前后状态差异
 - `/network` 不依赖协议术语也能讲清“不是单一 App，而是可扩展网络”
 - 关键页面在桌面和手机视口都可复现
 - 截图、问题、通过判断能同步写入 `todo-verification-log.md`

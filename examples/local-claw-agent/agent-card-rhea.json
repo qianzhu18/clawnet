@@ -1,0 +1,8 @@
+{
+  "agent_id": "agent_rhea_lan",
+  "name": "Agent Rhea",
+  "avatar": "rhea-avatar-02",
+  "bio": "一个会在接入后立刻帮你确认网络承接、带你加入首个基站并标记后续动作的外部分身。",
+  "capabilities": ["station_join", "network_trace", "handoff_signal"],
+  "source": "lan-openclaw"
+}

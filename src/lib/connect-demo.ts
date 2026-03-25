@@ -7,12 +7,28 @@ export type DemoAgentCard = {
   source: string;
 };
 
+type SearchParamValue = string | string[] | undefined;
+
+export type PairingHostMode = "local" | "lan" | "public";
+
 export type PairingState = {
   code: string;
   pairUrl: string;
+  connectUrl: string;
   qrPayload: string;
   payload: string;
   agentPreview: DemoAgentCard;
+  hostValue: string;
+  hostMode: PairingHostMode;
+  hostLabel: string;
+  hostHint: string;
+  scanReady: boolean;
+};
+
+export type PairingSearchParams = {
+  code?: SearchParamValue;
+  payload?: SearchParamValue;
+  pair_url?: SearchParamValue;
 };
 
 export const defaultDemoHost = process.env.NEXT_PUBLIC_CLAWNET_HOST ?? "http://localhost:3000";
@@ -64,6 +80,75 @@ export function buildPairCode(agentCard: DemoAgentCard) {
   return `CLAW-${hash.slice(0, 6)}`;
 }
 
+function normalizeHost(host: string) {
+  try {
+    return new URL(host).origin;
+  } catch {
+    return defaultDemoHost;
+  }
+}
+
+function isLoopbackHostname(hostname: string) {
+  const normalized = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  return normalized === "localhost" || normalized === "127.0.0.1" || normalized === "0.0.0.0" || normalized === "::1";
+}
+
+function isLanHostname(hostname: string) {
+  const normalized = hostname.replace(/^\[|\]$/g, "").toLowerCase();
+  const pieces = normalized.split(".").map((item) => Number(item));
+
+  if (normalized.endsWith(".local")) {
+    return true;
+  }
+
+  if (pieces.length !== 4 || pieces.some((item) => Number.isNaN(item))) {
+    return false;
+  }
+
+  if (pieces[0] === 10) {
+    return true;
+  }
+
+  if (pieces[0] === 172 && pieces[1] >= 16 && pieces[1] <= 31) {
+    return true;
+  }
+
+  return pieces[0] === 192 && pieces[1] === 168;
+}
+
+export function describePairingHost(host: string) {
+  const hostValue = normalizeHost(host);
+  const hostname = new URL(hostValue).hostname;
+
+  if (isLoopbackHostname(hostname)) {
+    return {
+      hostValue,
+      hostMode: "local" as const,
+      hostLabel: "localhost 调试",
+      hostHint: "当前 host 只适合这台电脑本机调试。真机扫码必须改用 `npm run dev:lan / start:lan`，并把 `CLAWNET_HOST` 覆盖成局域网或公网地址。",
+      scanReady: false,
+    };
+  }
+
+  if (isLanHostname(hostname)) {
+    return {
+      hostValue,
+      hostMode: "lan" as const,
+      hostLabel: "LAN 真机模式",
+      hostHint: "当前二维码已经指向局域网地址，同一 Wi-Fi 下的手机可以直接扫码进入 `/pair -> /app`。",
+      scanReady: true,
+    };
+  }
+
+  return {
+    hostValue,
+    hostMode: "public" as const,
+    hostLabel: "公网真机模式",
+    hostHint: "当前二维码已经指向公网 host，可以直接给外部手机扫码或打开。",
+    scanReady: true,
+  };
+}
+
 export function encodePairingPayload(agentCard: DemoAgentCard) {
   return Buffer.from(JSON.stringify(agentCard), "utf8").toString("base64url");
 }
@@ -81,19 +166,78 @@ export function decodePairingPayload(payload?: string | null) {
   }
 }
 
+export function buildConnectPageUrl({
+  code,
+  payload,
+  pairUrl,
+  host,
+}: {
+  code: string;
+  payload: string;
+  pairUrl?: string;
+  host?: string;
+}) {
+  const params = new URLSearchParams();
+  params.set("code", code);
+  params.set("payload", payload);
+
+  if (pairUrl) {
+    params.set("pair_url", pairUrl);
+  }
+
+  if (!host) {
+    return `/connect?${params.toString()}`;
+  }
+
+  return `${normalizeHost(host)}/connect?${params.toString()}`;
+}
+
 export function buildPairingState(agentCard: DemoAgentCard, host = defaultDemoHost): PairingState {
   const payload = encodePairingPayload(agentCard);
   const code = buildPairCode(agentCard);
-  const normalizedHost = host.replace(/\/$/, "");
-  const pairUrl = `${normalizedHost}/pair/${code}?payload=${payload}`;
+  const hostInfo = describePairingHost(host);
+  const pairUrl = `${hostInfo.hostValue}/pair/${code}?payload=${payload}`;
+  const connectUrl = buildConnectPageUrl({
+    code,
+    payload,
+    pairUrl,
+    host: hostInfo.hostValue,
+  });
 
   return {
     code,
     pairUrl,
+    connectUrl,
     qrPayload: pairUrl,
     payload,
     agentPreview: agentCard,
+    hostValue: hostInfo.hostValue,
+    hostMode: hostInfo.hostMode,
+    hostLabel: hostInfo.hostLabel,
+    hostHint: hostInfo.hostHint,
+    scanReady: hostInfo.scanReady,
   };
+}
+
+export function readImportedPairing(searchParams: PairingSearchParams, fallbackHost = defaultDemoHost) {
+  const payload = getSingleQueryValue(searchParams.payload);
+  const agentPreview = decodePairingPayload(payload);
+
+  if (!payload || !agentPreview) {
+    return null;
+  }
+
+  const importedPairUrl = getSingleQueryValue(searchParams.pair_url);
+
+  if (importedPairUrl) {
+    try {
+      return buildPairingState(agentPreview, new URL(importedPairUrl).origin);
+    } catch {
+      return buildPairingState(agentPreview, fallbackHost);
+    }
+  }
+
+  return buildPairingState(agentPreview, fallbackHost);
 }
 
 export function getSingleQueryValue(value?: string | string[]) {

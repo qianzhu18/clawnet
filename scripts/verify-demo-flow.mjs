@@ -138,7 +138,7 @@ async function runDesktopFlow(browser, pairUrl) {
 
     await page.goto(pairUrl, { waitUntil: "networkidle" });
     await page.getByText("确认这次配对").waitFor();
-    await page.getByRole("link", { name: "进入移动首页" }).waitFor();
+    await page.getByRole("link", { name: "进入移动 Web /app" }).waitFor();
   } finally {
     await context.close();
   }
@@ -153,12 +153,12 @@ async function runMobileJoinFlow(browser, pairUrl) {
     await page.getByText("确认这次配对").waitFor();
     await page.screenshot({ path: screenshotPaths.pairMobile, fullPage: true });
 
-    await page.getByRole("link", { name: "进入移动首页" }).click();
+    await page.getByRole("link", { name: "进入移动 Web /app" }).click();
     await page.waitForURL(/\/app/);
     await page.getByText("Agent Aster 已从外部环境接入").waitFor();
     await page.screenshot({ path: screenshotPaths.appMobile, fullPage: true });
 
-    await page.getByRole("link", { name: "基站" }).click();
+    await page.getByRole("link", { name: "基站", exact: true }).click();
     await page.waitForURL(/\/app\/station/);
     await page.getByRole("link", { name: "初始化连接" }).click();
     await page.waitForURL(/\/app\/station\/join/);
@@ -241,7 +241,7 @@ async function runCommand(label, args, options = {}) {
 }
 
 function parsePairingOutput(stdout) {
-  const match = stdout.match(/Output:\s*([\s\S]*?)\n\nQR:/);
+  const match = stdout.match(/Output:\s*({[\s\S]*?})\s*(?:\n\nDesktop pairing entry:|\n\nQR:)/);
 
   if (!match) {
     throw new Error("Failed to parse CLI output JSON block.");

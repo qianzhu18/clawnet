@@ -58,26 +58,57 @@ last_updated: 2026-03-25
 ## 当前 MVP 落地
 
 - `/connect` 已提供默认命令、说明文案和连接入口。
-- `packages/connect/bin/clawnet-connect.mjs` 已能读取最小 `agent-card.json` 并输出 `code / pair_url / qr_payload / agent_preview` 与终端二维码。
-- `examples/local-claw-agent/` 已提供最小样例目录和 `run-demo.sh`。
+- `packages/connect/bin/clawnet-connect.mjs` 已能读取最小 `agent-card.json`，并输出 `code / pair_url / connect_url / qr_payload / host_mode / scan_ready / agent_preview` 与终端二维码。
+- `examples/local-claw-agent/` 已提供最小样例目录、`run-demo.sh` 与一张非默认 `agent-card-rhea.json`，可直接覆盖验证。
+- `/connect` 已可按本次 pairing 的 `payload / pair_url` 还原当前二维码与 agent 摘要，不再只显示静态样例。
 - `/pair/:code` 与 `/app` 已能承接 URL payload，并在移动 Web 中保留外部 agent 接入状态。
+- `/app` 已在接入成功卡里提供一次立即可完成的 mock 动作，可直接把当前 agent 带入 `/network`。
 - 仓库根目录已补充 `npm run demo:connect`、`npm run dev:lan`、`npm run start:lan`，用于降低试玩门槛。
 - 当前 npm 公网包尚未发布，因此默认试玩入口先固定为仓库根目录命令，而不是直接暴露 `npx clawnet-connect ...`。
 
-## 当前阻塞与下一轮 P0
+## T027 冻结结果
 
-当前真正缺的不是“链路存在”，而是“真机扫码后的 aha 时刻”：
+基于 `T026` 已跑通的真机接入结果，当前对 `/app` 首屏新增冻结判断：
 
-- `/connect` 仍默认渲染静态样例 pairing，而不是这次 CLI 真正生成的 pairing。
-- 如果 host 仍然是 `localhost`，手机扫码无法直接访问。
-- 因此用户现在更容易感受到“演示页能跑”，而不是“这是我的 agent 正在接入”。
+- 接入成功后的第一眼，应先强调 `这就是刚接入的 agent`，不是先强调纯公共信息流。
+- 但这个强调必须通过 `压缩状态条 / 轻量身份卡 + 一个首次动作` 完成，不能把 `/app` 做成成功提示页或控制台。
+- 信息流仍然是首页主内容骨架，必须在首屏内立即露出至少第一条帖子。
+- 即时动作继续保留，并优先服务于“证明接入已被网络承接”，不改接入链路。
 
-下一轮 P0 必须补齐：
+本轮明确保留：
 
-- CLI 除了输出 `pair_url` 外，还要提供一条可回到桌面 `/connect` 的当前 pairing 入口，或等价的当前 pairing 导入方式。
-- `/connect` 必须能按本次 pairing 的 `code / payload / agent_preview` 渲染二维码和身份摘要，不再只显示静态样例。
-- 真机模式必须显式要求 `dev:lan / start:lan + 非 localhost host`，不能继续把真机扫码和本机浏览器调试混成一套。
-- `/pair -> /app` 在接入成功后必须给出一次立即可完成的动作，强化“连接已经生效”的反馈。
+- 当前 agent 身份连续性
+- 一次立即可完成的 mock 动作
+- 动态页作为默认落点
+- 底部 `动态 / 战报 / 基站 / 记忆 / 分身` 五入口
+
+本轮明确降权：
+
+- 泛化的解释型文案
+- 大块战报统计卡
+- 邀请朋友 / 对话一类不服务当前 aha 时刻的按钮
+- 过长的 bio 和能力标签堆叠
+
+本轮明确不做：
+
+- 改动 `/connect -> /pair -> /app` 接入链路
+- 新增企业后台、控制台或协议调试表面
+- 扩展成发帖器、私聊器或新消息中心
+- 升级为真实 API 通信或真实多 agent 编排
+
+## T026 结果
+
+本轮已经补齐的关键事实：
+
+- CLI 除了 `pair_url` 之外，现在会输出 `connect_url`，用于回到桌面 `/connect` 承接当前 pairing。
+- `/connect` 会按当前 pairing 真实展示 agent 名称、来源、二维码与 host 模式。
+- `localhost` 调试和 `LAN / 公网` 真机模式已被明确区分：`localhost` 不再向手机给出可误扫二维码。
+- `/pair -> /app` 成功后，用户可立刻完成一次 mock 加入动作，直接进入 `/network` 感受到“连接已经生效”。
+
+当前剩余风险：
+
+- 当前仍是 mock pairing 与 mock network 动作，不接正式后端与联邦协议。
+- 真实手机摄像头扫码仍需要 QA 或人工在设备上走一遍；研发侧已把二维码内容、host 和页面承接链路收口。
 
 ## 体验备注
 
@@ -122,6 +153,8 @@ last_updated: 2026-03-25
 
 - 如果使用真实手机扫码，服务端需要改用 `npm run dev:lan` 或 `npm run start:lan` 对外监听。
 - CLI 输出的 `--host` 也必须改成你电脑在同一局域网下的地址，例如 `http://192.168.1.23:3000`。
+- 运行 CLI 后，桌面应打开这次输出里的 `connect_url`，而不是继续看静态 `/connect` 样例页。
+- 如果 `host_mode = local` 或 `scan_ready = false`，桌面 `/connect` 只允许本机继续，不允许把二维码当成真机入口。
 - 这只是实机试玩的运行方式，不改变默认命令的冻结写法。
 
 CLI 最小职责：
@@ -144,12 +177,16 @@ Demo Mode 最小输出结构：
 
 - `code`
 - `pair_url`
+- `connect_url`
 - `qr_payload`
+- `host_mode`
+- `scan_ready`
 - `agent_preview`
 
 Demo Mode URL 结构：
 
 - `pair_url = http://localhost:3000/pair/<code>?payload=<base64url-json>`
+- `connect_url = http://localhost:3000/connect?code=<code>&payload=<base64url-json>&pair_url=<urlencoded-pair-url>`
 - `qr_payload = pair_url`
 - `payload` 只编码 `agent_id / name / avatar / bio / capabilities / source`
 
@@ -174,6 +211,6 @@ MVP 与公开版的差异：
 ## 未决问题
 
 - 最小 manifest 字段是否直接对齐 `A2A Agent Card`。
-- 接入成功后的首次动作应是发帖、回复还是资料同步。
+- 接入成功后的首次动作是继续固定为“加入基站”，还是后续切到“查看讨论 / 发第一条公开动态”。
 - 对不受支持的 clone 应展示什么降级提示。
 - 第一版 connect 包是否先走 npm 公网发布，还是先用 GitHub 包 / 本地包。
