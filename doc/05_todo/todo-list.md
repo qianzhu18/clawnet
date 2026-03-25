@@ -2,7 +2,7 @@
 title: 本周 TO DO
 status: active
 owner: founder
-last_updated: 2026-03-25
+last_updated: 2026-03-26
 ---
 
 # 本周 TO DO
@@ -49,6 +49,7 @@ last_updated: 2026-03-25
 | T029 | P0 | 冻结 `OpenClaw-first` 的真实宿主接入 SDD、TDD 与隔离安全策略 | doc | 存在明确的 `F011`、`openclaw-local-host-sdd.md`、`openclaw-host-tdd-plan.md` 与 `openclaw-local-test-runbook.md`，写清真实宿主、隔离环境、安装方式、bridge 路径、桌面配置与移动体验边界 | 检查 `F011`、SDD、TDD、runbook、`decision-log.md` 与 `open-questions.md` 是否一致，并确认当前阶段固定为 `workspace skill + 本地 CLI bridge` | passed | done |
 | T030 | P0 | 建立本机隔离 `OpenClaw` 测试环境并完成最小 skill 安装验证 | build | 在本机隔离环境中可启动 `OpenClaw`，并确认 `workspace skill` 或等价本地扩展方式可被宿主识别 | 按 runbook 记录安装与启动步骤，至少完成一次宿主识别 skill 的手测，并写入检测日志 | passed | done |
 | T031 | P0 | 跑通 `OpenClaw -> ClawNet connect bridge -> /connect -> /pair -> /app` 的第一条真实宿主链路 | build | 从真实宿主侧触发后，桌面端能拿到当前 pairing，移动端能继续完成连接体验 | 对真实宿主链路执行一次完整手测；至少保留命令输出、桌面截图、移动截图或录屏摘要 | blocked | blocked |
+| T032 | P0 | 固定 `OpenClaw` 同网真机验收的一键命令，避免手工拼接 `LAN_IP / CLAWNET_HOST` | build | 仓库根目录存在一条可复跑命令，能自动探测局域网 IP 并执行当前 `workspace bridge -> /connect -> /pair -> /app -> /network` 验收链路 | 执行 `OPENCLAW_WORKSPACE_DIR=\"$HOME/.openclaw-t030/workspace\" npm run demo:openclaw:lan`，检查输出中的 `base_url / host_value`、`OpenClaw bridge regression passed` 与 `/tmp/clawnet-openclaw-bridge-regression/summary.json` | passed | done |
 | T015 | P0 | 冻结 connect CLI 的最小参数、输出格式与默认命令写法 | doc | `F010`、本地 demo 执行文档、`/connect` 页面统一使用同一条命令和同一组输出字段 | 对照 `F010-agent-connect.md`、`local-cli-demo-execution.md`、`src/app/connect/page.tsx` 三处是否一致 | passed | done |
 | T019 | P0 | 冻结 demo mode 的最小输入字段与 URL 编码结构 | doc | 文档里明确只使用 `agent_id / name / avatar / bio / capabilities / source` 与 URL 编码或 mock payload | 检查 `F010`、本地 demo 执行文档、未决问题与决策日志是否一致 | passed | done |
 | T018 | P0 | 实现本地 `connect CLI demo mode`，让任意本地 `Node.js / claw` 目录里都能执行命令并输出二维码 | build | 在一个独立本地样例目录里运行命令后，终端能拿到 `code / URL / QR` | 在本地样例目录真实运行 CLI，并记录输出结果 | passed | done |

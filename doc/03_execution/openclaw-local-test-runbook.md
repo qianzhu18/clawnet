@@ -2,7 +2,7 @@
 title: OpenClaw 本机隔离测试 Runbook
 status: active
 owner: founder
-last_updated: 2026-03-25
+last_updated: 2026-03-26
 ---
 
 # OpenClaw 本机隔离测试 Runbook
@@ -265,6 +265,28 @@ CLAWNET_HOST=http://172.20.10.3:3000 \
 
 ```bash
 cd "/Users/mac/qianzhu Vault/project/clawnet"
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  npm run demo:openclaw:lan
+```
+
+这条命令会自动做两件事：
+
+- 自动探测当前默认网卡和局域网 IP
+- 把 `CLAWNET_BASE_URL / CLAWNET_HOST` 设成同一局域网地址，再执行 `demo:openclaw:bridge`
+
+如果你要手动指定 IP，推荐这样覆盖：
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
+CLAWNET_LAN_IP="172.20.10.3" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  npm run demo:openclaw:lan
+```
+
+底层展开命令仍然是：
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
 LAN_IFACE="$(route get default | awk '/interface:/{print $2}')"
 LAN_IP="$(ipconfig getifaddr "$LAN_IFACE")"
 
@@ -285,7 +307,9 @@ npm run demo:openclaw:bridge
 补充说明：
 
 - 如果 `3000` 端口上已经有当前 `ClawNet` 服务在跑，脚本会直接复用，不会重复起一个 server。
+- 如果 `3000` 端口还没有服务，`demo:openclaw:bridge` 会自动 build 并拉起 `start:lan`。
 - 这条命令对应当前“本地启动 OpenClaw 后，手机可扫码进入微博客表面”的验收口径。
+- 这条一键命令不要求你先手工 export `LAN_IP`，更适合作为当前主线的默认入口。
 
 ## T030 最小可复跑摘要
 

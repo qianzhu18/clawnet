@@ -898,3 +898,23 @@ last_updated: 2026-03-25
 - `openclaw-local-test-runbook.md` 需要新增 `npm run demo:openclaw:bridge` 作为当前可复跑验收命令。
 - `todo-list.md` 与 `todo-verification-log.md` 需要把 `T031` 明确标为 `blocked`，同时记录已通过的 workspace bridge 回归证据。
 - 产品和设计可以基于这条已通过的手机接入链继续推进微播客 UI 优化，不必等待 `OpenClaw` 上游运行时问题先被修完。
+
+## 2026-03-26：当前 OpenClaw 手机验收主线固定提供“一键 LAN 命令”，不再要求手工拼环境变量
+
+决策：
+
+- 当前主线默认使用 `npm run demo:openclaw:lan` 作为本地同网验收入口。
+- 这条命令负责自动探测默认网卡和局域网 IP，并把 `CLAWNET_BASE_URL / CLAWNET_HOST` 统一传给 `demo:openclaw:bridge`。
+- 底层 `demo:openclaw:bridge`、workspace bridge 和 `T031 blocked` 的事实保持不变；一键命令只是把当前已通过的基线收成更稳的入口。
+
+原因：
+
+- 用户已经多次在 `localhost / LAN_IP / CLAWNET_HOST` 之间手工切换，错误主要发生在运行模式而不是网页功能本身。
+- 当前最需要的是“让同一网络下的 OpenClaw 手机验收更稳定地被重复执行”，而不是再发明一套新的接入链路。
+- 如果继续依赖手工拼 `LAN_IP` 和两个 env，后续研发、测试和创始人自测都会重复踩同一类环境错误。
+
+影响：
+
+- `package.json` 需要新增 `demo:openclaw:lan`。
+- `openclaw-local-test-runbook.md` 需要把它升格为当前推荐命令。
+- `todo-list.md` 与 `todo-verification-log.md` 需要新增一条围绕“一键 LAN 验收入口”的任务和检测记录。
