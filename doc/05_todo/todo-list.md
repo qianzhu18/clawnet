@@ -46,8 +46,9 @@ last_updated: 2026-03-25
 | ID | P级 | 事项 | 类型 | 完成定义 | 检测方式 | 检测状态 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | T026 | P0 | 打通真机扫码的“这是我的 agent 连进来了” aha 时刻 | build | 当前 CLI 生成的 pairing 状态可以回到桌面 `/connect` 被真实还原；手机可通过局域网或公网 host 真扫进入 `/pair -> /app`；`/pair` 与 `/app` 都展示这次真实接入的 agent 身份，并给出一次立即可完成的成功动作 | 用一张非默认 `agent-card.json` 在真机模式下执行命令，检查桌面 `/connect` 的二维码是否来自本次 pairing，手机扫码后是否在 `/pair`、`/app` 看到同一 agent 名称 / 来源，并记录整条链路截图或视频 | passed | done |
-| T027 | P0 | 冻结接入成功后的微播客存在感与移动 Web 首屏 UI 优化清单 | product | 明确 `/app` 在 agent 已接入后第一屏必须出现什么、哪些演示感元素应降级、即时动作该放哪里，以及微播客流与已接入状态如何共存；冻结一版最小 UI 改动清单 | 产品窗口基于 `T026` 已跑通的接入结果，产出 3-5 条明确 UI 调整项、保留项和不做项，主管拍板后进入实现 | pending | doing |
-| T028 | P0 | 实现并验证接入成功后的微播客 UI 第一轮收口 | build | `/app` 首屏在 agent 已接入时更像真实微播客产品，而不是 demo 页面；已接入状态、即时动作和信息流层级清晰，桌面与手机视口都可用 | 研发按 `T027` 冻结结果实现后，执行 `npm run lint`、`npm run build`，再由 QA 在桌面、`iPhone 13` 和真机接入模式下复核首屏层级与关键动作 | pending | todo |
+| T029 | P0 | 冻结 `OpenClaw-first` 的真实宿主接入 SDD 与隔离安全策略 | doc | 存在明确的 `F011`、`openclaw-local-host-sdd.md` 与 `openclaw-local-test-runbook.md`，写清真实宿主、隔离环境、安装方式、bridge 路径、桌面配置与移动体验边界 | 检查 `F011`、SDD、runbook、`decision-log.md` 与 `open-questions.md` 是否一致，并确认当前阶段固定为 `workspace skill + 本地 CLI bridge` | passed | done |
+| T030 | P0 | 建立本机隔离 `OpenClaw` 测试环境并完成最小 skill 安装验证 | build | 在本机隔离环境中可启动 `OpenClaw`，并确认 `workspace skill` 或等价本地扩展方式可被宿主识别 | 按 runbook 记录安装与启动步骤，至少完成一次宿主识别 skill 的手测，并写入检测日志 | pending | todo |
+| T031 | P0 | 跑通 `OpenClaw -> ClawNet connect bridge -> /connect -> /pair -> /app` 的第一条真实宿主链路 | build | 从真实宿主侧触发后，桌面端能拿到当前 pairing，移动端能继续完成连接体验 | 对真实宿主链路执行一次完整手测；至少保留命令输出、桌面截图、移动截图或录屏摘要 | pending | todo |
 | T015 | P0 | 冻结 connect CLI 的最小参数、输出格式与默认命令写法 | doc | `F010`、本地 demo 执行文档、`/connect` 页面统一使用同一条命令和同一组输出字段 | 对照 `F010-agent-connect.md`、`local-cli-demo-execution.md`、`src/app/connect/page.tsx` 三处是否一致 | passed | done |
 | T019 | P0 | 冻结 demo mode 的最小输入字段与 URL 编码结构 | doc | 文档里明确只使用 `agent_id / name / avatar / bio / capabilities / source` 与 URL 编码或 mock payload | 检查 `F010`、本地 demo 执行文档、未决问题与决策日志是否一致 | passed | done |
 | T018 | P0 | 实现本地 `connect CLI demo mode`，让任意本地 `Node.js / claw` 目录里都能执行命令并输出二维码 | build | 在一个独立本地样例目录里运行命令后，终端能拿到 `code / URL / QR` | 在本地样例目录真实运行 CLI，并记录输出结果 | passed | done |
@@ -65,6 +66,8 @@ last_updated: 2026-03-25
 
 | ID | P级 | 事项 | 类型 | 完成定义 | 检测方式 | 检测状态 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| T027 | P1 | 冻结接入成功后的微播客存在感与移动 Web 首屏 UI 优化清单 | product | 明确 `/app` 在 agent 已接入后第一屏必须出现什么、哪些演示感元素应降级、即时动作该放哪里，以及微播客流与已接入状态如何共存；冻结一版最小 UI 改动清单 | 产品窗口基于 `T026` 或 `T031` 已跑通的接入结果，产出 3-5 条明确 UI 调整项、保留项和不做项，主管拍板后进入实现 | pending | todo |
+| T028 | P1 | 实现并验证接入成功后的微播客 UI 第一轮收口 | build | `/app` 首屏在 agent 已接入时更像真实微播客产品，而不是 demo 页面；已接入状态、即时动作和信息流层级清晰，桌面与手机视口都可用 | 研发按 `T027` 冻结结果实现后，执行 `npm run lint`、`npm run build`，再由 QA 在桌面、`iPhone 13` 和真机接入模式下复核首屏层级与关键动作 | pending | todo |
 | T007 | P1 | 把冻结后的默认命令同步到 `/connect` 页面、功能规格和 Demo 文案 | doc | 页面、规格、脚本都使用同一条命令，不再摇摆 | 检查三处文案是否完全一致 | passed | done |
 | T005 | P1 | 用 mock 数据串起完整 Demo 剧本并走通一遍 | demo | 可以按“首页 -> connect/CLI -> 扫码 -> app -> 基站操作 -> network”完整演一遍 | 运行 `npm run demo:regression`，或按演示脚本手走一遍并记录卡点 | passed | done |
 | T004 | P1 | 完成 `/network` 的 network layer 演示页，并支持一次 mock 的“加入 / 创建基站”动作 | build | 能讲清楚网络层，不只是单一 App；并能完成一次加入或创建基站 | 执行 `npm run lint`、`npm run build`，再用 Playwright 在 `iPhone 13` 与桌面视口检查 `/app/station/* -> /network` 的状态变化与截图证据 | passed | done |

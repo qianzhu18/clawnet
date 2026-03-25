@@ -35,6 +35,12 @@ last_updated: 2026-03-24
 - 本周最大目标是把 `local CLI -> QR -> /pair -> /app` 做实。
 - 在此基础上，再补“网页内加入基站”的展示动作。
 
+### 当前下一步
+
+- 当前 demo 基线已成立，下一步转入 `OpenClaw-first` 真实宿主接入。
+- 先在本机隔离环境中完成 `workspace skill + 本地 CLI bridge`。
+- 先证明“电脑端真实配置 + 手机端只负责体验”成立，再考虑第二宿主和 webhook。
+
 ### 当前代码落地顺序
 
 1. 先把 `stitch/notion_app_1-6` 转成 `src/app/app/*` 下的真实移动页面。

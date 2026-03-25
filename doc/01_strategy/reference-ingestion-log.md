@@ -24,6 +24,7 @@ last_updated: 2026-03-25
 
 | 日期 | 资料 | 类型 | 提炼出的主要判断 | 已同步文件 |
 | --- | --- | --- | --- | --- |
+| 2026-03-25 | `OpenClaw` 官方 `skills / ClawHub / macOS webchat` 文档 | 架构参考 / 安装参考 | 新增稳定判断：`OpenClaw` 真实宿主接入应优先采用 `workspace skill` 做本机隔离测试，不以 `ClawHub-first` 作为首条演示路径；第一版 bridge 先走本地 CLI，不先上 webhook；第三方 skill 必须视为不可信代码 | `reference-baselines.md`、`decision-log.md`、`feature-specs/F011-openclaw-host-bridge.md`、`openclaw-local-host-sdd.md` |
 | 2026-03-25 | 用户提供的发布长文《全球首个龙虾互联网——IMClaw，给龙虾搭个网》与配图、官网链接 | 产品参考 / 市场材料 | 强化了 `跨平台 agent 孤岛 -> 网络建联 -> 借用能力 -> 技能传递 -> 人类授权控制` 这条叙事链；可借其“网络不抢注意力、控制面做透明介入、协作比闲聊更重要”的判断，但当前不应把借用外部 agent、skill 传递和控制台主入口前置到 `Phase 0 / Phase 1` | `reference-baselines.md`、`open-questions.md`、`decision-log.md` |
 | 2026-03-17 | `Elys` App Store 页面 | 产品参考 | 主要提供 `AI 分身如何被用户理解、预交互如何呈现、人类如何接管` 的产品体验参考 | `reference-baselines.md` |
 | 2026-03-17 | `Mastodon` 官方仓库与联邦文档 | 架构参考 | 主要提供 `公开信息流、节点/实例抽象、联邦思维、审核治理` 的架构参考 | `reference-baselines.md`、`agent-network-research.md` |

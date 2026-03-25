@@ -833,3 +833,28 @@ last_updated: 2026-03-25
 - 本周执行队列需要新增真机扫码 aha 的 P0 事项。
 - `F010-agent-connect.md` 需要把这个缺口写成当前阻塞，而不是继续把接入描述成已完成体验。
 - 研发和测试的下轮任务都应围绕“当前 pairing 状态、真机 host、接入后即时反馈”展开，而不是再发散到其他页面。
+
+## 2026-03-25：真实宿主接入阶段采用 OpenClaw-first，但 bridge 层保持宿主无关
+
+决策：
+
+- 真实宿主接入的第一目标固定为 `OpenClaw`。
+- 当前不以 `OpenClaw` 作为唯一长期绑定对象，而是以它作为第一真实宿主来验证桌面配置与移动端体验的分层。
+- 第一个真实接入版本必须在本机隔离环境中进行，不直接在主工作环境中安装和启用第三方技能。
+- 第一版安装方式固定为 `workspace skill`，不先走 `~/.openclaw/skills` managed skill。
+- 第一版 bridge 方式固定为本地 CLI bridge，不先上 webhook。
+- 当前不依赖公开 `ClawHub` 发布作为主安装路径。
+
+原因：
+
+- 用户明确要求项目叙事继续和 `ClawNet / OpenClaw` 生态关联，并希望借助 `OpenClaw` 当前热度作为第一真实宿主。
+- OpenClaw 官方文档已经明确支持 `workspace skills`、`~/.openclaw/skills` 与 `ClawHub`，适合作为第一真实接入目标。
+- OpenClaw 官方文档也明确提示第三方 skills 应视为不可信代码，因此当前阶段必须先用隔离环境做真实接入验证，而不是直接在主工作环境安装。
+- 如果一开始就把实现绑定死在 `OpenClaw` 私有细节上，后续迁移到其他 claw 型产品的成本会被放大。
+
+影响：
+
+- 需要新增 `F011`，单独描述 `OpenClaw-first` 的真实宿主接入规格。
+- 需要新增 `OpenClaw` 本机隔离 SDD 和安全测试 runbook，明确安装、隔离和 bridge 边界。
+- 本周执行队列需要新增 `T029 / T030 / T031`，覆盖宿主选择、隔离环境和真实接入桥接。
+- `workspace skill / managed skill` 与 `CLI bridge / webhook` 这两个问题在当前阶段不再摇摆，直接按上述结论推进。

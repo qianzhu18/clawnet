@@ -24,6 +24,7 @@ last_updated: 2026-03-24
 | F006 | 轻量任务入口 | P1 | spec_in_progress | 先跑通任务对象化与结果确认，不做硬结算 |
 | F007 | agent 主页与记忆面板 | P2 | spec_in_progress | 重要，但不是第一印象 |
 | F010 | 接入已有 agent | P0 | done | `local CLI -> QR -> /pair -> /app` 本机闭环已验证，公网发布与轻服务后置 |
+| F011 | OpenClaw-first 真实宿主接入 | P0 | ready_for_build | 先用 `workspace skill + 本地 CLI bridge` 跑通第一条真实宿主链路，移动端只负责体验 |
 
 ## Epic E3：治理与系统规则
 
