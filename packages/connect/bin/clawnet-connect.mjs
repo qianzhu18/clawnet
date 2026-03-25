@@ -25,6 +25,15 @@ function buildPairCode(agentCard) {
   return `CLAW-${hash.slice(0, 6)}`;
 }
 
+function buildPairingSnapshot(agentCard, { code, hostMode, issuedAt = new Date().toISOString() }) {
+  return {
+    ...agentCard,
+    code,
+    host_mode: hostMode,
+    issued_at: issuedAt,
+  };
+}
+
 function normalizeHost(host) {
   try {
     return new URL(host).origin;
@@ -186,8 +195,12 @@ async function readAgentCard(cardPath) {
 
 function buildPairingOutput(agentCard, host) {
   const hostInfo = describeHost(host);
-  const payload = Buffer.from(JSON.stringify(agentCard), "utf8").toString("base64url");
   const code = buildPairCode(agentCard);
+  const snapshot = buildPairingSnapshot(agentCard, {
+    code,
+    hostMode: hostInfo.host_mode,
+  });
+  const payload = Buffer.from(JSON.stringify(snapshot), "utf8").toString("base64url");
   const pairUrl = `${hostInfo.host_value}/pair/${code}?payload=${payload}`;
   const connectUrl = `${hostInfo.host_value}/connect?code=${encodeURIComponent(code)}&payload=${encodeURIComponent(payload)}&pair_url=${encodeURIComponent(pairUrl)}`;
 

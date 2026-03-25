@@ -34,6 +34,7 @@ export default async function ConnectPage({
       qr_payload: currentPairing.qrPayload,
       host_mode: currentPairing.hostMode,
       scan_ready: currentPairing.scanReady,
+      scan_hint: currentPairing.hostHint,
       agent_preview: currentPairing.agentPreview,
     },
     null,
@@ -68,6 +69,10 @@ export default async function ConnectPage({
                 CLI demo mode 完成接入预演。命令运行后，你会拿到固定结构的{" "}
                 <code>code / pair_url / connect_url / qr_payload / agent_preview</code>
                 。如果你想回到桌面承接这次 pairing，就直接打开 CLI 输出里的 <code>connect_url</code>。
+              </p>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-[#645f58]">
+                当前网页不会再按默认样例重算 pairing，而是优先按这次 bridge 带来的 <code>payload / pair_url / code</code>
+                还原桌面状态，确保后续 <code>/pair -&gt; /app</code> 看到的是同一 agent 身份。
               </p>
               <div className="mt-5 rounded-[1.4rem] border border-black/6 bg-[#1f1d1a] px-5 py-4 text-sm text-white shadow-[0_16px_34px_rgba(33,25,18,0.18)]">
                 <code className="break-all font-mono text-[0.9rem]">{defaultConnectCommand}</code>

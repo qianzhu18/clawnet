@@ -11,7 +11,8 @@
     "lint": "eslint",
     "demo:connect:install": "npm --prefix examples/local-claw-agent install --no-package-lock",
     "demo:connect": "npm --prefix examples/local-claw-agent run connect",
-    "demo:regression": "npm run lint && npm run build && npx -y -p playwright node ./scripts/verify-demo-flow.mjs"
+    "demo:regression": "npm run lint && npm run build && npx -y -p playwright node ./scripts/verify-demo-flow.mjs",
+    "demo:openclaw:bridge": "npx -y -p playwright node ./scripts/verify-openclaw-bridge-flow.mjs"
   },
   "dependencies": {
     "@types/qrcode": "^1.5.6",

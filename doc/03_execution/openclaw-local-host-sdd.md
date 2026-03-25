@@ -102,11 +102,24 @@ last_updated: 2026-03-25
 - 公开市场安装会引入额外信任面和安全面
 - 现在还没有稳定的对外安装口径
 
+补充约束：
+
+- `examples/openclaw-skill/clawnet-connect-bridge/` 只是模板源目录，不会自动被宿主识别。
+- 要让宿主识别，必须把它实体化到 `~/.openclaw/workspace/skills/clawnet-connect-bridge/` 或等价 workspace 根下。
+- `SKILL.md` 必须带最小 YAML frontmatter，至少包含 `name` 和 `description`；没有 frontmatter 时，OpenClaw 的 skill loader 不会把它计入可见 workspace skills。
+- 第一版不要把 workspace skill 通过 symlink 指到 workspace 外部；优先复制真实文件到 workspace 内，避免被 workspace root 边界检查跳过。
+
 ## Bridge 架构
 
 ### 当前选型
 
 第一版 bridge 采用“OpenClaw skill shell-out 到本地 CLI”的方式。
+
+补充约束：
+
+- 被复制进 workspace 后的 `bridge.sh` 不能再假设自己与 `ClawNet` 仓库保持原始相对路径。
+- 第一版通过 `install-workspace-skill.sh` 在目标 skill 目录里写入 `.clawnet-repo-root` 标记文件，让 `bridge.sh` 仍能定位原始 `ClawNet` 仓库。
+- 如需显式覆盖，仍允许用 `CLAWNET_REPO_ROOT` 环境变量指定仓库路径。
 
 ### 调用顺序
 
@@ -122,6 +135,21 @@ last_updated: 2026-03-25
 4. 桌面浏览器打开 `connect_url`
 5. 手机扫码进入 `pair_url`
 6. 用户继续完成 `/pair -> /app`
+
+### 当前验收分层
+
+当前把真实宿主阶段拆成两层验收，不再混成一个结论：
+
+1. 本地可验收基线
+   - `OpenClaw` 已在隔离环境中启动
+   - workspace skill 已安装
+   - 直接执行 workspace 内 `bridge.sh`，能产出当前 pairing
+   - 桌面 `/connect` 与手机 `/pair -> /app -> /network` 可复跑
+2. 严格宿主动作链
+   - 由 `OpenClaw` 内部动作或 `/skill` 真正触发 bridge
+   - 当前仍保留为 `T031` 的关闭条件
+
+这样拆分的原因不是放宽标准，而是避免被宿主上游运行时问题误判成“手机体验本身还没成立”。
 
 ### 为什么先不用 webhook
 

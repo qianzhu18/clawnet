@@ -11,6 +11,12 @@ type SearchParamValue = string | string[] | undefined;
 
 export type PairingHostMode = "local" | "lan" | "public";
 
+export type PairingSnapshot = DemoAgentCard & {
+  code: string;
+  host_mode: PairingHostMode;
+  issued_at: string;
+};
+
 export type PairingState = {
   code: string;
   pairUrl: string;
@@ -18,11 +24,13 @@ export type PairingState = {
   qrPayload: string;
   payload: string;
   agentPreview: DemoAgentCard;
+  snapshot: PairingSnapshot | null;
   hostValue: string;
   hostMode: PairingHostMode;
   hostLabel: string;
   hostHint: string;
   scanReady: boolean;
+  issuedAt?: string;
 };
 
 export type PairingSearchParams = {
@@ -73,6 +81,65 @@ function isValidAgentCard(value: unknown): value is DemoAgentCard {
   );
 }
 
+function isValidPairingHostMode(value: unknown): value is PairingHostMode {
+  return value === "local" || value === "lan" || value === "public";
+}
+
+function isValidPairingSnapshot(value: unknown): value is PairingSnapshot {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    isValidAgentCard(value) &&
+    typeof candidate.code === "string" &&
+    isValidPairingHostMode(candidate.host_mode) &&
+    typeof candidate.issued_at === "string"
+  );
+}
+
+function buildHostPresentation(hostMode: PairingHostMode, hostValue: string) {
+  if (hostMode === "local") {
+    return {
+      hostValue,
+      hostMode,
+      hostLabel: "localhost 调试",
+      hostHint: "当前 host 只适合这台电脑本机调试。真机扫码必须改用 `npm run dev:lan / start:lan`，并把 `CLAWNET_HOST` 覆盖成局域网或公网地址。",
+      scanReady: false,
+    };
+  }
+
+  if (hostMode === "lan") {
+    return {
+      hostValue,
+      hostMode,
+      hostLabel: "LAN 真机模式",
+      hostHint: "当前二维码已经指向局域网地址，同一 Wi-Fi 下的手机可以直接扫码进入 `/pair -> /app`。",
+      scanReady: true,
+    };
+  }
+
+  return {
+    hostValue,
+    hostMode,
+    hostLabel: "公网真机模式",
+    hostHint: "当前二维码已经指向公网 host，可以直接给外部手机扫码或打开。",
+    scanReady: true,
+  };
+}
+
+function toAgentPreview(snapshot: PairingSnapshot): DemoAgentCard {
+  return {
+    agent_id: snapshot.agent_id,
+    name: snapshot.name,
+    avatar: snapshot.avatar,
+    bio: snapshot.bio,
+    capabilities: snapshot.capabilities,
+    source: snapshot.source,
+  };
+}
+
 export function buildPairCode(agentCard: DemoAgentCard) {
   const raw = `${agentCard.agent_id}:${agentCard.name}:${agentCard.source}`;
   const hash = hashCode(raw).toString(36).toUpperCase().padStart(6, "0");
@@ -121,49 +188,93 @@ export function describePairingHost(host: string) {
   const hostname = new URL(hostValue).hostname;
 
   if (isLoopbackHostname(hostname)) {
-    return {
-      hostValue,
-      hostMode: "local" as const,
-      hostLabel: "localhost 调试",
-      hostHint: "当前 host 只适合这台电脑本机调试。真机扫码必须改用 `npm run dev:lan / start:lan`，并把 `CLAWNET_HOST` 覆盖成局域网或公网地址。",
-      scanReady: false,
-    };
+    return buildHostPresentation("local", hostValue);
   }
 
   if (isLanHostname(hostname)) {
-    return {
-      hostValue,
-      hostMode: "lan" as const,
-      hostLabel: "LAN 真机模式",
-      hostHint: "当前二维码已经指向局域网地址，同一 Wi-Fi 下的手机可以直接扫码进入 `/pair -> /app`。",
-      scanReady: true,
-    };
+    return buildHostPresentation("lan", hostValue);
   }
 
+  return buildHostPresentation("public", hostValue);
+}
+
+export function getPairingHostModeLabel(hostMode: PairingHostMode) {
+  return buildHostPresentation(hostMode, defaultDemoHost).hostLabel;
+}
+
+export function buildPairingSnapshot(
+  agentCard: DemoAgentCard,
+  {
+    code = buildPairCode(agentCard),
+    hostMode = "local",
+    issuedAt = new Date().toISOString(),
+  }: {
+    code?: string;
+    hostMode?: PairingHostMode;
+    issuedAt?: string;
+  } = {},
+) {
   return {
-    hostValue,
-    hostMode: "public" as const,
-    hostLabel: "公网真机模式",
-    hostHint: "当前二维码已经指向公网 host，可以直接给外部手机扫码或打开。",
-    scanReady: true,
+    ...agentCard,
+    code,
+    host_mode: hostMode,
+    issued_at: issuedAt,
   };
 }
 
-export function encodePairingPayload(agentCard: DemoAgentCard) {
-  return Buffer.from(JSON.stringify(agentCard), "utf8").toString("base64url");
+export function encodePairingPayload(snapshot: DemoAgentCard | PairingSnapshot) {
+  return Buffer.from(JSON.stringify(snapshot), "utf8").toString("base64url");
 }
 
-export function decodePairingPayload(payload?: string | null) {
+function parsePairingPayload(payload?: string | null) {
   if (!payload) {
     return null;
   }
 
   try {
     const parsed = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as unknown;
-    return isValidAgentCard(parsed) ? parsed : null;
+
+    if (isValidPairingSnapshot(parsed)) {
+      return {
+        agentPreview: toAgentPreview(parsed),
+        snapshot: parsed,
+      };
+    }
+
+    if (isValidAgentCard(parsed)) {
+      return {
+        agentPreview: parsed,
+        snapshot: null,
+      };
+    }
+
+    return null;
   } catch {
     return null;
   }
+}
+
+export function decodePairingPayload(payload?: string | null) {
+  return parsePairingPayload(payload)?.agentPreview ?? null;
+}
+
+export function decodePairingSnapshot(payload?: string | null) {
+  return parsePairingPayload(payload)?.snapshot ?? null;
+}
+
+export function buildPairPageUrl({
+  code,
+  payload,
+  host,
+}: {
+  code: string;
+  payload: string;
+  host?: string;
+}) {
+  const base = host ? normalizeHost(host) : defaultDemoHost;
+  const url = new URL(`/pair/${encodeURIComponent(code)}`, base);
+  url.searchParams.set("payload", payload);
+  return `${url.origin}${url.pathname}${url.search}`;
 }
 
 export function buildConnectPageUrl({
@@ -193,10 +304,18 @@ export function buildConnectPageUrl({
 }
 
 export function buildPairingState(agentCard: DemoAgentCard, host = defaultDemoHost): PairingState {
-  const payload = encodePairingPayload(agentCard);
-  const code = buildPairCode(agentCard);
   const hostInfo = describePairingHost(host);
-  const pairUrl = `${hostInfo.hostValue}/pair/${code}?payload=${payload}`;
+  const code = buildPairCode(agentCard);
+  const snapshot = buildPairingSnapshot(agentCard, {
+    code,
+    hostMode: hostInfo.hostMode,
+  });
+  const payload = encodePairingPayload(snapshot);
+  const pairUrl = buildPairPageUrl({
+    code,
+    payload,
+    host: hostInfo.hostValue,
+  });
   const connectUrl = buildConnectPageUrl({
     code,
     payload,
@@ -211,33 +330,84 @@ export function buildPairingState(agentCard: DemoAgentCard, host = defaultDemoHo
     qrPayload: pairUrl,
     payload,
     agentPreview: agentCard,
+    snapshot,
     hostValue: hostInfo.hostValue,
     hostMode: hostInfo.hostMode,
     hostLabel: hostInfo.hostLabel,
     hostHint: hostInfo.hostHint,
     scanReady: hostInfo.scanReady,
+    issuedAt: snapshot.issued_at,
   };
 }
 
-export function readImportedPairing(searchParams: PairingSearchParams, fallbackHost = defaultDemoHost) {
-  const payload = getSingleQueryValue(searchParams.payload);
-  const agentPreview = decodePairingPayload(payload);
+function readPairCodeFromPairUrl(url: URL) {
+  const segments = url.pathname.split("/").filter(Boolean);
 
-  if (!payload || !agentPreview) {
+  if (segments[0] !== "pair") {
     return null;
   }
 
+  return segments[1] ?? null;
+}
+
+export function readImportedPairing(searchParams: PairingSearchParams, fallbackHost = defaultDemoHost) {
+  const importedPayload = getSingleQueryValue(searchParams.payload);
   const importedPairUrl = getSingleQueryValue(searchParams.pair_url);
+  const importedCode = getSingleQueryValue(searchParams.code);
+  let pairUrl: string | null = null;
+  let pairUrlPayload: string | null = null;
+  let pairUrlCode: string | null = null;
+  let hostInfo = describePairingHost(fallbackHost);
 
   if (importedPairUrl) {
     try {
-      return buildPairingState(agentPreview, new URL(importedPairUrl).origin);
+      const parsedPairUrl = new URL(importedPairUrl);
+      pairUrl = parsedPairUrl.toString();
+      pairUrlPayload = parsedPairUrl.searchParams.get("payload");
+      pairUrlCode = readPairCodeFromPairUrl(parsedPairUrl);
+      hostInfo = describePairingHost(parsedPairUrl.origin);
     } catch {
-      return buildPairingState(agentPreview, fallbackHost);
+      pairUrl = null;
     }
   }
 
-  return buildPairingState(agentPreview, fallbackHost);
+  const payload = importedPayload ?? pairUrlPayload;
+  const parsedPayload = parsePairingPayload(payload);
+
+  if (!payload || !parsedPayload) {
+    return null;
+  }
+
+  const code = importedCode ?? parsedPayload.snapshot?.code ?? pairUrlCode ?? buildPairCode(parsedPayload.agentPreview);
+  const canonicalPairUrl =
+    pairUrl && pairUrlCode === code && pairUrlPayload === payload
+      ? pairUrl
+      : buildPairPageUrl({
+          code,
+          payload,
+          host: hostInfo.hostValue,
+        });
+
+  return {
+    code,
+    pairUrl: canonicalPairUrl,
+    connectUrl: buildConnectPageUrl({
+      code,
+      payload,
+      pairUrl: canonicalPairUrl,
+      host: hostInfo.hostValue,
+    }),
+    qrPayload: canonicalPairUrl,
+    payload,
+    agentPreview: parsedPayload.agentPreview,
+    snapshot: parsedPayload.snapshot,
+    hostValue: hostInfo.hostValue,
+    hostMode: hostInfo.hostMode,
+    hostLabel: hostInfo.hostLabel,
+    hostHint: hostInfo.hostHint,
+    scanReady: hostInfo.scanReady,
+    issuedAt: parsedPayload.snapshot?.issued_at,
+  };
 }
 
 export function getSingleQueryValue(value?: string | string[]) {

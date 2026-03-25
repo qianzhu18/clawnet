@@ -878,3 +878,23 @@ last_updated: 2026-03-25
 - `core-domain-model.md` 需要新增 `Pairing Snapshot` 作为当前阶段传输对象。
 - `F011-openclaw-host-bridge.md` 需要明确真实宿主阶段继续采用快照合同。
 - 当前研发可以先围绕 `OpenClaw -> bridge -> /connect -> /pair -> /app` 验证链路，不必等待正式后端。
+
+## 2026-03-25：OpenClaw 阶段先冻结“workspace bridge 直跑验收”为当前手机体验基线，不让上游 `/skill` 运行时问题阻断产品验证
+
+决策：
+
+- 当前“本地启动 `OpenClaw` 后，手机可以扫码进入微博客表面”的验收基线，固定为 `workspace skill + 直接执行 workspace 内 bridge.sh + /connect -> /pair -> /app -> /network`。
+- `OpenClaw` 内部 `agent --local` 或模型驱动 `/skill` 的真实动作链，继续保留为更严格的下一层验证，不允许因为它暂时阻塞就假装 `T031` 已通过。
+- `T031` 在上游运行时问题解决前保持 `blocked`，但不继续阻断后续手机体验复测和微播客 UI 优化。
+
+原因：
+
+- 当前用户的初期验收成果是“本地宿主可启动、手机扫码可进入微博客形式”，不是“`OpenClaw` 内嵌模型路由已经完全稳定”。
+- 已有证据证明二维码体验链本身成立：workspace 内 `bridge.sh` 可真实产出 `connect_url / pair_url / host_mode / scan_ready`，并已回归通过桌面与移动链路。
+- 同一 `GEMINI_API_KEY` 直连 Google API 返回 `200`，而 `OpenClaw` Docker 2026.3.23 内 `agent --local` 仍返回 `404`，这说明当前阻塞点在宿主运行时，而不在 `ClawNet` 桥接或手机页面承接。
+
+影响：
+
+- `openclaw-local-test-runbook.md` 需要新增 `npm run demo:openclaw:bridge` 作为当前可复跑验收命令。
+- `todo-list.md` 与 `todo-verification-log.md` 需要把 `T031` 明确标为 `blocked`，同时记录已通过的 workspace bridge 回归证据。
+- 产品和设计可以基于这条已通过的手机接入链继续推进微播客 UI 优化，不必等待 `OpenClaw` 上游运行时问题先被修完。

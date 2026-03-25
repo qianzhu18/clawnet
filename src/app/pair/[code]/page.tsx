@@ -4,8 +4,10 @@ import { MenuIcon, UserIcon } from "@/components/mobile/icons";
 import {
   appendPayload,
   buildConnectPageUrl,
+  buildPairPageUrl,
   decodePairingPayload,
-  demoAgentCard,
+  decodePairingSnapshot,
+  getPairingHostModeLabel,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
 import { getRequestOrigin } from "@/lib/request-origin";
@@ -20,14 +22,23 @@ export default async function PairPage({
   const { code } = await params;
   const { payload: rawPayload } = await searchParams;
   const payload = getSingleQueryValue(rawPayload);
-  const agentPreview = decodePairingPayload(payload) ?? demoAgentCard;
+  const agentPreview = decodePairingPayload(payload);
+  const pairingSnapshot = decodePairingSnapshot(payload);
   const requestOrigin = (await getRequestOrigin()) ?? "http://localhost:3000";
-  const currentPairUrl = `${requestOrigin}/pair/${code}?payload=${payload ?? ""}`;
-  const connectPageHref = buildConnectPageUrl({
-    code,
-    payload: payload ?? "",
-    pairUrl: currentPairUrl,
-  });
+  const currentPairUrl = payload
+    ? buildPairPageUrl({
+        code,
+        payload,
+        host: requestOrigin,
+      })
+    : `${requestOrigin}/pair/${encodeURIComponent(code)}`;
+  const connectPageHref = payload
+    ? buildConnectPageUrl({
+        code,
+        payload,
+        pairUrl: currentPairUrl,
+      })
+    : "/connect";
 
   return (
     <div className="mobile-app-root min-h-screen px-4 py-6 font-[family:var(--font-inter)] text-[#37352f]">
@@ -46,54 +57,85 @@ export default async function PairPage({
         </header>
 
         <main className="mt-6 space-y-6">
-          <section className="rounded-[2rem] border border-black/5 bg-[rgba(255,255,255,0.84)] px-6 py-6 text-center shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl">
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">ready for mobile</p>
-            <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">确认这次配对</h2>
-            <p className="mt-4 text-sm leading-7 text-[#645f58]">
-              这个二维码来自外部 claw 环境中的 <code>{agentPreview.name}</code>。确认后，你会进入移动 Web
-              首页，并保持当前配对 code 的身份连续感。
-            </p>
-            <p className="mt-3 text-xs leading-6 text-[#8b857d]">
-              这是 connect 流程扫码后的内部第二步，不作为对外公开首链。
-            </p>
-            <div className="mt-6 flex justify-center">
-              <PairingQr value={currentPairUrl} size={170} label={`${agentPreview.name} current pair URL`} />
-            </div>
-            <div className="mt-5 inline-flex rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
-              {code}
-            </div>
-          </section>
+          {agentPreview ? (
+            <>
+              <section className="rounded-[2rem] border border-black/5 bg-[rgba(255,255,255,0.84)] px-6 py-6 text-center shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">ready for mobile</p>
+                <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">确认这次配对</h2>
+                <p className="mt-4 text-sm leading-7 text-[#645f58]">
+                  这个二维码来自外部 claw 环境中的 <code>{agentPreview.name}</code>。确认后，你会进入移动 Web
+                  首页，并保持当前配对 code 的身份连续感。
+                </p>
+                <p className="mt-3 text-xs leading-6 text-[#8b857d]">
+                  这是 connect 流程扫码后的内部第二步，不作为对外公开首链。
+                </p>
+                <div className="mt-6 flex justify-center">
+                  <PairingQr value={currentPairUrl} size={170} label={`${agentPreview.name} current pair URL`} />
+                </div>
+                <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                  <div className="inline-flex rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+                    {code}
+                  </div>
+                  {pairingSnapshot ? (
+                    <div className="inline-flex rounded-full border border-black/6 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+                      {getPairingHostModeLabel(pairingSnapshot.host_mode)}
+                    </div>
+                  ) : null}
+                </div>
+              </section>
 
-          <section className="rounded-[1.8rem] border border-black/5 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">外部 agent 摘要</p>
-            <div className="mt-4 space-y-3 text-sm text-[#615d56]">
-              <p>名称：{agentPreview.name}</p>
-              <p>状态：ready_for_mobile</p>
-              <p>来源：{agentPreview.source}</p>
-              <p>能力：{agentPreview.capabilities.join(" / ")}</p>
-              <p>简介：{agentPreview.bio}</p>
-            </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <Link
-                href={appendPayload("/app", payload)}
-                className="inline-flex items-center justify-center rounded-[1.35rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_18px_36px_rgba(33,25,18,0.16)]"
-              >
-                进入移动 Web /app
-              </Link>
-              <Link
-                href="/connect"
-                className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
-              >
-                返回桌面接入页
-              </Link>
-              <Link
-                href={connectPageHref}
-                className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
-              >
-                回到当前 pairing 桌面页
-              </Link>
-            </div>
-          </section>
+              <section className="rounded-[1.8rem] border border-black/5 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">外部 agent 摘要</p>
+                <div className="mt-4 space-y-3 text-sm text-[#615d56]">
+                  <p>名称：{agentPreview.name}</p>
+                  <p>状态：ready_for_mobile</p>
+                  <p>来源：{agentPreview.source}</p>
+                  <p>能力：{agentPreview.capabilities.join(" / ")}</p>
+                  <p>简介：{agentPreview.bio}</p>
+                </div>
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  <Link
+                    href={appendPayload("/app", payload)}
+                    className="inline-flex items-center justify-center rounded-[1.35rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_18px_36px_rgba(33,25,18,0.16)]"
+                  >
+                    进入移动 Web /app
+                  </Link>
+                  <Link
+                    href="/connect"
+                    className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
+                  >
+                    返回桌面接入页
+                  </Link>
+                  <Link
+                    href={connectPageHref}
+                    className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
+                  >
+                    回到当前 pairing 桌面页
+                  </Link>
+                </div>
+              </section>
+            </>
+          ) : (
+            <section className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-6 shadow-[0_18px_36px_rgba(45,33,22,0.06)]">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-amber-700">snapshot missing</p>
+              <h2 className="mt-3 text-[1.5rem] font-semibold tracking-[-0.05em] text-amber-950">当前 pairing 快照缺失</h2>
+              <p className="mt-4 text-sm leading-7 text-amber-900">
+                `/pair/{code}` 需要带上这次 bridge 产出的 <code>payload</code> 才能还原外部 agent 身份。请回到桌面页重新打开本次{" "}
+                <code>connect_url</code>，或者重新执行一次 connect bridge。
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <div className="inline-flex rounded-full border border-amber-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
+                  {code}
+                </div>
+                <Link
+                  href={connectPageHref}
+                  className="inline-flex items-center justify-center rounded-[1.25rem] border border-amber-300 bg-white px-4 py-3 text-sm font-semibold text-amber-950"
+                >
+                  返回桌面承接页
+                </Link>
+              </div>
+            </section>
+          )}
         </main>
       </div>
     </div>

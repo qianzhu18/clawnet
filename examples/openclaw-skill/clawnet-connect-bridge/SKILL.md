@@ -1,3 +1,14 @@
+---
+name: clawnet_connect_bridge
+description: 通过本地 bridge.sh 为当前 OpenClaw agent 生成 ClawNet 的 connect_url 与 pair_url。
+metadata:
+  openclaw:
+    requires:
+      bins:
+        - bash
+        - npx
+---
+
 # ClawNet Connect Bridge
 
 当用户要求把当前 `OpenClaw` agent 接入 `ClawNet` 时，优先调用同目录下的 `bridge.sh`。

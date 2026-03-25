@@ -87,6 +87,7 @@ http://172.20.10.3:3000
 mkdir -p ~/clawnet-openclaw-lab
 cd ~/clawnet-openclaw-lab
 git clone https://github.com/qianzhu18/clawnet.git clawnet
+git clone https://github.com/openclaw/openclaw.git openclaw
 cd clawnet
 git checkout spec/t029-openclaw-host-strategy
 npm install
@@ -100,14 +101,51 @@ npm install
 
 ### 步骤 4：安装和启动 OpenClaw
 
-按 OpenClaw 官方安装和 onboarding 文档完成：
+按 OpenClaw 官方安装和 onboarding 文档完成，但 `T030` 当前优先采用“Docker 隔离 + 非交互 onboard”的最小路径。
 
-- 安装 `OpenClaw CLI`
-- 完成 `onboard`
-- 确认 gateway 正常
-- 能打开 dashboard / control UI
+当前只要求最小可运行，不要求先接通所有 channel，也不要求先补模型 API key。
 
-当前只要求最小可运行，不要求先接通所有 channel。
+当前最小可复跑命令以 `OpenClaw` 仓库根目录为准：
+
+```bash
+cd ~/clawnet-openclaw-lab/openclaw
+export OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest"
+export OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030"
+export OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace"
+export OPENCLAW_GATEWAY_TOKEN="t030-local-token"
+
+docker compose run --rm --no-deps openclaw-cli onboard --non-interactive \
+  --mode local \
+  --auth-choice skip \
+  --gateway-port 18789 \
+  --gateway-bind lan \
+  --gateway-auth token \
+  --gateway-token "$OPENCLAW_GATEWAY_TOKEN" \
+  --accept-risk \
+  --skip-skills \
+  --skip-health \
+  --json
+
+docker compose up -d openclaw-gateway
+docker compose ps
+```
+
+已验证事实：
+
+- `onboard --non-interactive` 会写出隔离目录下的 `openclaw.json` 和 workspace bootstrap 文件
+- 在当前官方镜像上，`gateway.bind = lan` 首次启动时会自动补 `gateway.controlUi.allowedOrigins`
+- `docker compose ps` 应显示 `openclaw-gateway` 为 `healthy`
+- `auth-choice skip` 不会阻断 `T030` 的 skill loader 验证，但后续真实会话聊天仍需要补 provider auth
+
+如果你更想走官方引导式安装，而不是这条最小命令链，可以改用：
+
+```bash
+cd ~/clawnet-openclaw-lab/openclaw
+export OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest"
+export OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030"
+export OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace"
+./scripts/docker/setup.sh
+```
 
 ### 步骤 5：只使用 workspace skill
 
@@ -117,11 +155,43 @@ npm install
 
 - `examples/openclaw-skill/clawnet-connect-bridge/SKILL.md`
 - `examples/openclaw-skill/clawnet-connect-bridge/bridge.sh`
+- `examples/openclaw-skill/clawnet-connect-bridge/install-workspace-skill.sh`
+
+安装方式固定为“复制进 workspace”，不是把 repo 外部目录直接 symlink 进去：
+
+```bash
+cd ~/clawnet-openclaw-lab/clawnet
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  ./examples/openclaw-skill/clawnet-connect-bridge/install-workspace-skill.sh
+```
+
+这一步会做 3 件事：
+
+- 把 `SKILL.md` 和 `bridge.sh` 复制到 `~/.openclaw-t030/workspace/skills/clawnet-connect-bridge/`
+- 写入 `.clawnet-repo-root`，让被复制后的 `bridge.sh` 还能定位原始 `ClawNet` 仓库
+- 保留 workspace 内的真实文件结构，避免被 skill loader 当成越界路径跳过
 
 验收点：
 
 - `OpenClaw` 能发现这个 workspace skill
 - 不需要依赖公开 `ClawHub`
+
+当前最小检测命令：
+
+```bash
+cd ~/clawnet-openclaw-lab/openclaw
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest" \
+docker compose run --rm --no-deps --entrypoint sh openclaw-gateway -lc \
+  'cd /home/node/.openclaw/workspace && node /app/dist/index.js skills info clawnet_connect_bridge --json'
+```
+
+通过标准：
+
+- `source = openclaw-workspace`
+- `eligible = true`
+- `filePath` 指向 `/home/node/.openclaw/workspace/skills/clawnet-connect-bridge/SKILL.md`
 
 ### 步骤 6：桥接到本地 CLI
 
@@ -144,6 +214,19 @@ npm install
 cd ~/clawnet-openclaw-lab/clawnet
 CLAWNET_HOST=http://172.20.10.3:3000 ./examples/openclaw-skill/clawnet-connect-bridge/bridge.sh
 ```
+
+如果你要验证“被复制到 workspace 后的 skill 仍然可执行”，当前最小命令固定为：
+
+```bash
+CLAWNET_HOST=http://172.20.10.3:3000 \
+  ~/.openclaw-t030/workspace/skills/clawnet-connect-bridge/bridge.sh
+```
+
+通过标准：
+
+- 输出中同时包含 `connect_url / pair_url / host_mode / scan_ready`
+- `host_mode = lan` 时，`scan_ready = true`
+- `Desktop pairing entry` 与 `pair_url` 可继续承接到现有 `ClawNet /connect`
 
 ### 步骤 7：桌面承接
 
@@ -169,6 +252,50 @@ CLAWNET_HOST=http://172.20.10.3:3000 ./examples/openclaw-skill/clawnet-connect-b
 
 目标不是多功能，而是证明“这次连接真的已经生效”。
 
+### 步骤 10：固定一条可复跑的本地验收命令
+
+当前最小验收基线先固定为：
+
+- `OpenClaw` 已启动
+- workspace skill 已安装
+- workspace 内 `bridge.sh` 可产出当前 pairing
+- 桌面 `/connect` 与手机 `/pair -> /app -> /network` 可重复验证
+
+推荐命令：
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
+LAN_IFACE="$(route get default | awk '/interface:/{print $2}')"
+LAN_IP="$(ipconfig getifaddr "$LAN_IFACE")"
+
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+CLAWNET_BASE_URL="http://${LAN_IP}:3000" \
+CLAWNET_HOST="http://${LAN_IP}:3000" \
+npm run demo:openclaw:bridge
+```
+
+通过标准：
+
+- 终端输出 `OpenClaw bridge regression passed`
+- `host_mode = lan`
+- `scan_ready = true`
+- `/tmp/clawnet-openclaw-bridge-regression/summary.json` 存在
+- 桌面与手机截图都已生成
+
+补充说明：
+
+- 如果 `3000` 端口上已经有当前 `ClawNet` 服务在跑，脚本会直接复用，不会重复起一个 server。
+- 这条命令对应当前“本地启动 OpenClaw 后，手机可扫码进入微博客表面”的验收口径。
+
+## T030 最小可复跑摘要
+
+1. 主开发账户启动 `npm run dev:lan`，先拿到手机可访问的 `ClawNet` 局域网地址。
+2. 隔离账户准备 `~/clawnet-openclaw-lab/clawnet` 和 `~/clawnet-openclaw-lab/openclaw` 两个仓库。
+3. 在 `openclaw/` 根目录执行上面的非交互 `onboard`，并用 `docker compose up -d openclaw-gateway` 拉起隔离宿主。
+4. 在 `clawnet/` 根目录执行 `install-workspace-skill.sh`，把 skill 复制到 `~/.openclaw-t030/workspace/skills/`。
+5. 回到 `openclaw/` 根目录执行 `skills info clawnet_connect_bridge --json`，确认 `source = openclaw-workspace` 且 `eligible = true`。
+6. 直接执行 `~/.openclaw-t030/workspace/skills/clawnet-connect-bridge/bridge.sh`，确认输出里同时存在 `connect_url / pair_url / host_mode / scan_ready`。
+
 ## 当前禁止事项
 
 - 不把 `localhost` 二维码拿给手机扫
@@ -176,6 +303,75 @@ CLAWNET_HOST=http://172.20.10.3:3000 ./examples/openclaw-skill/clawnet-connect-b
 - 不把 `ClawHub` 上的随机包当主演示依赖
 - 不在第一版就接 webhook 服务
 - 不把移动端变成宿主配置入口
+- 不把没有 frontmatter 的 `SKILL.md` 当作可识别 skill
+- 不把 workspace skill 通过越出 workspace root 的 symlink 暴露给宿主
+
+## 常见卡点
+
+### 1. `docker compose ps` 提示 `OPENCLAW_CONFIG_DIR / OPENCLAW_WORKSPACE_DIR` 为空
+
+原因：
+
+- 没有在 `OpenClaw` 仓库根目录执行命令
+- 或 `setup.sh` 没有正常写出 `.env`
+
+最小修复：
+
+- 回到 `OpenClaw` 仓库根目录
+- 重新运行 `./scripts/docker/setup.sh`
+- 或在当前 shell 显式导出 `OPENCLAW_CONFIG_DIR` 与 `OPENCLAW_WORKSPACE_DIR`
+
+### 2. 网关日志提示 `Missing config` 或 `allowedOrigins`
+
+如果 onboarding 被跳过或中断，当前最小修复命令为：
+
+```bash
+docker compose run --rm --no-deps --entrypoint node openclaw-gateway \
+  dist/index.js config set gateway.mode local
+
+docker compose run --rm --no-deps --entrypoint node openclaw-gateway \
+  dist/index.js config set gateway.bind lan
+
+docker compose run --rm --no-deps --entrypoint node openclaw-gateway \
+  dist/index.js config set gateway.controlUi.allowedOrigins \
+  '["http://localhost:18789","http://127.0.0.1:18789"]' --strict-json
+
+docker compose restart openclaw-gateway
+```
+
+### 3. workspace 里明明有 skill 文件，但 `skills list` 看不到
+
+优先检查：
+
+- `SKILL.md` 是否有 `name / description` frontmatter
+- skill 是否真实位于 `<workspace>/skills/<name>/`
+- `bridge.sh` 是否仍能定位原始 `ClawNet` 仓库
+
+### 4. gateway 已经 `healthy`，但会话里聊天仍报 `No API key found`
+
+原因：
+
+- `T030` 的最小 onboarding 故意使用了 `--auth-choice skip`
+- 这只证明隔离环境、gateway 和 workspace skill loader 成立
+- 它不证明 OpenClaw 已经具备模型调用能力
+
+最小结论：
+
+- 这不阻断 `T030`
+- 如果你要在真实 OpenClaw 会话里直接让 agent 触发 skill，进入 `T031` 前必须补 provider auth
+
+### 5. `OpenClaw` 已启动，provider auth 也已补，但 `agent --local` 或 `/skill` 仍返回 `404 Not Found`
+
+当前已确认一种上游运行时卡点：
+
+- 同一 `GEMINI_API_KEY` 在宿主外直连 Google API 可返回 `200`
+- 但 `OpenClaw` Docker 2026.3.23 内嵌 `agent --local` 走 Google provider 时仍可能返回 `404`
+
+当前最小处理原则：
+
+- 不把这个问题和手机扫码体验绑死
+- 先用 `npm run demo:openclaw:bridge` 固定本地验收基线
+- 把“真实 `/skill` 触发”单独保留在 `T031`
 
 ## T030 完成定义
 
@@ -190,6 +386,11 @@ CLAWNET_HOST=http://172.20.10.3:3000 ./examples/openclaw-skill/clawnet-connect-b
 - 当前 pairing 已落到桌面 `/connect`
 - 手机能进入 `/pair -> /app`
 - 至少保留命令输出、桌面截图、手机截图或录屏摘要
+
+当前备注：
+
+- 上面的严格定义还没通过，原因是 `OpenClaw` 内嵌模型调用路径仍有 `404` 阻塞。
+- 但“本地启动 OpenClaw 后，workspace bridge 可产出二维码并把手机带进微博客表面”这条初期验收路径已经可复跑。
 
 ## 推荐证据
 

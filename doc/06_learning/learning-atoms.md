@@ -2,7 +2,7 @@
 title: Learning Atoms
 status: active
 owner: founder
-last_updated: 2026-03-24
+last_updated: 2026-03-25
 ---
 
 # Learning Atoms
@@ -112,6 +112,22 @@ last_updated: 2026-03-24
 - `为什么对当前项目重要`：如果不区分这两种运行方式，MVP 看起来已经完成，但用户一拿手机就会误判为“二维码不可用”
 - `怎么判断自己学会了`：能解释为什么要用 `npm run start:lan`，并把 `CLAWNET_HOST` 改成 `http://<局域网IP>:3000`
 - `关联文件或下一步`：`package.json`、`local-cli-demo-execution.md`、`mvp-validation-runbook.md`
+
+### LA-012：OpenClaw workspace skill 不是“把文件放进去”就算成立
+
+- `场景`：为 `T030` 把 `clawnet-connect-bridge` 放进 `OpenClaw` 的隔离 workspace
+- `概念`：workspace skill 至少同时满足 3 个条件才会被宿主识别：位于 `<workspace>/skills/<name>/`、`SKILL.md` 带 `name / description` frontmatter、运行脚本能在被复制后仍定位真实仓库
+- `为什么对当前项目重要`：否则会出现“目录里有文件，但 `skills list` 看不到”或“skill 被识别了，但 bridge 找不到 `ClawNet` repo”这两种假完成
+- `怎么判断自己学会了`：能用 `skills info clawnet_connect_bridge --json` 看见 `source = openclaw-workspace`，并从 workspace 内 `bridge.sh` 真实拿到 `connect_url / pair_url / host_mode / scan_ready`
+- `关联文件或下一步`：`examples/openclaw-skill/clawnet-connect-bridge/`、`openclaw-local-test-runbook.md`、`T031`
+
+### LA-013：真实宿主接入要拆成“bridge 可验收”和“宿主内动作可触发”两层
+
+- `场景`：为 `T031` 继续推进 `OpenClaw -> bridge -> /connect -> /pair -> /app` 时
+- `概念`：同一 API key 在宿主外直连模型接口成功，不代表宿主内嵌 `agent --local` 或 `/skill` 触发路径也一定成功；两者必须分层验证
+- `为什么对当前项目重要`：这样才能在上游运行时卡住时，先固定“手机扫码进入微博客表面”的验收链，不把 UI 与产品验证一起拖住
+- `怎么判断自己学会了`：能解释为什么当前 `demo:openclaw:bridge` 已可作为本地验收基线，而 `T031` 仍需保持 `blocked`
+- `关联文件或下一步`：`openclaw-local-host-sdd.md`、`openclaw-local-test-runbook.md`、`todo-verification-log.md`
 
 ## 使用规则
 

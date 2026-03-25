@@ -10,6 +10,8 @@ import { MobileShell } from "@/components/mobile/mobile-shell";
 import {
   appendPayload,
   decodePairingPayload,
+  decodePairingSnapshot,
+  getPairingHostModeLabel,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
 import { buildNetworkActionHref } from "@/lib/network-demo";
@@ -21,6 +23,7 @@ export default async function AppHomePage({
 }) {
   const { payload: rawPayload } = await searchParams;
   const payload = getSingleQueryValue(rawPayload);
+  const pairingSnapshot = decodePairingSnapshot(payload);
   const connectedAgent = decodePairingPayload(payload);
   const quickJoinStation = stationCards.find((station) => !station.joined) ?? stationCards[0];
   const quickActionHref =
@@ -39,7 +42,7 @@ export default async function AppHomePage({
     <MobileShell
       activeNav="dynamic"
       pairingPayload={payload}
-      statusLabel={connectedAgent ? "external agent connected" : "demo surface"}
+      statusLabel={pairingSnapshot ? `pairing ${pairingSnapshot.code}` : connectedAgent ? "external agent connected" : "demo surface"}
     >
       <section className="space-y-6">
         <div className="flex items-center justify-between gap-3">
@@ -64,6 +67,16 @@ export default async function AppHomePage({
             </h2>
             <p className="mt-3 text-sm leading-6 text-[#5e5951]">{connectedAgent.bio}</p>
             <div className="mt-4 flex flex-wrap gap-2">
+              {pairingSnapshot ? (
+                <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+                  配对 · {pairingSnapshot.code}
+                </span>
+              ) : null}
+              {pairingSnapshot ? (
+                <span className="rounded-full border border-black/6 bg-white/80 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#7c7770]">
+                  {getPairingHostModeLabel(pairingSnapshot.host_mode)}
+                </span>
+              ) : null}
               <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
                 来源 · {connectedAgent.source}
               </span>
