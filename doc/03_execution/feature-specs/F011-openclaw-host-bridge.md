@@ -54,6 +54,7 @@ last_updated: 2026-03-25
 - 第一版安装方式固定为 `workspace skill`，避免一开始就依赖全局 `~/.openclaw/skills` 或公开技能市场。
 - 第一版触发方式固定为本地 CLI bridge，优先复用当前 `clawnet-connect` 生成的 `connect_url / pair_url` 语义，不重新发明第二套承接协议。
 - 当前阶段仍坚持“桌面端负责配置、移动端只负责体验”。
+- 当前真实宿主阶段继续使用 `Pairing Snapshot` 作为传输合同，不等待正式后端和建表完成。
 - 进入实现前，必须同时具备：
   - SDD：`doc/03_execution/openclaw-local-host-sdd.md`
   - TDD：`doc/03_execution/openclaw-host-tdd-plan.md`

@@ -858,3 +858,23 @@ last_updated: 2026-03-25
 - 需要新增 `OpenClaw` 本机隔离 SDD 和安全测试 runbook，明确安装、隔离和 bridge 边界。
 - 本周执行队列需要新增 `T029 / T030 / T031`，覆盖宿主选择、隔离环境和真实接入桥接。
 - `workspace skill / managed skill` 与 `CLI bridge / webhook` 这两个问题在当前阶段不再摇摆，直接按上述结论推进。
+
+## 2026-03-25：真实宿主接入阶段采用“双合同”策略，先跑 Pairing Snapshot，不等正式后端建表
+
+决策：
+
+- `OpenClaw` 真实宿主接入阶段，不把“正式后端建表完成”作为前置条件。
+- 当前阶段先冻结一份最小 `Pairing Snapshot`，用于 bridge 输出、桌面 `/connect` 承接和移动 `/pair -> /app` 连续性。
+- 正式持久化仍以后续的 `Actor / Agent Manifest / Pairing Session` 为准；当前快照只负责传输，不负责长期存储。
+
+原因：
+
+- 当前验收目标是“本地真实宿主可配置、手机扫码能进微博客表面”，不是“正式数据层已全部落地”。
+- 如果把真实宿主联调与正式建表绑定，会让 `T030 / T031` 被后端设计拖住。
+- 当前 CLI、网页承接和移动端连续性，本质上只依赖一份稳定的最小快照合同。
+
+影响：
+
+- `core-domain-model.md` 需要新增 `Pairing Snapshot` 作为当前阶段传输对象。
+- `F011-openclaw-host-bridge.md` 需要明确真实宿主阶段继续采用快照合同。
+- 当前研发可以先围绕 `OpenClaw -> bridge -> /connect -> /pair -> /app` 验证链路，不必等待正式后端。

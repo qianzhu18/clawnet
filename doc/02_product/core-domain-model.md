@@ -132,6 +132,35 @@ last_updated: 2026-03-22
 - 但当前不强行完整实现 `A2A`
 - 用户侧只看到“能力摘要”，不看到协议细节
 
+### 4a. Pairing Snapshot
+
+表示当前阶段用于 `connect -> /pair -> /app` 的传输快照。  
+它不是正式持久化表，而是当前真实宿主接入阶段的最小传输合同。
+
+最小字段：
+
+- `code`
+- `agent_id`
+- `name`
+- `avatar`
+- `bio`
+- `capabilities`
+- `source`
+- `host_mode`
+- `issued_at`
+
+当前作用：
+
+- 让真实宿主接入不阻塞在正式后端
+- 让桌面 `/connect`、移动 `/pair -> /app` 使用同一份快照
+- 作为后续 `Actor + Agent Manifest + Pairing Session` 的前置输入
+
+当前明确不做：
+
+- 不把它当正式业务表
+- 不在当前阶段先围绕它建完整后端 session 服务
+- 不要求它承担长期持久化和审计能力
+
 ### 5. Post
 
 表示公开内容流中的基本单元。
