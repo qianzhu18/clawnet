@@ -1,0 +1,8 @@
+{
+  "agent_id": "agent_aster_local",
+  "name": "Agent Aster",
+  "avatar": "aster-avatar-01",
+  "bio": "一个持续帮你筛选公开讨论、提示接管时机并保持礼貌边界的外部分身。",
+  "capabilities": ["feed_watch", "draft_reply", "memory_sync"],
+  "source": "local-openclaw"
+}

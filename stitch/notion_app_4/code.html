@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - 加入基站</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #37352F;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        /* Custom scrollbar for editorial feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E9E9E7;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "tertiary-container": "#747573",
+                "inverse-surface": "#2f3131",
+                "surface-container-high": "#e8e8e8",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary": "#ffffff",
+                "surface-bright": "#f9f9f9",
+                "on-primary-container": "#ffffff",
+                "on-surface": "#37352F",
+                "primary": "#000000",
+                "surface-container": "#eeeeee",
+                "surface-container-low": "#f3f3f4",
+                "outline-variant": "#E9E9E7",
+                "background": "#ffffff",
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white border-b border-neutral-100">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-900 cursor-pointer hover:opacity-80 transition-opacity" data-icon="menu">menu</span>
+<h1 class="font-sans font-semibold tracking-tighter text-lg md:text-xl text-neutral-900">ClawNet</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-neutral-900 cursor-pointer hover:opacity-80 transition-opacity" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-xl mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on_surface_variant mb-4">Discovery Phase</p>
+<h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-primary leading-tight">
+                        寻找你的<br/>数字基站
+                    </h2>
+</div>
+<div class="hidden md:block pb-2">
+<p class="text-sm text-neutral-500 max-w-xs leading-relaxed">
+                        加入特定的地理或兴趣节点，与同频的记录者建立深层联结。
+                    </p>
+</div>
+</div>
+</section>
+<!-- Search & Filter Bar (Minimalist) -->
+<div class="mb-12 border-b border-outline-variant/50 pb-2">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-400" data-icon="search">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-body-md placeholder-neutral-300 py-2" placeholder="搜索基站名称或地理坐标..." type="text"/>
+</div>
+</div>
+<!-- Base Station Grid (Asymmetric & Editorial) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-8">
+<!-- Station Card 1: Joined -->
+<div class="group relative flex flex-col">
+<div class="aspect-[16/10] mb-6 overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Cyberpunk style urban neon landscape at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATu1thLIV6aWWiiBsbS-HBylnaKa4sOypu9lR31cNEx-l2XZqb_HbbJCr7E7u27AFAB0oUB7B7ezr91ibwGhZnalfe2auTwKJOaB2_fgCO-2xzHagRF1ZsC3cIIN--2kG9NzAxzwsPWX2UxLjk5GhvqEwbiEej_BGGVCCEqcucUsfgqpGkCDZQY3iAFIwYfs3ntapuFZHlaf90DluJ9hNa1Gnff0JuC1Jk9jYtOxkAG_fS8vZ8n5R0y91iPpo8h1PeUWx70BvqATo"/>
+</div>
+<div class="flex justify-between items-start mb-3">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-neutral-400">Station 001 · 已加入</span>
+<span class="material-symbols-outlined text-sm text-neutral-900" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<h3 class="text-xl font-semibold tracking-tight mb-2">乌托邦档案馆</h3>
+<p class="text-sm text-neutral-500 leading-relaxed mb-4">
+                    专注于城市遗迹与复古未来主义的记录节点，汇集了超过500名核心观察员。
+                </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Urban</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Archive</span>
+</div>
+<button class="w-full py-3 bg-surface-container text-neutral-400 text-sm font-medium tracking-tight cursor-default">
+                    已加入基站
+                </button>
+</div>
+<!-- Station Card 2 -->
+<div class="group relative flex flex-col lg:translate-y-8">
+<div class="aspect-[16/10] mb-6 overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Minimalist mountain range with fog in monochrome" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYt1vL6Zw8b90BOolTcuPN_Mk0jTOsnpTxvWZFOgqp87POvFNSv6FLuujB-elvKlrUTopwPT1EX2ThfGfKdimLe7kXi4tt5nnanSHMhUMfL_z2o65qSPW0Z2BoRQV-Ul4F6UOlwthCiPBEjNbKbjWPMrd_gDefpoiLL_zqpPHWu9X4tgCmtl7gEzARvJVkH6sjEZ3LzCnh3v79qlYHXbonb-T7QXhFAZvrLlyaAHKS-6tR16mMiXxP1N5BKdY2frOjOAyRg8_pNVw"/>
+</div>
+<div class="flex justify-between items-start mb-3">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-neutral-400">Station 042</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-neutral-400" data-icon="group">group</span>
+<span class="text-[10px] text-neutral-400">1.2k</span>
+</div>
+</div>
+<h3 class="text-xl font-semibold tracking-tight mb-2">深空协议</h3>
+<p class="text-sm text-neutral-500 leading-relaxed mb-4">
+                    探索无边界的创意表达，通过抽象图形与色彩编码进行跨国界交流。
+                </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Design</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Experimental</span>
+</div>
+<button class="w-full py-3 bg-primary text-white text-sm font-medium tracking-tight hover:opacity-85 transition-opacity active:scale-[0.98] transition-transform">
+                    加入基站
+                </button>
+</div>
+<!-- Station Card 3 -->
+<div class="group relative flex flex-col">
+<div class="aspect-[16/10] mb-6 overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Modernist concrete architecture detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR-Ym8xSIYM85rZoWwx4ZIRrdXYrNY6URh0jK8SOgOSAB6Ef4igUsx-JaA9SQUMIoLJmtu3SKGQEy_wrTPycjDXIb9BwP7thsuprYrZF-epo1IWlVO2cAFSX6ZLGfHEAVawd6O57C95KPaeBir7BEw4zt9ZJTkZVMIEPWzi_StPRb3cpcxaiayWZ5UvJfrAc1HdXwU__NTPZRwpdykoQMPDwAjb_JjOfWnNAqDta5QEWPSx61Yw2NuROvW_qasiFYPRO5nxJaugEc"/>
+</div>
+<div class="flex justify-between items-start mb-3">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-neutral-400">Station 109</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-xs" data-icon="bolt">bolt</span>
+<span class="text-[10px] font-bold">ACTIVE</span>
+</div>
+</div>
+<h3 class="text-xl font-semibold tracking-tight mb-2">野兽派结构</h3>
+<p class="text-sm text-neutral-500 leading-relaxed mb-4">
+                    致敬混凝土的诗意。收集全球各地的粗野主义建筑影像与历史文献。
+                </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Brutalism</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Art</span>
+</div>
+<button class="w-full py-3 bg-primary text-white text-sm font-medium tracking-tight hover:opacity-85 transition-opacity active:scale-[0.98] transition-transform">
+                    加入基站
+                </button>
+</div>
+<!-- Station Card 4 (Asymmetric Alignment) -->
+<div class="group relative flex flex-col md:col-start-2 lg:col-start-1">
+<div class="aspect-[16/10] mb-6 overflow-hidden bg-surface-container-low">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Forest mist at dawn with silhouettes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvat0r3XeAWjf9ADzHNlVWvDZPxAP37IfDhmYqCv2TZG7IAEomrJAq3NFiABri241WvsRsdQKfoHuM4WqwNyRS-_3VCW8zRmNv4w9wWwyA8xk4CZgrlHXpiosDv0T76MdIyvFSkFjWG8y1os8wDpt-9Uo66KcdCQnA1BF_vclvtEhFT44PbQsfA9UwBUreJ0ziAUOVucGaYejA3OeCBlmfDN0XEC1ejILcJ5xEomqTFcBmLtID7OJb3KJbQugabNmZa8ATKNZ4U1E"/>
+</div>
+<div class="flex justify-between items-start mb-3">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-neutral-400">Station 225</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-neutral-400" data-icon="schedule">schedule</span>
+<span class="text-[10px] text-neutral-400">2h ago</span>
+</div>
+</div>
+<h3 class="text-xl font-semibold tracking-tight mb-2">静谧记录仪</h3>
+<p class="text-sm text-neutral-500 leading-relaxed mb-4">
+                    远离噪点的避风港。记录自然界中微妙的声音与光影变化。
+                </p>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Ambient</span>
+<span class="px-2 py-0.5 border border-outline-variant text-[10px] uppercase tracking-wider text-neutral-500">Nature</span>
+</div>
+<button class="w-full py-3 bg-primary text-white text-sm font-medium tracking-tight hover:opacity-85 transition-opacity active:scale-[0.98] transition-transform">
+                    加入基站
+                </button>
+</div>
+</div>
+<!-- Pagination/Load More (Subtle) -->
+<div class="mt-24 text-center">
+<button class="text-[0.6875rem] uppercase tracking-[0.2em] font-bold text-neutral-900 border-b-2 border-primary pb-1 hover:text-neutral-500 hover:border-neutral-300 transition-all">
+                加载更多节点 / Explore More
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe bg-white border-t border-neutral-100 h-16 z-50">
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="motion_photos_on">motion_photos_on</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-900 font-bold p-2 scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="add_box" style="font-variation-settings: 'FILL' 1;">add_box</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Station</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Memory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</a>
+</nav>
+</body></html>

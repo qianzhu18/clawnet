@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>创建基站 - ClawNet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-container": "#747573",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f9f9f9",
+                        "on-primary-container": "#ffffff",
+                        "on-surface": "#37352F",
+                        "primary": "#000000",
+                        "primary-fixed-dim": "#494740",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed": "#c8c6c3",
+                        "primary-fixed": "#615e57",
+                        "surface-container": "#eeeeee",
+                        "surface-variant": "#e2e2e2",
+                        "tertiary": "#3a3c3b",
+                        "on-tertiary-container": "#ffffff",
+                        "surface-tint": "#615e57",
+                        "tertiary-fixed": "#5d5f5d",
+                        "on-secondary-fixed": "#1b1c1a",
+                        "on-secondary-fixed-variant": "#3b3b39",
+                        "background": "#ffffff",
+                        "outline": "#777777",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#e2e2e1",
+                        "on-background": "#37352F",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-primary-fixed": "#ffffff",
+                        "on-surface-variant": "#9B9A97",
+                        "on-error-container": "#410002",
+                        "secondary-container": "#d6d4d1",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#cbc6bd",
+                        "surface": "#ffffff",
+                        "tertiary-fixed-dim": "#454746",
+                        "on-primary-fixed-variant": "#e7e2d9",
+                        "secondary-fixed-dim": "#acaba8",
+                        "on-tertiary-fixed": "#ffffff",
+                        "secondary": "#5f5e5c",
+                        "surface-container-low": "#f9f9f9",
+                        "on-secondary-container": "#1b1c1a",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#e2e2e1",
+                        "outline-variant": "#E9E9E7",
+                        "primary-container": "#3d3b35"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-surface-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white border-b border-outline-variant">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-xl font-semibold tracking-tighter text-on-surface">ClawNet</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-3xl mx-auto">
+<!-- Editorial Header -->
+<section class="mb-16">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-4 block">Archive Configuration</span>
+<h2 class="text-[3.5rem] font-semibold tracking-tighter leading-none text-primary mb-6">创建新基站</h2>
+<p class="text-on-surface-variant leading-relaxed max-w-xl">
+                定义一个全新的数字存档空间。基站是您的核心节点，用于同步、存储与分发生态数据。
+            </p>
+</section>
+<!-- Form Section -->
+<form class="space-y-12">
+<!-- Field: Station Name -->
+<div class="group">
+<label class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-3 block">
+                    Station Name / 基站名称
+                </label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 text-lg focus:ring-0 focus:border-primary placeholder:text-surface-container-highest transition-all" placeholder="输入独特且具有辨识度的名称..." type="text"/>
+</div>
+<!-- Field: Station Introduction -->
+<div class="group">
+<label class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-3 block">
+                    Station Introduction / 基站简介
+                </label>
+<textarea class="w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 text-base focus:ring-0 focus:border-primary placeholder:text-surface-container-highest transition-all resize-none" placeholder="简要描述此基站的用途、覆盖范围或核心职能..." rows="3"></textarea>
+</div>
+<!-- Field: Theme/Tags -->
+<div class="group">
+<label class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-3 block">
+                    Theme &amp; Tags / 主题与标签
+                </label>
+<div class="relative">
+<input class="w-full bg-transparent border-0 border-b border-outline-variant px-0 py-3 text-base focus:ring-0 focus:border-primary placeholder:text-surface-container-highest transition-all" placeholder="使用逗号分隔标签，例如：数据采集, 环境监测, 边缘计算" type="text"/>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-low text-[10px] uppercase font-bold tracking-tight border border-outline-variant/30">
+                            SYSTEM-DEFAULT
+                        </span>
+<span class="inline-flex items-center px-3 py-1 bg-surface-container-low text-[10px] uppercase font-bold tracking-tight border border-outline-variant/30">
+                            NODE-SYNC
+                        </span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="pt-8 flex flex-col items-start gap-4">
+<button class="bg-primary text-white px-10 py-4 font-medium text-sm transition-all hover:opacity-85 active:scale-[0.98] flex items-center gap-3" type="submit">
+                    立即创建基站
+                    <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<p class="text-[10px] text-on-surface-variant leading-tight">
+                    点击“立即创建”即表示您同意我们的<br/>数据主权协议与节点服务条款。
+                </p>
+</div>
+</form>
+<!-- Contextual Card (Asymmetric Layout) -->
+<aside class="mt-24 p-8 bg-surface-container-low relative overflow-hidden">
+<div class="relative z-10 max-w-sm">
+<h3 class="text-sm font-bold uppercase tracking-widest mb-4">为什么创建基站？</h3>
+<p class="text-xs text-on-surface-variant leading-loose mb-4">
+                    基站是 ClawNet 架构中的基本地理单位。通过建立基站，您可以实现更精准的数据锚定，并为周边终端提供高带宽的低延迟接入点。
+                </p>
+<a class="text-[10px] font-bold border-b border-primary pb-0.5 hover:opacity-70 transition-opacity" href="#">了解更多技术细节</a>
+</div>
+<div class="absolute -right-12 -bottom-12 opacity-5 scale-150 pointer-events-none">
+<span class="material-symbols-outlined text-[12rem]" data-icon="sensors">sensors</span>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe bg-white border-t border-outline-variant h-16 z-50">
+<button class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="motion_photos_on">motion_photos_on</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Reports</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary font-bold p-2 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="add_box" style="font-variation-settings: 'FILL' 1;">add_box</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Station</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Memory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-primary transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</button>
+</nav>
+</body></html>

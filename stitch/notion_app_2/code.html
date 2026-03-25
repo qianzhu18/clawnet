@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#747573",
+              "inverse-surface": "#2f3131",
+              "surface-container-high": "#e8e8e8",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#f9f9f9",
+              "on-primary-container": "#ffffff",
+              "on-surface": "#37352F",
+              "primary": "#000000",
+              "primary-fixed-dim": "#494740",
+              "surface-dim": "#dadada",
+              "secondary-fixed": "#c8c6c3",
+              "primary-fixed": "#615e57",
+              "surface-container": "#eeeeee",
+              "surface-variant": "#e2e2e2",
+              "tertiary": "#3a3c3b",
+              "on-tertiary-container": "#ffffff",
+              "surface-tint": "#615e57",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "background": "#ffffff",
+              "outline": "#777777",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-background": "#37352F",
+              "inverse-on-surface": "#f0f1f1",
+              "on-primary-fixed": "#ffffff",
+              "on-surface-variant": "#9B9A97",
+              "on-error-container": "#410002",
+              "secondary-container": "#d6d4d1",
+              "surface-container-highest": "#e2e2e2",
+              "on-error": "#ffffff",
+              "inverse-primary": "#cbc6bd",
+              "surface": "#ffffff",
+              "tertiary-fixed-dim": "#454746",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-tertiary-fixed": "#ffffff",
+              "secondary": "#5f5e5c",
+              "surface-container-low": "#F9F9F9",
+              "on-secondary-container": "#1b1c1a",
+              "on-primary": "#e7e2d9",
+              "error": "#ba1a1a",
+              "on-tertiary": "#e2e2e1",
+              "outline-variant": "#E9E9E7",
+              "primary-container": "#3d3b35"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #ffffff;
+            color: #37352F;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-surface-container">
+<!-- TopAppBar Component -->
+<header class="fixed top-0 w-full z-50 bg-white border-b border-neutral-100">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-900 cursor-pointer hover:opacity-80 transition-opacity">menu</span>
+<h1 class="font-sans font-semibold tracking-tighter text-lg md:text-xl text-neutral-900">ClawNet</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neutral-900 cursor-pointer hover:opacity-80 transition-opacity">person</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-screen-md mx-auto min-h-screen">
+<!-- Header Section -->
+<section class="mb-12">
+<div class="flex items-baseline justify-between mb-2">
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Intelligence Report</p>
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">2023.10.27</p>
+</div>
+<h2 class="text-[2.75rem] font-semibold tracking-tighter leading-tight mb-8">数据洞察战报</h2>
+<!-- Switch: Daily / Weekly -->
+<div class="flex gap-1 p-1 bg-surface-container-low w-fit rounded-lg">
+<button class="px-6 py-1.5 text-[0.875rem] font-medium bg-white text-primary rounded shadow-sm">日报</button>
+<button class="px-6 py-1.5 text-[0.875rem] font-medium text-on-surface-variant hover:text-on-surface transition-colors">周报</button>
+</div>
+</section>
+<!-- Summary Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+<div class="p-6 bg-surface-container-low rounded-xl border border-outline-variant/50">
+<h3 class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-4">活跃指数</h3>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold tracking-tighter">89.4</span>
+<span class="text-xs text-green-600 font-medium mb-1">+12%</span>
+</div>
+<p class="mt-4 text-sm leading-relaxed text-on-surface-variant">本周期内社交声量显著提升，品牌关键词提及频率达到近三月峰值。</p>
+</div>
+<div class="p-6 bg-surface-container-low rounded-xl border border-outline-variant/50 flex flex-col justify-between">
+<div>
+<h3 class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-4">处理进度</h3>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[72%]"></div>
+</div>
+</div>
+<div class="flex justify-between items-end mt-4">
+<span class="text-2xl font-bold tracking-tighter">72%</span>
+<span class="text-xs text-on-surface-variant">24/33 任务已完成</span>
+</div>
+</div>
+</section>
+<!-- Action Report List -->
+<section>
+<h3 class="text-xl font-semibold tracking-tight mb-6 px-1">核心执行回顾</h3>
+<div class="space-y-4">
+<!-- Item 1: Topics -->
+<div class="group p-6 bg-white border border-outline-variant hover:bg-surface-container-low transition-colors rounded-xl flex items-start gap-5">
+<div class="mt-1 w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">topic</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-semibold text-on-surface">关注话题动态</h4>
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Today 09:12</span>
+</div>
+<p class="text-sm leading-relaxed text-on-surface-variant">成功追踪“生成式AI应用”与“跨端框架”两个核心技术标签，捕获新增深度讨论 14 条。</p>
+</div>
+</div>
+<!-- Item 2: Posts -->
+<div class="group p-6 bg-white border border-outline-variant hover:bg-surface-container-low transition-colors rounded-xl flex items-start gap-5">
+<div class="mt-1 w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">filter_list</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-semibold text-on-surface">内容自动筛选</h4>
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Today 14:30</span>
+</div>
+<p class="text-sm leading-relaxed text-on-surface-variant">自动化引擎完成 1,200+ 篇资讯筛选，标记 3 篇具有高度竞品研究价值的深度长文。</p>
+</div>
+</div>
+<!-- Item 3: Interactions -->
+<div class="group p-6 bg-white border border-outline-variant hover:bg-surface-container-low transition-colors rounded-xl flex items-start gap-5">
+<div class="mt-1 w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">forum</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-semibold text-on-surface">社区互动管理</h4>
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Yesterday</span>
+</div>
+<p class="text-sm leading-relaxed text-on-surface-variant">响应 5 次技术社区提问，建立 2 个潜在开发者联系，有效维护开源品牌形象。</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Insights Quote -->
+<section class="mt-16 pt-12 border-t border-outline-variant/30 italic">
+<p class="text-lg text-on-surface-variant leading-relaxed">
+                “本周的数据趋势显示，用户对‘端侧私有化部署’的关注度正在超越通用云服务，建议下周重点倾斜相关维度的资讯收集。”
+            </p>
+<p class="mt-4 not-italic text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface">—— ClawNet 智库建议</p>
+</section>
+</main>
+<!-- BottomNavBar Component -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe bg-white border-t border-neutral-100 h-16 z-50">
+<!-- Dynamic -->
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined">motion_photos_on</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</a>
+<!-- Reports (Active) -->
+<a class="flex flex-col items-center justify-center text-neutral-900 font-bold p-2 active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-bold mt-1">Reports</span>
+</a>
+<!-- Station -->
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined">add_box</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Station</span>
+</a>
+<!-- Memory -->
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Memory</span>
+</a>
+<!-- Avatar -->
+<a class="flex flex-col items-center justify-center text-neutral-400 p-2 hover:text-neutral-900 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-sans text-[10px] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</a>
+</nav>
+</body></html>

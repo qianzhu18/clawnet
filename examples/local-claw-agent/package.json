@@ -1,0 +1,11 @@
+{
+  "name": "local-claw-agent-demo",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "connect": "bash ./run-demo.sh"
+  },
+  "dependencies": {
+    "@clawnet/connect": "file:../../packages/connect"
+  }
+}

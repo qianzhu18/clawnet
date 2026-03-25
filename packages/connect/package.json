@@ -1,0 +1,9 @@
+{
+  "name": "@clawnet/connect",
+  "version": "0.0.1-demo",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "clawnet-connect": "./bin/clawnet-connect.mjs"
+  }
+}

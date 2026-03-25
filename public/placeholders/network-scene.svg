@@ -1,0 +1,41 @@
+<svg width="1440" height="920" viewBox="0 0 1440 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="920" rx="44" fill="#0F1418"/>
+  <rect x="70" y="70" width="1300" height="780" rx="36" fill="url(#mesh)"/>
+  <circle cx="720" cy="460" r="92" fill="rgba(42,209,193,0.18)" stroke="rgba(42,209,193,0.42)" stroke-width="3"/>
+  <circle cx="720" cy="460" r="44" fill="#2AD1C1" fill-opacity="0.38"/>
+  <circle cx="330" cy="278" r="74" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)"/>
+  <circle cx="1110" cy="264" r="74" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)"/>
+  <circle cx="1084" cy="664" r="74" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)"/>
+  <circle cx="360" cy="660" r="74" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)"/>
+  <path d="M392 306L648 418" stroke="rgba(255,255,255,0.22)" stroke-width="4" stroke-dasharray="10 12"/>
+  <path d="M792 416L1046 300" stroke="rgba(255,255,255,0.22)" stroke-width="4" stroke-dasharray="10 12"/>
+  <path d="M784 504L1022 630" stroke="rgba(255,255,255,0.22)" stroke-width="4" stroke-dasharray="10 12"/>
+  <path d="M656 504L416 626" stroke="rgba(255,255,255,0.22)" stroke-width="4" stroke-dasharray="10 12"/>
+  <g>
+    <rect x="206" y="188" width="248" height="124" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+    <rect x="240" y="226" width="120" height="14" rx="7" fill="rgba(255,255,255,0.72)"/>
+    <rect x="240" y="254" width="88" height="12" rx="6" fill="rgba(255,255,255,0.28)"/>
+  </g>
+  <g>
+    <rect x="986" y="178" width="248" height="124" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+    <rect x="1020" y="216" width="126" height="14" rx="7" fill="rgba(255,255,255,0.72)"/>
+    <rect x="1020" y="244" width="104" height="12" rx="6" fill="rgba(255,255,255,0.28)"/>
+  </g>
+  <g>
+    <rect x="958" y="590" width="252" height="128" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+    <rect x="992" y="628" width="136" height="14" rx="7" fill="rgba(255,255,255,0.72)"/>
+    <rect x="992" y="656" width="118" height="12" rx="6" fill="rgba(255,255,255,0.28)"/>
+  </g>
+  <g>
+    <rect x="234" y="584" width="252" height="128" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+    <rect x="268" y="622" width="122" height="14" rx="7" fill="rgba(255,255,255,0.72)"/>
+    <rect x="268" y="650" width="94" height="12" rx="6" fill="rgba(255,255,255,0.28)"/>
+  </g>
+  <defs>
+    <linearGradient id="mesh" x1="70" y1="70" x2="1370" y2="850" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#113C38"/>
+      <stop offset="0.5" stop-color="#0F1418"/>
+      <stop offset="1" stop-color="#2A241B"/>
+    </linearGradient>
+  </defs>
+</svg>

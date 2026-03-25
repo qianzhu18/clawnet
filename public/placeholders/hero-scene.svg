@@ -1,0 +1,54 @@
+<svg width="1600" height="1040" viewBox="0 0 1600 1040" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1040" rx="48" fill="#11151A"/>
+  <rect width="1600" height="1040" rx="48" fill="url(#bg)"/>
+  <rect x="88" y="96" width="1424" height="848" rx="36" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)"/>
+  <circle cx="290" cy="248" r="86" fill="url(#tealGlow)" fill-opacity="0.45"/>
+  <circle cx="1286" cy="208" r="110" fill="url(#amberGlow)" fill-opacity="0.34"/>
+  <rect x="188" y="176" width="760" height="540" rx="32" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+  <rect x="222" y="208" width="252" height="28" rx="14" fill="rgba(255,255,255,0.14)"/>
+  <rect x="222" y="272" width="636" height="72" rx="18" fill="rgba(255,255,255,0.9)"/>
+  <rect x="222" y="370" width="560" height="26" rx="13" fill="rgba(255,255,255,0.26)"/>
+  <rect x="222" y="410" width="496" height="26" rx="13" fill="rgba(255,255,255,0.18)"/>
+  <rect x="222" y="470" width="190" height="56" rx="28" fill="#2AD1C1"/>
+  <rect x="428" y="470" width="214" height="56" rx="28" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.12)"/>
+  <g opacity="0.92">
+    <rect x="986" y="226" width="352" height="240" rx="28" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.1)"/>
+    <rect x="1016" y="256" width="122" height="20" rx="10" fill="rgba(255,255,255,0.18)"/>
+    <rect x="1016" y="300" width="208" height="30" rx="15" fill="rgba(255,255,255,0.86)"/>
+    <rect x="1016" y="356" width="290" height="70" rx="22" fill="rgba(17,21,26,0.36)"/>
+    <circle cx="1052" cy="392" r="14" fill="#F8B84E"/>
+    <rect x="1080" y="378" width="184" height="12" rx="6" fill="rgba(255,255,255,0.24)"/>
+    <rect x="1080" y="400" width="140" height="12" rx="6" fill="rgba(255,255,255,0.18)"/>
+  </g>
+  <g opacity="0.96">
+    <rect x="890" y="512" width="418" height="238" rx="28" fill="rgba(42,209,193,0.16)" stroke="rgba(42,209,193,0.22)"/>
+    <rect x="920" y="544" width="154" height="20" rx="10" fill="rgba(255,255,255,0.18)"/>
+    <circle cx="958" cy="614" r="22" fill="rgba(255,255,255,0.16)"/>
+    <rect x="1000" y="598" width="186" height="14" rx="7" fill="rgba(255,255,255,0.76)"/>
+    <circle cx="958" cy="684" r="22" fill="rgba(255,255,255,0.16)"/>
+    <rect x="1000" y="668" width="228" height="14" rx="7" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="958" cy="754" r="22" fill="rgba(255,255,255,0.16)"/>
+    <rect x="1000" y="738" width="168" height="14" rx="7" fill="rgba(255,255,255,0.54)"/>
+  </g>
+  <circle cx="1110" cy="442" r="6" fill="#2AD1C1"/>
+  <circle cx="986" cy="552" r="6" fill="#2AD1C1"/>
+  <circle cx="1144" cy="642" r="6" fill="#2AD1C1"/>
+  <path d="M892 555C828 506 780 458 738 416" stroke="rgba(255,255,255,0.24)" stroke-width="3" stroke-dasharray="8 10"/>
+  <path d="M986 552C948 502 906 476 860 460" stroke="rgba(42,209,193,0.4)" stroke-width="3"/>
+  <path d="M1150 642C1110 618 1080 590 1056 562" stroke="rgba(42,209,193,0.4)" stroke-width="3"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="1040" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#153E3B"/>
+      <stop offset="0.48" stop-color="#11151A"/>
+      <stop offset="1" stop-color="#2B2419"/>
+    </linearGradient>
+    <radialGradient id="tealGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(290 248) rotate(90) scale(86)">
+      <stop stop-color="#2AD1C1"/>
+      <stop offset="1" stop-color="#2AD1C1" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1286 208) rotate(90) scale(110)">
+      <stop stop-color="#F8B84E"/>
+      <stop offset="1" stop-color="#F8B84E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>
