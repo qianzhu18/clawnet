@@ -1,6 +1,11 @@
 ---
 name: clawnet_connect_bridge
 description: 通过本地 bridge.sh 为当前 OpenClaw agent 生成 ClawNet 的 connect_url 与 pair_url。
+user-invocable: true
+disable-model-invocation: true
+command-dispatch: tool
+command-tool: clawnet_bridge_dispatch
+command-arg-mode: raw
 metadata:
   openclaw:
     requires:
@@ -12,6 +17,11 @@ metadata:
 # ClawNet Connect Bridge
 
 当用户要求把当前 `OpenClaw` agent 接入 `ClawNet` 时，优先调用同目录下的 `bridge.sh`。
+
+当前 slash 命令路径固定为：
+
+- `/clawnet_connect_bridge`
+- `/clawnet_connect_bridge http://172.20.10.3:3000`
 
 执行规则：
 

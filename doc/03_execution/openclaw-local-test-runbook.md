@@ -317,8 +317,117 @@ npm run demo:openclaw:bridge
 2. 隔离账户准备 `~/clawnet-openclaw-lab/clawnet` 和 `~/clawnet-openclaw-lab/openclaw` 两个仓库。
 3. 在 `openclaw/` 根目录执行上面的非交互 `onboard`，并用 `docker compose up -d openclaw-gateway` 拉起隔离宿主。
 4. 在 `clawnet/` 根目录执行 `install-workspace-skill.sh`，把 skill 复制到 `~/.openclaw-t030/workspace/skills/`。
-5. 回到 `openclaw/` 根目录执行 `skills info clawnet_connect_bridge --json`，确认 `source = openclaw-workspace` 且 `eligible = true`。
-6. 直接执行 `~/.openclaw-t030/workspace/skills/clawnet-connect-bridge/bridge.sh`，确认输出里同时存在 `connect_url / pair_url / host_mode / scan_ready`。
+5. `install-workspace-skill.sh` 现在会顺带把最小 `clawnet-connect.mjs` 和默认 `agent-card-rhea.json` vendoring 到 `workspace/skills/clawnet-connect-bridge/vendor/`，避免容器内真实 slash 触发时找不到宿主仓库路径。
+6. 回到 `openclaw/` 根目录执行 `skills info clawnet_connect_bridge --json`，确认 `source = openclaw-workspace` 且 `eligible = true`。
+7. 直接执行 `~/.openclaw-t030/workspace/skills/clawnet-connect-bridge/bridge.sh`，确认输出里同时存在 `connect_url / pair_url / host_mode / scan_ready`。
+
+## T031 严格宿主链复跑
+
+### 1. 先确认宿主与 workspace skill 都已就绪
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  docker compose -f openclaw/docker-compose.yml ps
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  docker compose -f openclaw/docker-compose.yml exec -T openclaw-gateway \
+  node /app/dist/index.js skills info clawnet_connect_bridge --json
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+  docker compose -f openclaw/docker-compose.yml exec -T openclaw-gateway \
+  node /app/dist/index.js plugins list --json
+```
+
+通过标准：
+
+- `openclaw-openclaw-gateway-1` 为 `healthy`
+- `clawnet_connect_bridge` 仍然是 `source = openclaw-workspace`、`eligible = true`
+- `clawnet-bridge-dispatch` 为 `origin = workspace`、`status = loaded`
+
+### 2. 收窄 provider 404
+
+先证明这不是“没有 key”或“模型列表里没有模型”：
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
+KEY="$GEMINI_API_KEY"
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest" \
+  docker compose -f openclaw/docker-compose.yml run --rm --no-deps \
+  -e GEMINI_API_KEY="$KEY" \
+  --entrypoint node openclaw-gateway \
+  -e 'fetch("https://generativelanguage.googleapis.com/v1beta/models?key="+encodeURIComponent(process.env.GEMINI_API_KEY||"")).then(async (res)=>{console.log("status="+res.status);console.log(await res.text())})'
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest" \
+  docker compose -f openclaw/docker-compose.yml run --rm --no-deps \
+  -e GEMINI_API_KEY="$KEY" \
+  --entrypoint node openclaw-gateway \
+  dist/index.js models list --json
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+OPENCLAW_IMAGE="ghcr.io/openclaw/openclaw:latest" \
+  docker compose -f openclaw/docker-compose.yml run --rm --no-deps \
+  -e GEMINI_API_KEY="$KEY" \
+  --entrypoint node openclaw-gateway \
+  dist/index.js agent --local --agent main --message 'reply with ok' --json
+```
+
+当前缩小结论：
+
+- 同一把 `GEMINI_API_KEY` 直连 Google `models` 接口返回 `status = 200`
+- `models list --json` 能看到 `google/gemini-2.5-flash`、`google/gemini-3-flash-preview` 等模型可用
+- 但 `agent --local --agent main --message 'reply with ok' --json` 仍会返回 Google provider `404 Not Found`
+
+这说明 `T031` 当前不该等 provider 路径修好再继续。
+
+### 3. 用真实宿主 slash 命令绕过 provider 404
+
+当前最小绕过固定为：
+
+- `SKILL.md` 使用 `disable-model-invocation: true`
+- `command-dispatch: tool`
+- `command-tool: clawnet_bridge_dispatch`
+- `clawnet-bridge-dispatch` 插件直接执行 workspace 内的 `bridge.sh`
+- `bridge.sh` 优先使用 vendored `clawnet-connect.mjs` 与 `agent-card-rhea.json`
+
+复跑命令：
+
+```bash
+cd "/Users/mac/qianzhu Vault/project/clawnet"
+LAN_IP="$(ipconfig getifaddr "$(route get default | awk '/interface:/{print $2; exit}')")"
+
+OPENCLAW_CONFIG_DIR="$HOME/.openclaw-t030" \
+OPENCLAW_WORKSPACE_DIR="$HOME/.openclaw-t030/workspace" \
+OPENCLAW_GATEWAY_TOKEN="t030-local-token" \
+OPENCLAW_BRIDGE_TRIGGER="gateway-chat" \
+CLAWNET_BASE_URL="http://${LAN_IP}:3000" \
+CLAWNET_HOST="http://${LAN_IP}:3000" \
+  npm run demo:openclaw:bridge
+```
+
+通过标准：
+
+- 终端输出 `bridge_trigger=gateway-chat`
+- 终端输出 `host_mode = lan`
+- 终端输出 `scan_ready = true`
+- `/tmp/clawnet-openclaw-bridge-regression/summary.json` 中记录：
+  - `bridgeTrigger = "gateway-chat"`
+  - `trigger_details.gateway_command = "/clawnet_connect_bridge http://<LAN_IP>:3000"`
+  - `trigger_details.gateway_run_id`
+- `/tmp/clawnet-openclaw-bridge-regression/connect-desktop.png`
+- `/tmp/clawnet-openclaw-bridge-regression/pair-mobile.png`
+- `/tmp/clawnet-openclaw-bridge-regression/app-mobile.png`
+- `/tmp/clawnet-openclaw-bridge-regression/network-mobile.png`
 
 ## 当前禁止事项
 

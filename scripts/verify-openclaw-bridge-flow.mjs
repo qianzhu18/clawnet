@@ -15,6 +15,9 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const npmCmd = process.platform === "win32" ? "npm.cmd" : "npm";
 const baseUrl = process.env.CLAWNET_BASE_URL ?? "http://127.0.0.1:3000";
 const bridgeHost = process.env.CLAWNET_HOST ?? baseUrl;
+const bridgeTrigger = process.env.OPENCLAW_BRIDGE_TRIGGER ?? "workspace-bridge";
+const openclawConfigDir =
+  process.env.OPENCLAW_CONFIG_DIR ?? path.join(os.homedir(), ".openclaw-t030");
 const workspaceDir =
   process.env.OPENCLAW_WORKSPACE_DIR ?? path.join(os.homedir(), ".openclaw-t030", "workspace");
 const bridgeScriptPath = path.join(
@@ -23,6 +26,11 @@ const bridgeScriptPath = path.join(
   "clawnet-connect-bridge",
   "bridge.sh",
 );
+const openclawComposeFile = path.join(rootDir, "openclaw", "docker-compose.yml");
+const gatewayServiceName = process.env.OPENCLAW_GATEWAY_SERVICE ?? "openclaw-gateway";
+const gatewayUrl = process.env.OPENCLAW_GATEWAY_URL ?? "ws://127.0.0.1:18789";
+const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN ?? "t030-local-token";
+const gatewaySessionKey = process.env.OPENCLAW_SESSION_KEY ?? "main";
 const screenshotDir =
   process.env.CLAWNET_SCREENSHOT_DIR ?? "/tmp/clawnet-openclaw-bridge-regression";
 
@@ -44,8 +52,8 @@ async function main() {
   const server = await ensureServer();
 
   try {
-    const bridgeOutput = await runBridge();
-    const pairingOutput = parseBridgeOutput(bridgeOutput.stdout);
+    const bridgeResult = await acquirePairingResult();
+    const pairingOutput = parseBridgeOutput(bridgeResult.text);
 
     const browser = await chromium.launch({ headless: true });
 
@@ -59,6 +67,8 @@ async function main() {
     const summary = {
       baseUrl,
       bridgeHost,
+      bridgeTrigger,
+      openclawConfigDir,
       workspaceDir,
       bridgeScriptPath,
       code: pairingOutput.code,
@@ -68,12 +78,14 @@ async function main() {
       host_mode: pairingOutput.host_mode,
       scan_ready: pairingOutput.scan_ready,
       agent_name: pairingOutput.agent_preview?.name,
+      trigger_details: bridgeResult.details,
       screenshots: screenshotPaths,
     };
 
     await writeFile(screenshotPaths.summary, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
 
     console.log("OpenClaw bridge regression passed.");
+    console.log(`bridge_trigger=${bridgeTrigger}`);
     console.log(`code=${pairingOutput.code}`);
     console.log(`connect_url=${pairingOutput.connect_url}`);
     console.log(`pair_url=${pairingOutput.pair_url}`);
@@ -83,6 +95,28 @@ async function main() {
   } finally {
     await stopServer(server);
   }
+}
+
+async function acquirePairingResult() {
+  if (bridgeTrigger === "gateway-chat") {
+    return await runGatewayChatBridge();
+  }
+
+  if (bridgeTrigger !== "workspace-bridge") {
+    throw new Error(
+      `Unsupported OPENCLAW_BRIDGE_TRIGGER="${bridgeTrigger}". Expected "workspace-bridge" or "gateway-chat".`,
+    );
+  }
+
+  const bridgeOutput = await runWorkspaceBridge();
+
+  return {
+    text: bridgeOutput.stdout,
+    details: {
+      mode: "workspace-bridge",
+      bridge_script_path: bridgeScriptPath,
+    },
+  };
 }
 
 async function ensureBuild() {
@@ -174,7 +208,7 @@ async function isServerReady() {
   }
 }
 
-async function runBridge() {
+async function runWorkspaceBridge() {
   return runCommand("openclaw-workspace-bridge", bridgeScriptPath, [], {
     cwd: rootDir,
     env: {
@@ -182,6 +216,77 @@ async function runBridge() {
       CLAWNET_HOST: bridgeHost,
     },
   });
+}
+
+async function runGatewayChatBridge() {
+  const commandText =
+    process.env.OPENCLAW_BRIDGE_COMMAND ??
+    `/clawnet_connect_bridge${bridgeHost ? ` ${bridgeHost}` : ""}`;
+  const gatewayProbe = buildGatewayChatProbeCode();
+  const result = await runCommand(
+    "openclaw-gateway-chat-bridge",
+    "docker",
+    [
+      "compose",
+      "-f",
+      openclawComposeFile,
+      "exec",
+      "-T",
+      "-e",
+      `CLAWNET_HOST=${bridgeHost}`,
+      "-e",
+      `OPENCLAW_GATEWAY_URL=${gatewayUrl}`,
+      "-e",
+      `OPENCLAW_GATEWAY_TOKEN=${gatewayToken}`,
+      "-e",
+      `OPENCLAW_SESSION_KEY=${gatewaySessionKey}`,
+      "-e",
+      `OPENCLAW_BRIDGE_COMMAND=${commandText}`,
+      gatewayServiceName,
+      "node",
+      "-e",
+      gatewayProbe,
+    ],
+    {
+      cwd: rootDir,
+      env: {
+        ...process.env,
+        CLAWNET_HOST: bridgeHost,
+        OPENCLAW_CONFIG_DIR: openclawConfigDir,
+        OPENCLAW_WORKSPACE_DIR: workspaceDir,
+        OPENCLAW_GATEWAY_URL: gatewayUrl,
+        OPENCLAW_GATEWAY_TOKEN: gatewayToken,
+        OPENCLAW_SESSION_KEY: gatewaySessionKey,
+        OPENCLAW_BRIDGE_COMMAND: commandText,
+      },
+    },
+  );
+
+  let parsed;
+  try {
+    parsed = JSON.parse(result.stdout.trim());
+  } catch (error) {
+    throw new Error(
+      `Failed to parse gateway-chat bridge output as JSON.\n${result.stdout}\n${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+  }
+
+  if (!parsed || typeof parsed.text !== "string") {
+    throw new Error(`Gateway chat bridge output missing text.\n${result.stdout}`);
+  }
+
+  return {
+    text: parsed.text,
+    details: {
+      mode: "gateway-chat",
+      gateway_url: gatewayUrl,
+      gateway_session_key: gatewaySessionKey,
+      gateway_command: parsed.command ?? commandText,
+      gateway_run_id: parsed.runId ?? null,
+    },
+  };
 }
 
 async function runDesktopConnectFlow(browser, pairingOutput) {
@@ -269,6 +374,105 @@ async function runCommand(label, command, args, options = {}) {
   }
 
   return { stdout, stderr };
+}
+
+function buildGatewayChatProbeCode() {
+  return `
+const { GatewayClient } = require("openclaw/plugin-sdk/gateway-runtime");
+const { randomUUID } = require("node:crypto");
+
+async function connect(onEvent) {
+  return await new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = (error, client) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      clearTimeout(timer);
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(client);
+    };
+    const client = new GatewayClient({
+      url: process.env.OPENCLAW_GATEWAY_URL || "ws://127.0.0.1:18789",
+      token: process.env.OPENCLAW_GATEWAY_TOKEN || "t030-local-token",
+      clientName: "test",
+      clientDisplayName: "verify-openclaw-bridge-flow",
+      clientVersion: "dev",
+      mode: "test",
+      requestTimeoutMs: 30000,
+      onHelloOk: () => finish(undefined, client),
+      onConnectError: (error) => finish(error),
+      onClose: (code, reason) => finish(new Error(\`gateway closed during connect (\${code}): \${reason}\`)),
+      onEvent,
+    });
+    const timer = setTimeout(() => finish(new Error("gateway connect timeout")), 10000);
+    timer.unref();
+    client.start();
+  });
+}
+
+function readMessageText(message) {
+  if (!message || !Array.isArray(message.content)) {
+    return "";
+  }
+  return message.content
+    .map((block) => (block && typeof block.text === "string" ? block.text : ""))
+    .filter(Boolean)
+    .join("\\n");
+}
+
+(async () => {
+  const runId = randomUUID();
+  const command = process.env.OPENCLAW_BRIDGE_COMMAND || "/clawnet_connect_bridge";
+  const sessionKey = process.env.OPENCLAW_SESSION_KEY || "main";
+  let resolver;
+  let rejecter;
+  const finalPromise = new Promise((resolve, reject) => {
+    resolver = resolve;
+    rejecter = reject;
+  });
+  const timeout = setTimeout(() => rejecter(new Error("timeout waiting for final chat event")), 25000);
+  timeout.unref();
+
+  const client = await connect((event) => {
+    if (event?.event !== "chat") {
+      return;
+    }
+    const payload = event.payload || {};
+    if (payload.runId !== runId || payload.state !== "final") {
+      return;
+    }
+    clearTimeout(timeout);
+    resolver(payload);
+  });
+
+  try {
+    await client.request("chat.send", {
+      sessionKey,
+      message: command,
+      idempotencyKey: runId,
+    });
+    const finalPayload = await finalPromise;
+    process.stdout.write(
+      JSON.stringify({
+        runId,
+        command,
+        sessionKey,
+        text: readMessageText(finalPayload.message),
+      }),
+    );
+  } finally {
+    await client.stopAndWait();
+  }
+})().catch((error) => {
+  console.error(error instanceof Error ? error.stack : String(error));
+  process.exit(1);
+});
+`.trim();
 }
 
 function parseBridgeOutput(stdout) {
