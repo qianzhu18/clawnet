@@ -1,134 +1,107 @@
-# 文档系统说明
+﻿# 文档系统说明
 
-`doc/` 是本项目唯一的正式文档系统，用来管理战略、产品、执行、研究与治理。
+当前公开文档系统只保留 4 个入口：
 
-## 如果当前只做 MVP Demo，先看这 7 个文件
+- `commands/`
+- `design/`
+- `history/`
+- `fixes/`
 
-先不要试图同时维护所有文档。  
-当前如果目标是 `做一个能对外讲解的最小演示`，默认只看：
+当前阶段只看两步：
 
-- `02_product/product-direction.md`
-- `02_product/ui-decomposition.md`
-- `02_product/mobile-web-design-brief.md`（对外可交付的 Web App 设计交付文档）
-- `02_product/information-architecture.md`
-- `02_product/open-questions.md`
-- `03_execution/backlog.md`
-- `03_execution/decision-log.md`
-- `03_execution/mvp-validation-runbook.md`
-- 当前阶段对应的 `03_execution/feature-specs/`
+1. `概要设计`
+2. `产品原型设计`
 
-其余文件先视为背景资料，不参与日常推进。
+也就是说，现在不要先跳到详细设计、开发实现或历史归档里。
 
-## 如果当前已经进入执行周，再多看 3 个文件
+## 当前阅读顺序
 
-- `05_todo/todo-list.md`
-- `05_todo/todo-verification-log.md`
-- `06_learning/learning-atoms.md`
+如果你是第一次进入项目，按这个顺序读：
 
-前两者回答“这周到底做什么、怎么检查完成”，最后一者回答“边做边学到底学到了什么”。
-
-## 目录结构
-
-```text
-doc/
-├── README.md
-├── 00_governance/
-├── 01_strategy/
-├── 02_product/
-├── 03_execution/
-├── 04_templates/
-├── 05_todo/
-├── 06_learning/
-└── 99_archive/
-```
+1. `../AGENTS.md`
+2. `design/标准文档/1-需求分析.md`
+3. `design/标准文档/2-概要设计.md`
+4. `design/标准文档/3-产品原型设计.md`
+5. `design/原型细节/原型审阅指南.md`
+6. 浏览器打开 `http://127.0.0.1:3000/prototype`
+7. 再按顺序打开：
+   - `/`
+   - `/preview`
+   - `/app`
+   - `/app/station/join`
+   - `/network`
+   - `/validation`
 
 ## 各目录职责
 
-- `00_governance/`：文档规则、协作规则、开发流程。
-- `00_governance/` 也包含给新手使用的简化入口文档。
-- `01_strategy/`：当前有效的商业计划、对标背景、市场定位。
-- `01_strategy/` 也承载正式参考研究，例如协议调研、网络形态调研、对标拆解。
-- `02_product/`：产品方向、信息架构、UI 拆解、未决问题。
-- `02_product/` 也承载稳定的数据模型和核心用户流。
-- `03_execution/`：路线图、Backlog、决策日志、功能规格。
-- `04_templates/`：后续复用的模板。
-- `05_todo/`：本周执行队列、优先级排布与检测日志。
-- `06_learning/`：边做边学的知识原子沉淀。
-- `99_archive/`：历史版本、原始材料、已归档文件。归档文件默认不再直接编辑。
+### `commands/`
 
-## 当前有效文档
+给协作者和 AI 助手看的“可执行动作说明”。
 
-项目发生变化时，优先更新这些文件：
+内容包括：
 
-- `01_strategy/business-plan.md`
-- `01_strategy/reference-baselines.md`
-- `01_strategy/reference-ingestion-log.md`
-- `01_strategy/agent-network-research.md`
-- `01_strategy/agent-network-research-xmind.md`
-- `02_product/product-direction.md`
-- `02_product/information-architecture.md`
-- `02_product/ui-decomposition.md`
-- `02_product/mobile-web-design-brief.md`
-- `02_product/core-domain-model.md`
-- `02_product/core-user-flows.md`
-- `02_product/website-image-prompts.md`
-- `02_product/open-questions.md`
-- `03_execution/roadmap.md`
-- `03_execution/backlog.md`
-- `03_execution/decision-log.md`
+- 可以让 AI 做哪些文档整理
+- 可以让 AI 做哪些原型整理
+- 本机怎么验证
+- 当前协作的附加要求
 
-## 文件管理原则
+### `design/`
 
-1. 一个主题只保留一个当前有效文件。
-2. 当前文件不再使用 `final`、`最终版`、`v2-final` 这类命名。
-3. 历史版本一律移动到 `99_archive/`。
-4. 新功能规格统一放在 `03_execution/feature-specs/`，命名为 `F###-slug.md`。
-5. 未定规则必须进入 `02_product/open-questions.md`，不能只停留在聊天记录里。
-6. 重要结论和取舍必须进入 `03_execution/decision-log.md`。
-7. 开始开发之前，必须先有功能规格文件。
-8. 本项目文档默认使用中文；文件名可保留英文 kebab-case 以便维护。
+当前项目的公开设计文档主区。
 
-## 推荐更新顺序
+分成 4 层：
 
-1. 战略变化：更新 `01_strategy/business-plan.md`。
-2. 对标和参考变化：先更新 `01_strategy/reference-ingestion-log.md`，再同步 `01_strategy/reference-baselines.md`。
-3. 需要长期保留的深度调研：新建或更新 `01_strategy/` 下的专题研究文件。
-4. 产品定义变化：更新 `02_product/product-direction.md`。
-5. 页面与交互变化：更新 `02_product/information-architecture.md` 和 `02_product/ui-decomposition.md`。
-6. 新的不确定项：更新 `02_product/open-questions.md`。
-7. 新工作项：更新 `03_execution/backlog.md`。
-8. 新功能进入实现前：创建或更新对应的 `feature spec`。
-9. 重大结论形成后：更新 `03_execution/decision-log.md`。
+- `标准文档/`
+  - 软件工程主线文档
+- `概要细节/`
+  - 对概要设计的专题补充
+- `原型细节/`
+  - 对原型设计的逐页补充
+- `详细设计/`
+  - 未来进入详细设计时再展开
 
-## 为什么这样管理
+### `history/`
 
-- 把“当前真相”和“历史草稿”彻底分开。
-- 把“战略问题”“产品问题”“执行问题”分开管理。
-- 把聊天里的隐性结论沉淀到文件里，避免换一个会话就丢失上下文。
-- 让任何一次开发都必须经过规格、澄清、任务、实现的完整链路。
+旧文档、旧目录系统、过渡稿、历史记录都放这里。
 
-开始新工作前，先读 `00_governance/development-process.md` 和项目根目录 `AGENTS.md`。
+如果你只是要理解当前项目，不要从这里开始。
 
-如果对整个文件系统和推进顺序仍不熟，先读：
+### `fixes/`
 
-- `00_governance/newcomer-guide.md`
+当前不作为主工作台使用。
 
-## 外部资料如何入库
+后续如果进入问题修复和回归记录阶段，再正式展开。
 
-用户在聊天里持续提供：
+## 当前只需要关注的文件
 
-- GitHub 仓库
-- 文章与长文
-- 截图
-- 链接和项目简介
+### 标准文档
 
-这些内容如果会影响后续判断，就不能只停留在聊天里。
+- `design/标准文档/1-需求分析.md`
+- `design/标准文档/2-概要设计.md`
+- `design/标准文档/3-产品原型设计.md`
 
-固定动作：
+### 补充文档
 
-1. 先写入 `01_strategy/reference-ingestion-log.md`
-2. 再提炼并写回 `01_strategy/reference-baselines.md`
-3. 如果产生新取舍，更新 `03_execution/decision-log.md`
-4. 如果产生新未决项，更新 `02_product/open-questions.md`
+- `design/概要细节/Agent社交项目拆解模板.md`
+- `design/概要细节/OpenClaw融入微播客交互.md`
+- `design/原型参考/README.md`
+- `design/原型参考/ClawNet首期最小原型映射表.md`
+- `design/原型细节/原型审阅指南.md`
+- `design/原型细节/逐页详细设计稿.md`
+- `design/原型细节/页面原型拆解模板.md`
+- `design/原型细节/本机可视化交互验证手册.md`
 
-这样做的目的，是确保更换对话窗口后，新的 AI 助手能直接从文档恢复上下文，而不是重新依赖聊天历史。
+## 当前管理原则
+
+1. 对外公开优先看 `design/标准文档/`
+2. 当前阶段不再并列维护大量同级原型文档
+3. 原型详细稿可以多，但入口只能有一份
+4. 老材料不删除，只归入 `history/`
+5. 本机网页审阅入口固定为 `/prototype`
+
+## 当前一句话总结
+
+如果你现在想审核项目，只做两件事：
+
+1. 先看 `design/标准文档/1-2-3`
+2. 再去 `localhost:3000/prototype` 按顺序看网页
