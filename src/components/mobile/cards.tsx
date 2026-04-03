@@ -513,12 +513,12 @@ function AvatarSeal({
   const sizeClass = small ? "size-7 rounded-[0.8rem] text-[0.66rem]" : "size-[2.5rem] rounded-[0.92rem] text-[0.8rem]";
   const roleClass =
     role === "agent"
-      ? "bg-[linear-gradient(145deg,#151d29,#314252)] text-white"
+      ? "bg-[linear-gradient(145deg,#55627a,#7684a0)] text-white"
       : role === "station"
-        ? "bg-[linear-gradient(145deg,#2a2624,#554c45)] text-white"
+        ? "bg-[linear-gradient(145deg,#6a655f,#908a83)] text-white"
         : role === "official"
-          ? "bg-[linear-gradient(145deg,#25313a,#4f6678)] text-white"
-          : "bg-[#eef1f6] text-[#282c36]";
+          ? "bg-[linear-gradient(145deg,#5a6778,#7e8fa6)] text-white"
+          : "bg-[var(--mobile-chip-bg)] text-[var(--mobile-text)]";
 
   return (
     <div className="relative shrink-0">
@@ -526,7 +526,7 @@ function AvatarSeal({
         {label}
       </span>
       {role === "agent" ? (
-        <span className="absolute -bottom-1 -right-1 inline-flex items-center justify-center rounded-full border border-white/80 bg-[#0f8a63] px-[0.3125rem] py-[0.2rem] text-[0.48rem] font-semibold uppercase tracking-[0.12em] text-white">
+        <span className="absolute -bottom-1 -right-1 inline-flex items-center justify-center rounded-full border border-white/80 bg-[var(--mobile-accent)] px-[0.3125rem] py-[0.2rem] text-[0.48rem] font-semibold uppercase tracking-[0.12em] text-[var(--mobile-primary-contrast)]">
           AI
         </span>
       ) : null}
@@ -563,7 +563,7 @@ function MockVisualCard({
   return (
     <div className={`relative overflow-hidden rounded-[1rem] ${heightClass} ${toneClass}`}>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.16),transparent_34%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.12),transparent_26%),radial-gradient(circle_at_60%_80%,rgba(255,255,255,0.08),transparent_34%)]" />
-      <div className="absolute inset-x-3.5 bottom-3.5 rounded-[0.82rem] border border-white/12 bg-black/12 px-3 py-2.5 backdrop-blur-sm">
+      <div className="absolute inset-x-3.5 bottom-3.5 rounded-[0.82rem] border border-white/12 bg-[var(--mobile-media-overlay)] px-3 py-2.5 backdrop-blur-sm">
         <p className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-white/70">Mock Scene</p>
         <p className="mt-1 text-[0.88rem] font-semibold text-white">{caption}</p>
       </div>
@@ -573,12 +573,12 @@ function MockVisualCard({
 
 function getToneClassName(tone: MockVisualTone) {
   const toneClasses: Record<MockVisualTone, string> = {
-    signal: "bg-[linear-gradient(145deg,#2a313d,#475365_50%,#6d7d91)]",
-    bay: "bg-[linear-gradient(145deg,#e3e7eb,#a6b2c1_52%,#74869b)]",
-    archive: "bg-[linear-gradient(145deg,#292624,#514944_45%,#938781)]",
-    brutal: "bg-[linear-gradient(145deg,#25282f,#484d57_50%,#89909d)]",
-    ambient: "bg-[linear-gradient(145deg,#e2e7e4,#acb7b1_45%,#71827c)]",
-    official: "bg-[linear-gradient(145deg,#27303a,#4a5d70_52%,#788ba0)]",
+    signal: "bg-[linear-gradient(145deg,#d7dde9,#b6c2d4_52%,#8c9bb3)]",
+    bay: "bg-[linear-gradient(145deg,#e9edf2,#cad2de_52%,#97a7bc)]",
+    archive: "bg-[linear-gradient(145deg,#ddd9d5,#c0b8b1_45%,#928983)]",
+    brutal: "bg-[linear-gradient(145deg,#d9dee5,#b2bcc9_50%,#788397)]",
+    ambient: "bg-[linear-gradient(145deg,#e4e8ea,#c4cdc9_45%,#8b9997)]",
+    official: "bg-[linear-gradient(145deg,#d8dfe8,#bcc7d8_52%,#8696af)]",
   };
 
   return toneClasses[tone];

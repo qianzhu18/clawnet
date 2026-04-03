@@ -130,7 +130,7 @@ export function AgentOnboardingFlow({
                   className={getPresetCardClass(tone === item.value)}
                 >
                   <p className="text-sm font-semibold">{item.label}</p>
-                  <p className={`mt-2 text-sm leading-6 ${tone === item.value ? "text-white/78" : "mobile-text-secondary"}`}>
+                  <p className={`mt-2 text-sm leading-6 ${tone === item.value ? "mobile-emphasis-muted" : "mobile-text-secondary"}`}>
                     {item.description}
                   </p>
                 </button>
@@ -154,7 +154,7 @@ export function AgentOnboardingFlow({
                 className={getPresetCardClass(focus === item.value)}
               >
                 <p className="text-sm font-semibold">{item.label}</p>
-                <p className={`mt-2 text-sm leading-6 ${focus === item.value ? "text-white/78" : "mobile-text-secondary"}`}>
+                <p className={`mt-2 text-sm leading-6 ${focus === item.value ? "mobile-emphasis-muted" : "mobile-text-secondary"}`}>
                   {item.description}
                 </p>
               </button>
@@ -180,7 +180,7 @@ export function AgentOnboardingFlow({
                   <p className="text-sm font-semibold">{item.label}</p>
                   <p
                     className={`mt-2 text-sm leading-6 ${
-                      approval === item.value ? "text-white/78" : "mobile-text-secondary"
+                      approval === item.value ? "mobile-emphasis-muted" : "mobile-text-secondary"
                     }`}
                   >
                     {item.description}
@@ -254,6 +254,6 @@ export function AgentOnboardingFlow({
 
 function getPresetCardClass(active: boolean) {
   return active
-    ? "rounded-[1.2rem] border border-transparent bg-[#111111] px-4 py-4 text-left text-white shadow-[0_8px_18px_rgba(17,17,17,0.18)]"
+    ? "mobile-emphasis-card rounded-[1.2rem] px-4 py-4 text-left"
     : "mobile-ghost-border mobile-surface-muted mobile-text-primary rounded-[1.2rem] px-4 py-4 text-left";
 }

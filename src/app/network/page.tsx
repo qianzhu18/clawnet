@@ -43,12 +43,12 @@ export default async function NetworkPage({
       pairingPayload={payload}
       statusLabel={stationState ? "已连接" : "网络中"}
     >
-      <section className="rounded-[1.5rem] bg-[#171717] px-5 py-5 text-white shadow-[0_18px_40px_rgba(12,14,18,0.22)]">
+      <section className="mobile-emphasis-card rounded-[1.5rem] px-5 py-5">
         <div className="flex flex-wrap gap-2">
           <Pill>{stationState ? `joined ${stationState.stationName}` : "public mode"}</Pill>
         </div>
-        <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.07em] text-white">Network Layer</h2>
-        <p className="mt-3 text-[0.88rem] leading-6 text-white/72">
+        <h2 className="mobile-emphasis-text mt-3 text-[2rem] font-semibold tracking-[-0.07em]">Network Layer</h2>
+        <p className="mobile-emphasis-muted mt-3 text-[0.88rem] leading-6">
           {connectedAgent
             ? `${connectedAgent.name} 已接入这张网络，你现在看到的是它会穿过的中心站、社区基站和后续节点。`
             : "你正在看当前加入动作落到哪一层。先把结构看懂，再继续把 Agent 接进来。"}
@@ -61,13 +61,13 @@ export default async function NetworkPage({
             <div
               key={node.id}
               className={`rounded-[1rem] border px-4 py-3 ${
-                index === 1 ? "border-transparent bg-[#111111] text-white" : "mobile-surface-muted border-[var(--mobile-border)]"
+                index === 1 ? "mobile-emphasis-card border-transparent" : "mobile-surface-muted border-[var(--mobile-border)]"
               }`}
             >
-              <p className={`text-[0.58rem] font-semibold uppercase tracking-[0.18em] ${index === 1 ? "text-white/70" : "mobile-text-muted"}`}>
+              <p className={`text-[0.58rem] font-semibold uppercase tracking-[0.18em] ${index === 1 ? "mobile-emphasis-muted" : "mobile-text-muted"}`}>
                 {node.type}
               </p>
-              <p className={`mt-2 text-[0.92rem] font-semibold ${index === 1 ? "text-white" : "mobile-text-primary"}`}>
+              <p className={`mt-2 text-[0.92rem] font-semibold ${index === 1 ? "mobile-emphasis-text" : "mobile-text-primary"}`}>
                 {node.name}
               </p>
             </div>
@@ -228,7 +228,7 @@ function getActionCopy(stationState: StationActionState | null) {
 
 function Pill({ children }: { children: string }) {
   return (
-    <span className="rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-white/82">
+    <span className="mobile-emphasis-pill rounded-full px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em]">
       {children}
     </span>
   );
@@ -264,11 +264,11 @@ function FeatureCard({
   return (
     <article
       className={`rounded-[1.1rem] px-4 py-4 ${
-        inverted ? "border border-transparent bg-[#111111] text-white" : "mobile-soft-card mobile-ghost-border"
+        inverted ? "mobile-emphasis-card" : "mobile-soft-card mobile-ghost-border"
       }`}
     >
-      <p className={`text-[0.86rem] font-semibold ${inverted ? "text-white" : "mobile-text-primary"}`}>{title}</p>
-      <p className={`mt-3 text-[0.82rem] leading-6 ${inverted ? "text-white/72" : "mobile-text-secondary"}`}>{body}</p>
+      <p className={`text-[0.86rem] font-semibold ${inverted ? "mobile-emphasis-text" : "mobile-text-primary"}`}>{title}</p>
+      <p className={`mt-3 text-[0.82rem] leading-6 ${inverted ? "mobile-emphasis-muted" : "mobile-text-secondary"}`}>{body}</p>
     </article>
   );
 }

@@ -636,7 +636,7 @@ export function JoinStationScreen({ payload, stations }: JoinStationScreenProps)
               className="mobile-ghost-border mobile-surface-muted mobile-text-primary mt-2 w-full rounded-[1rem] px-4 py-3 text-[0.9rem] outline-none"
             />
           </label>
-          {errorMessage ? <p className="mt-3 text-[0.82rem] font-medium text-[#d15a5a]">{errorMessage}</p> : null}
+          {errorMessage ? <p className="mt-3 text-[0.82rem] font-medium text-[var(--mobile-error)]">{errorMessage}</p> : null}
           <button
             type="button"
             onClick={verifyInvite}
@@ -705,7 +705,7 @@ export function ReportsScreen({ payload, reportEntries, focusEntry, sourcePost }
           <div className="space-y-5">
             {reportEmptyStates.map((item) => (
               <article key={item.id} className="mobile-soft-card mobile-ghost-border rounded-[1.35rem] px-4 py-8 text-center">
-                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-[rgba(0,0,0,0.03)] text-3xl text-[#c8c8cc]">
+                <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-[var(--mobile-accent-soft)] text-3xl text-[var(--mobile-icon-soft)]">
                   ◫
                 </div>
                 <h3 className="mobile-text-primary mt-4 text-[1.1rem] font-semibold tracking-[-0.04em]">{item.title}</h3>
@@ -1217,11 +1217,11 @@ function ToggleRow({
       <span className="mobile-text-primary text-[0.84rem] font-medium">{label}</span>
       <span
         className={`inline-flex h-6 w-11 items-center rounded-full px-1 transition-colors ${
-          checked ? "bg-[#111111]" : "bg-[rgba(0,0,0,0.12)]"
+          checked ? "bg-[var(--mobile-primary)]" : "bg-[var(--mobile-toggle-off)]"
         }`}
       >
         <span
-          className={`size-4 rounded-full bg-white transition-transform ${
+          className={`size-4 rounded-full bg-[var(--mobile-panel-strong)] transition-transform ${
             checked ? "translate-x-5" : "translate-x-0"
           }`}
         />

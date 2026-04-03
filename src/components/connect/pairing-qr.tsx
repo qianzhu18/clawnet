@@ -23,7 +23,7 @@ export async function PairingQr({ value, size = 180, label = "Pairing QR" }: Pai
       role="img"
       aria-label={label}
       data-qr-value={value}
-      className="overflow-hidden rounded-[1.5rem] bg-white p-4 shadow-[0_18px_40px_rgba(32,24,16,0.08)] [&_svg]:block [&_svg]:size-full"
+      className="mobile-ghost-border mobile-surface-strong overflow-hidden rounded-[1.5rem] p-4 shadow-[0_18px_40px_rgba(52,61,80,0.08)] [&_svg]:block [&_svg]:size-full"
       style={{ width: size, height: size }}
       dangerouslySetInnerHTML={{ __html: markup }}
     />

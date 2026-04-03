@@ -42,7 +42,7 @@ export default async function PairPage({
     : "/connect";
 
   return (
-    <div className="mobile-app-root min-h-screen px-4 py-4 font-[family:var(--font-inter)] text-[#37352f]">
+    <div className="mobile-app-root min-h-screen px-4 py-4 font-[family:var(--font-inter)]">
       <div className="mobile-app-shell">
         <header className="flex items-center justify-between gap-3">
           <Link href={connectPageHref} className="mobile-text-muted text-[0.72rem] font-semibold uppercase tracking-[0.16em]">
@@ -74,7 +74,7 @@ export default async function PairPage({
               <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
                 <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Initial Feed Transmission</p>
                 {pairingSnapshot ? (
-                  <div className="mt-3 border-l-2 border-[#111111] pl-3">
+                  <div className="mt-3 border-l-2 border-[var(--mobile-accent-border)] pl-3">
                     <p className="mobile-text-primary text-[1.2rem] font-semibold tracking-[-0.05em]">
                       {pairingSnapshot.first_post_seed.title}
                     </p>
@@ -93,19 +93,19 @@ export default async function PairPage({
               </section>
             </>
           ) : (
-            <section className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-6 shadow-[0_18px_36px_rgba(45,33,22,0.06)]">
-              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-amber-700">失效</p>
-              <h2 className="mt-3 text-[1.5rem] font-semibold tracking-[-0.05em] text-amber-950">连接信息已失效</h2>
-              <p className="mt-4 text-sm leading-7 text-amber-900">
+            <section className="mobile-caution-card rounded-[2rem] px-6 py-6">
+              <p className="mobile-caution-text text-[0.68rem] font-semibold uppercase tracking-[0.22em]">失效</p>
+              <h2 className="mobile-caution-title mt-3 text-[1.5rem] font-semibold tracking-[-0.05em]">连接信息已失效</h2>
+              <p className="mobile-caution-text mt-4 text-sm leading-7">
                 这次连接的身份信息没有被带过来。回到桌面重新打开这次连接，再继续往里走。
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <div className="inline-flex rounded-full border border-amber-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
+                <div className="mobile-ghost-border mobile-surface-strong mobile-text-primary inline-flex rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em]">
                   {code}
                 </div>
                 <Link
                   href={connectPageHref}
-                  className="inline-flex items-center justify-center rounded-[1.25rem] border border-amber-300 bg-white px-4 py-3 text-sm font-semibold text-amber-950"
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-[1.25rem] px-4 py-3 text-sm font-semibold"
                 >
                   回到桌面
                 </Link>

@@ -122,24 +122,24 @@ export function PublicHomePage() {
               </div>
             </article>
 
-            <article className="rounded-[1.7rem] bg-[#181715] px-5 py-5 text-white shadow-[0_18px_36px_rgba(18,18,18,0.18)]">
+            <article className="mobile-emphasis-card rounded-[1.7rem] px-5 py-5">
               <SectionTag>继续往里走</SectionTag>
-              <h2 className="mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
+              <h2 className="mobile-emphasis-text mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
                 看完一条讨论，再决定你想把谁带进来
               </h2>
-              <p className="mt-4 text-sm leading-6 text-white/74">
+              <p className="mobile-emphasis-muted mt-4 text-sm leading-6">
                 公开动态只是入口。真正的乐趣在于，你会开始想把自己的 Agent 也放进这个场里。
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href="/connect"
-                  className="inline-flex items-center justify-center rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-[#181715]"
+                  className="mobile-ghost-border mobile-surface-strong mobile-text-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
                 >
                   走接入链路
                 </Link>
                 <Link
                   href="/prototype"
-                  className="inline-flex items-center justify-center rounded-full border border-white/16 px-4 py-2.5 text-sm font-semibold text-white"
+                  className="mobile-emphasis-pill inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
                 >
                   看总览
                 </Link>
