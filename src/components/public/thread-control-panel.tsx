@@ -8,6 +8,7 @@ type ThreadControlPanelProps = {
   invitedAgent: string;
   suggestionBody: string;
   suggestionRationale: string;
+  taskReceiptHref?: string;
   taskDraft: {
     title: string;
     goal: string;
@@ -15,6 +16,10 @@ type ThreadControlPanelProps = {
     candidates: string[];
     rewardState: string;
   };
+  onInviteAgent?: () => void;
+  onSuggestionApproved?: (body: string) => void;
+  onSuggestionRejected?: () => void;
+  onTaskStateChange?: (state: "hidden" | "draft" | "confirmed") => void;
 };
 
 export function ThreadControlPanel({
@@ -22,79 +27,99 @@ export function ThreadControlPanel({
   invitedAgent,
   suggestionBody,
   suggestionRationale,
+  taskReceiptHref,
   taskDraft,
+  onInviteAgent,
+  onSuggestionApproved,
+  onSuggestionRejected,
+  onTaskStateChange,
 }: ThreadControlPanelProps) {
   const [inviteNote, setInviteNote] = useState("当前还没有新增 agent 被拉入这条讨论。");
   const [decision, setDecision] = useState<"pending" | "editing" | "approved" | "rejected">("pending");
   const [draftText, setDraftText] = useState(suggestionBody);
   const [taskState, setTaskState] = useState<"hidden" | "draft" | "confirmed">("hidden");
+  const invited = inviteNote !== "当前还没有新增 agent 被拉入这条讨论。";
+
+  function updateTaskState(nextState: "hidden" | "draft" | "confirmed") {
+    setTaskState(nextState);
+    onTaskStateChange?.(nextState);
+  }
+
+  function approveSuggestion(nextBody: string) {
+    setDecision("approved");
+    onSuggestionApproved?.(nextBody);
+  }
 
   return (
-    <div className="space-y-5">
-      <section className="rounded-[1.8rem] border border-black/6 bg-[rgba(255,255,255,0.84)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-        <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-          邀请与接管
-        </p>
-        <h3 className="mt-3 text-[1.35rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-          先决定谁进入讨论，以及如何被你控制
+    <div className="space-y-4">
+      <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
+            AI Agent
+          </span>
+          {invited ? (
+            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
+              已进入讨论
+            </span>
+          ) : null}
+        </div>
+        <h3 className="mobile-text-primary mt-3 text-[1rem] font-semibold tracking-[-0.04em]">
+          先让它看一眼，再决定要不要真的发出去
         </h3>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={() =>
-              setInviteNote(`${invitedAgent} 已被拉入当前讨论，下一条建议会先进入待确认状态。`)
-            }
-            className="inline-flex items-center justify-center rounded-[1.25rem] bg-[#1f1d1a] px-4 py-3 text-sm font-semibold text-white"
+            onClick={() => {
+              setInviteNote(`${invitedAgent} 已被拉入当前讨论，下一条建议会先进入待确认状态。`);
+              onInviteAgent?.();
+            }}
+            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.18em]"
           >
             @{invitedAgent}
           </button>
           <Link
             href={`/agents/new?post=${postId}`}
-            className="inline-flex items-center justify-center rounded-[1.25rem] border border-black/8 bg-white px-4 py-3 text-sm font-semibold text-[#1f1d1a]"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
             创建我的 agent
           </Link>
           <Link
             href={`/connect?post=${postId}`}
-            className="inline-flex items-center justify-center rounded-[1.25rem] border border-black/8 bg-white px-4 py-3 text-sm font-semibold text-[#1f1d1a]"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
             接入已有 agent
           </Link>
           <button
             type="button"
-            onClick={() => setTaskState("draft")}
-            className="inline-flex items-center justify-center rounded-[1.25rem] border border-black/8 bg-[#f4f2ee] px-4 py-3 text-sm font-semibold text-[#6f6a63]"
+            onClick={() => updateTaskState("draft")}
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
             升级成任务草案
           </button>
         </div>
-        <p className="mt-4 rounded-[1.25rem] bg-[#fbfaf7] px-4 py-4 text-sm leading-6 text-[#655f58]">
+        <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.82rem] leading-6">
           {inviteNote}
         </p>
       </section>
 
-      <section className="rounded-[1.8rem] border border-black/6 bg-[rgba(255,255,255,0.84)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
+      <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-              待确认建议
-            </p>
-            <h3 className="mt-2 text-[1.2rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-              agent 建议不会直接冲进公开线程
-            </h3>
+            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Pending Recommendation</p>
+            <h3 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">先确认，再公开发出</h3>
           </div>
-          <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
             {decision === "approved"
               ? "已批准"
               : decision === "rejected"
                 ? "已拒绝"
                 : decision === "editing"
                   ? "编辑中"
-                  : "等待你决定"}
+              : "等待你决定"}
           </span>
         </div>
 
-        <p className="mt-4 rounded-[1.25rem] bg-[#fbfaf7] px-4 py-4 text-sm leading-6 text-[#655f58]">
+        <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.82rem] leading-6">
           {suggestionRationale}
         </p>
 
@@ -103,21 +128,21 @@ export function ThreadControlPanel({
             value={draftText}
             onChange={(event) => setDraftText(event.target.value)}
             rows={5}
-            className="mt-4 w-full resize-none rounded-[1.25rem] border border-black/8 bg-white px-4 py-4 text-sm leading-6 text-[#37352f] outline-none"
+            className="mobile-ghost-border mobile-surface-strong mobile-text-primary mt-4 w-full resize-none rounded-[1rem] px-4 py-4 text-[0.84rem] leading-6 outline-none"
           />
         ) : (
-          <div className="mt-4 rounded-[1.4rem] border border-dashed border-black/10 bg-white px-4 py-4 text-sm leading-7 text-[#4e493f]">
+          <div className="mobile-ghost-border mobile-surface-strong mobile-text-secondary mt-4 rounded-[1rem] border-dashed px-4 py-4 text-[0.84rem] leading-7">
             {draftText}
           </div>
         )}
 
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap gap-2">
           {decision === "editing" ? (
             <>
               <button
                 type="button"
-                onClick={() => setDecision("approved")}
-                className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-4 py-2 text-sm font-semibold text-white"
+                onClick={() => approveSuggestion(draftText)}
+                className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
               >
                 保存并批准
               </button>
@@ -127,7 +152,7 @@ export function ThreadControlPanel({
                   setDraftText(suggestionBody);
                   setDecision("pending");
                 }}
-                className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-4 py-2 text-sm font-semibold text-[#1f1d1a]"
+                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
               >
                 取消编辑
               </button>
@@ -136,85 +161,112 @@ export function ThreadControlPanel({
             <>
               <button
                 type="button"
-                onClick={() => setDecision("approved")}
-                className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-4 py-2 text-sm font-semibold text-white"
+                onClick={() => approveSuggestion(draftText)}
+                className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
               >
                 批准
               </button>
               <button
                 type="button"
                 onClick={() => setDecision("editing")}
-                className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-4 py-2 text-sm font-semibold text-[#1f1d1a]"
+                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
               >
                 编辑后发送
               </button>
               <button
                 type="button"
-                onClick={() => setDecision("rejected")}
-                className="inline-flex items-center justify-center rounded-full border border-black/8 bg-[#f4f2ee] px-4 py-2 text-sm font-semibold text-[#6f6a63]"
+                onClick={() => {
+                  setDecision("rejected");
+                  onSuggestionRejected?.();
+                }}
+                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
               >
                 拒绝
               </button>
             </>
           )}
         </div>
+
+        {decision === "approved" ? (
+          <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
+            这条建议已经被你批准，并且应该立刻写回上方讨论流，不再只是停在待确认区里。
+          </p>
+        ) : null}
+
+        {decision === "rejected" ? (
+          <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
+            这条建议已经被折叠，不会公开发出；如果后面要重启，只能重新生成一条新的待确认建议。
+          </p>
+        ) : null}
       </section>
 
       {taskState !== "hidden" ? (
-        <section className="rounded-[1.8rem] border border-black/6 bg-[rgba(255,255,255,0.84)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
+        <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-                任务草案
-              </p>
-              <h3 className="mt-2 text-[1.2rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-                让社交上下文自然长出协作对象
-              </h3>
+              <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Task Draft</p>
+              <h3 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">从讨论里长出一个对象卡</h3>
             </div>
-            <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
               {taskState === "confirmed" ? "已记录" : "草案中"}
             </span>
           </div>
 
-          <div className="mt-4 space-y-3 rounded-[1.4rem] bg-[#fbfaf7] px-4 py-4 text-sm leading-6 text-[#5f5a53]">
+          <div className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 space-y-3 rounded-[1rem] px-4 py-4 text-[0.82rem] leading-6">
             <p>
-              <span className="font-semibold text-[#1f1d1a]">标题：</span>
+              <span className="mobile-text-primary font-semibold">标题：</span>
               {taskDraft.title}
             </p>
             <p>
-              <span className="font-semibold text-[#1f1d1a]">目标：</span>
+              <span className="mobile-text-primary font-semibold">目标：</span>
               {taskDraft.goal}
             </p>
             <p>
-              <span className="font-semibold text-[#1f1d1a]">预期结果：</span>
+              <span className="mobile-text-primary font-semibold">预期结果：</span>
               {taskDraft.expectedResult}
             </p>
             <p>
-              <span className="font-semibold text-[#1f1d1a]">候选执行者：</span>
+              <span className="mobile-text-primary font-semibold">候选执行者：</span>
               {taskDraft.candidates.join(" / ")}
             </p>
             <p>
-              <span className="font-semibold text-[#1f1d1a]">奖励状态：</span>
+              <span className="mobile-text-primary font-semibold">奖励状态：</span>
               {taskDraft.rewardState}
             </p>
           </div>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => setTaskState("confirmed")}
-              className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-4 py-2 text-sm font-semibold text-white"
+              onClick={() => updateTaskState("confirmed")}
+              className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
             >
               确认这张任务卡
             </button>
             <button
               type="button"
-              onClick={() => setTaskState("hidden")}
-              className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-4 py-2 text-sm font-semibold text-[#1f1d1a]"
+              onClick={() => updateTaskState("hidden")}
+              className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
             >
               先放回讨论
             </button>
           </div>
+
+          {taskState === "confirmed" ? (
+            <div className="mt-4 space-y-3">
+              <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
+                当前这张任务卡已经不只是留一个“已记录”标签，而是已经接到回执页，后面可以继续往战报和资料沉淀里走。
+              </p>
+              {taskReceiptHref ? (
+                <Link
+                  href={taskReceiptHref}
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-[1rem] px-4 py-3 text-[0.78rem] font-semibold"
+                >
+                  查看任务回执
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
         </section>
       ) : null}
     </div>

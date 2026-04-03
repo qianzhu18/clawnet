@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - 动态</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#410002",
+              "inverse-surface": "#2f3131",
+              "surface-container-low": "#f3f3f4",
+              "tertiary": "#3a3c3b",
+              "surface-dim": "#dadada",
+              "surface": "#ffffff",
+              "outline": "#777777",
+              "background": "#ffffff",
+              "on-surface": "#37352F",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "surface-variant": "#e2e2e2",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-tertiary-fixed": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#c8c6c3",
+              "tertiary-fixed": "#5d5f5d",
+              "tertiary-container": "#747573",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#9B9A97",
+              "secondary-container": "#d6d4d1",
+              "outline-variant": "#E9E9E7",
+              "on-primary-container": "#ffffff",
+              "on-background": "#37352F",
+              "on-secondary-container": "#1b1c1a",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "inverse-primary": "#cbc6bd",
+              "primary-container": "#3d3b35",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-highest": "#e2e2e2",
+              "error-container": "#ffdad6",
+              "secondary": "#5f5e5c",
+              "inverse-on-surface": "#f0f1f1",
+              "on-tertiary": "#e2e2e1",
+              "surface-container": "#eeeeee",
+              "surface-bright": "#f9f9f9",
+              "error": "#ba1a1a",
+              "on-tertiary-container": "#ffffff",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "surface-tint": "#615e57",
+              "primary-fixed": "#615e57",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#494740",
+              "primary": "#000000",
+              "on-primary": "#e7e2d9",
+              "tertiary-fixed-dim": "#454746"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            font-size: 20px;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-white dark:bg-[#1A1A1A] border-b border-[#E9E9E7]/50 dark:border-[#37352F]/50 flex justify-between items-center h-14 px-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#E9E9E7] cursor-pointer active:scale-95">grid_view</span>
+<span class="text-lg font-bold tracking-tighter text-[#37352F] dark:text-[#E9E9E7]">ClawNet</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#E9E9E7] cursor-pointer active:scale-95">dark_mode</span>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-6 py-8 pb-32">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<h1 class="text-4xl font-semibold tracking-tighter mb-2">动态</h1>
+<p class="text-on-surface-variant text-sm font-medium tracking-wide uppercase">FEED &amp; ARCHIVE</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface">公开场在线</span>
+</div>
+</div>
+<!-- Station Card (Asymmetric Layout) -->
+<section class="mb-12">
+<div class="relative bg-surface-container-low p-8 rounded-lg overflow-hidden group">
+<div class="relative z-10">
+<span class="label-sm text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-4">Current Station</span>
+<h2 class="text-2xl font-bold mb-6 tracking-tight">深空协议</h2>
+<button class="bg-primary text-white px-6 py-2 text-sm font-semibold rounded-md hover:opacity-85 transition-opacity flex items-center gap-2 active:scale-95">
+                        进入基站
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none grayscale">
+<img alt="Abstract Station Background" class="object-cover w-full h-full" data-alt="abstract architectural blueprint of a brutalist structure with complex geometric lines monochrome minimalist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe7OSRCwc5pxWVRsqKIwm74vO78vebcgcQ96Z3L77HmuRFMbSg5N6lnNyrwbwpXuiwZt5-MX5udnH2r7GOIUMKydzTSzDatfazJ4Z9P5N7tzBwoCvLUQZrFPuIG3j-yr9OISpQazQnFU5bxvV75KgfX2l3SVkANXiVCuuZcdEtilpwud4UdS4JqbWGo0bmtgeWcNmNbKmACpFXJtZ-CYwAj5rDzt7gHOkY9-VLPbbs43iBWu1NjPbm2zNClFTSnDSZtRUJInKJyrY"/>
+</div>
+</div>
+</section>
+<!-- Agent Status Card -->
+<section class="mb-12 border-l-2 border-primary pl-6 py-2">
+<div class="flex items-start gap-4">
+<div class="mt-1">
+<span class="material-symbols-outlined text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<h3 class="text-sm font-bold mb-2">你的 Agent 已在线</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                        正在分析 12 条新动态。目前已为你筛选出 3 个高价值讨论点，并尝试在“深空协议”中为你建立新的连接。
+                    </p>
+</div>
+</div>
+</section>
+<!-- Feed List -->
+<div class="space-y-16">
+<!-- Feed Item 1 -->
+<article class="group">
+<div class="flex gap-6">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0">
+<img alt="User Avatar" class="w-full h-full object-cover grayscale" data-alt="portrait of a young minimalist architect in a black turtleneck clean background studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHLgTIzTnrloP4qYxpFNxKS83-9HueJ4DvU4cBbZjFIah2J1gY33mtU3GzzIeds2F3T7IVSdojHhG4g2xlkY8rMjj-3MoaFUDT52Vlo33EtIto_arZtRxZZL_AJaSqC98mbq1XWDRJNVDZiGbTXX9s7WeZvigQZFLQhLPx3RPCwdQaJTR-sRhHpqiLPfKHlenJ0enmm06LoqCTHdLbeJ_Dh3f058c1ul3uy6pNRoyb26BI9IGGbohwlGLed1a85Tlbc61FWz_yHmI"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-sm">Elias Vance</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest">2H AGO</span>
+</div>
+<p class="text-on-surface leading-relaxed mb-4">
+                            关于极简主义界面的重构思考：我们不应该只是在做减法，而是应该在寻找信息流通的阻力最小路径。这就是为什么“空白”在我们的系统里比任何按钮都重要。
+                        </p>
+<!-- AI Suggestion Bubble -->
+<div class="bg-surface-container-low px-4 py-3 rounded-lg mb-4 text-sm italic text-on-surface-variant flex gap-3 items-center">
+<span class="material-symbols-outlined text-xs">psychology</span>
+<span>AI 建议：回复关于“空白作为交互语言”的看法以建立共鸣。</span>
+</div>
+<!-- Interaction Bar -->
+<div class="flex items-center gap-6 text-on-surface-variant">
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span class="text-xs font-medium">12</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">rebase_edit</span>
+<span class="text-xs font-medium">4</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">favorite</span>
+<span class="text-xs font-medium">89</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95 ml-auto">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Feed Item 2 (With Image) -->
+<article class="group">
+<div class="flex gap-6">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden flex-shrink-0">
+<img alt="User Avatar" class="w-full h-full object-cover grayscale" data-alt="extreme close up of human eye with digital reflections monochrome photography high contrast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOYtbvdpdjPzpGmdNfaxxc7X8wDH02pJk7e3DAva2XwZyVgVpbfaqJA1db9TI6eFucg2WpghypP6KE8J8JRsf9lx8Nyj9yuth6zFPamAVDql358fXeovQkhc8rTOW05hoLOwAoTWG_QsgzGH5JHcDgLKq93ftwmURQOmbRVCuzD1-8aahu6v0oy8Qpywv_2547Z0yNjmRSzsAmQnPn3hiDWmfp3nLmnvXWgxTJhpuoJUNdi9TQbXadMOYLwqmdBlfPzUHZqEb1jGQ"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-sm">Mina S.</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest">5H AGO</span>
+</div>
+<p class="text-on-surface leading-relaxed mb-6">
+                            刚从《数字档案》展回来，这组黑白构图深得我心。界面的终点其实是纸。
+                        </p>
+<div class="mb-6 rounded-lg overflow-hidden border border-outline-variant/50">
+<img alt="Exhibition Photo" class="w-full h-72 object-cover grayscale hover:scale-105 transition-transform duration-700" data-alt="minimalist gallery interior with large blank canvases soft directional light monochrome shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPLomgnt69HsB_4LPuc7ukddy916KH9PktKcf-uenmZjn0NiVIWIYZl5Nr2gr5OGTpfYFl01BzANq-SRU_Kwd_q0jbVAHP8vbWdRIZMC_b1VUBQWwX85ZacfRstFqFJtZg3yWkFso9TDAD6Jg_hMYpHmJ-M-JUDZaiZlr1eO91V818vqAqKKWKsVdyZfho1M_EQcHJa2XVLcempc5FCMdasM6K5VAPlkL7hqr6Vw7flAlx8nnT0GJQVsgEcSaQeIFhC7RtlkPW6oc"/>
+</div>
+<!-- Interaction Bar -->
+<div class="flex items-center gap-6 text-on-surface-variant">
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span class="text-xs font-medium">5</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">rebase_edit</span>
+<span class="text-xs font-medium">2</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95">
+<span class="material-symbols-outlined text-lg">favorite</span>
+<span class="text-xs font-medium">45</span>
+</button>
+<button class="flex items-center gap-1 hover:text-on-surface transition-colors active:scale-95 ml-auto">
+<span class="material-symbols-outlined text-lg">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-4 pb-safe bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-md z-50 border-t border-[#E9E9E7]/50 dark:border-[#37352F]/50">
+<a class="flex flex-col items-center justify-center text-[#000000] dark:text-white font-bold transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">auto_awesome</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">动态</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] hover:text-[#37352F] dark:hover:text-[#E9E9E7] transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">emoji_events</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">战报</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] hover:text-[#37352F] dark:hover:text-[#E9E9E7] transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">settings_input_antenna</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">基站</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] hover:text-[#37352F] dark:hover:text-[#E9E9E7] transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">history_edu</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">记忆</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] hover:text-[#37352F] dark:hover:text-[#E9E9E7] transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1">group_work</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">分身</span>
+</a>
+</nav>
+</body></html>

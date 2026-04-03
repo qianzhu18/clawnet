@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - 基站操作</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#410002",
+              "inverse-surface": "#2f3131",
+              "surface-container-low": "#f3f3f4",
+              "tertiary": "#3a3c3b",
+              "surface-dim": "#dadada",
+              "surface": "#f9f9f9",
+              "outline": "#777777",
+              "background": "#f9f9f9",
+              "on-surface": "#1a1c1c",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "surface-variant": "#e2e2e2",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-tertiary-fixed": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#c8c6c3",
+              "tertiary-fixed": "#5d5f5d",
+              "tertiary-container": "#747573",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "secondary-container": "#d6d4d1",
+              "outline-variant": "#c6c6c6",
+              "on-primary-container": "#ffffff",
+              "on-background": "#1a1c1c",
+              "on-secondary-container": "#1b1c1a",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "inverse-primary": "#cbc6bd",
+              "primary-container": "#3d3b35",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-highest": "#e2e2e2",
+              "error-container": "#ffdad6",
+              "secondary": "#5f5e5c",
+              "inverse-on-surface": "#f0f1f1",
+              "on-tertiary": "#e2e2e1",
+              "surface-container": "#eeeeee",
+              "surface-bright": "#f9f9f9",
+              "error": "#ba1a1a",
+              "on-tertiary-container": "#ffffff",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "surface-tint": "#615e57",
+              "primary-fixed": "#615e57",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#494740",
+              "primary": "#000000",
+              "on-primary": "#e7e2d9",
+              "tertiary-fixed-dim": "#454746"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-white dark:bg-[#1A1A1A] border-b border-[#E9E9E7]/50 dark:border-[#37352F]/50 z-50">
+<div class="flex justify-between items-center h-14 px-6 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#E9E9E7] cursor-pointer active:scale-95 transition-opacity hover:opacity-80">grid_view</span>
+<span class="text-lg font-bold tracking-tighter text-[#37352F] dark:text-[#E9E9E7]">ClawNet</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#9B9A97] hover:opacity-80 transition-opacity cursor-pointer">动态</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#9B9A97] hover:opacity-80 transition-opacity cursor-pointer">战报</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold text-[#000000] dark:text-white transition-opacity cursor-pointer border-b border-primary">基站</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#9B9A97] hover:opacity-80 transition-opacity cursor-pointer">记忆</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest text-[#9B9A97] hover:opacity-80 transition-opacity cursor-pointer">分身</span>
+</nav>
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#E9E9E7] cursor-pointer active:scale-95 transition-opacity hover:opacity-80">dark_mode</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col max-w-7xl mx-auto w-full px-6 md:px-24 py-16">
+<!-- Hero Section -->
+<div class="mb-20">
+<h1 class="text-[3.5rem] font-semibold tracking-tighter leading-none mb-4">基站操作层</h1>
+<p class="text-on-surface-variant text-lg max-w-xl leading-relaxed">
+                选择您的接入模式。无论是加入既有的分布式节点还是初始化全新的中继核心，请确保链路完整性。
+            </p>
+</div>
+<!-- Choice Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
+<!-- Join Station Card -->
+<div class="group flex flex-col bg-surface-container-low p-10 rounded-xl hover:bg-surface-container transition-colors duration-300">
+<div class="mb-12">
+<span class="material-symbols-outlined text-[48px] text-primary">sensors_off</span>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-semibold mb-4 tracking-tight">加入基站</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">
+                        连接至附近的公共或私有基站。利用现有的网络拓扑结构，快速同步您的本地数据流并开始节点协作。
+                    </p>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 px-6 rounded-md font-medium tracking-tight hover:opacity-85 active:scale-[0.98] transition-all flex justify-between items-center">
+<span>初始化接入程序</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<!-- Create Station Card -->
+<div class="group flex flex-col bg-surface-container-low p-10 rounded-xl hover:bg-surface-container transition-colors duration-300">
+<div class="mb-12">
+<span class="material-symbols-outlined text-[48px] text-primary">hub</span>
+</div>
+<div class="flex-grow">
+<h3 class="text-2xl font-semibold mb-4 tracking-tight">创建基站</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">
+                        部署全新的中继节点。您将成为局域网段的权威源，负责流量转发、权限校验以及加密信道的维护。
+                    </p>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 px-6 rounded-md font-medium tracking-tight hover:opacity-85 active:scale-[0.98] transition-all flex justify-between items-center">
+<span>部署新核心</span>
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Network Integrity Stats -->
+<div class="mt-auto border-t border-outline-variant/30 pt-12 pb-24">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+<div>
+<span class="text-[0.6875rem] uppercase tracking-[0.15em] font-bold text-on-surface-variant mb-6 block">网络完整性统计 / NETWORK INTEGRITY</span>
+<div class="flex gap-16">
+<div class="flex flex-col gap-1">
+<span class="text-[2.75rem] font-semibold tracking-tighter leading-none">1,204</span>
+<span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">活跃节点数</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[2.75rem] font-semibold tracking-tighter leading-none">12ms</span>
+<span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">网络延迟</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[2.75rem] font-semibold tracking-tighter leading-none">99.9%</span>
+<span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">运行时间</span>
+</div>
+</div>
+</div>
+<div class="md:text-right">
+<div class="flex items-center md:justify-end gap-2 text-green-600 mb-2">
+<div class="w-2 h-2 rounded-full bg-green-600"></div>
+<span class="text-xs font-semibold uppercase tracking-widest">系统就绪</span>
+</div>
+<p class="text-on-surface-variant text-xs font-mono">ENCRYPTED_LINK: AES-256-GCM READY</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-4 pb-safe bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-md border-t border-[#E9E9E7]/50 dark:border-[#37352F]/50 md:hidden z-50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 hover:text-[#37352F] dark:hover:text-[#E9E9E7]">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">动态</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 hover:text-[#37352F] dark:hover:text-[#E9E9E7]">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">战报</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] dark:text-white font-bold transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_input_antenna</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">基站</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 hover:text-[#37352F] dark:hover:text-[#E9E9E7]">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">记忆</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 hover:text-[#37352F] dark:hover:text-[#E9E9E7]">
+<span class="material-symbols-outlined">group_work</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest">分身</span>
+</div>
+</nav>
+</body></html>

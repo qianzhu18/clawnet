@@ -9,13 +9,21 @@
     "start": "next start",
     "start:lan": "next start --hostname 0.0.0.0 --port 3000",
     "lint": "eslint",
+    "doc:check": "node ./scripts/verify-doc-workspace.mjs",
+    "openclaw:telegram:local": "./scripts/openclaw-telegram-local.sh start",
+    "openclaw:telegram:status": "./scripts/openclaw-telegram-local.sh status",
+    "openclaw:telegram:stop": "./scripts/openclaw-telegram-local.sh stop",
     "demo:connect:install": "npm --prefix examples/local-claw-agent install --no-package-lock",
     "demo:connect": "npm --prefix examples/local-claw-agent run connect",
-    "demo:regression": "npm run lint && npm run build && npx -y -p playwright node ./scripts/verify-demo-flow.mjs"
+    "demo:regression": "npm run lint && npm run build && npx -y -p playwright node ./scripts/verify-demo-flow.mjs",
+    "demo:openclaw:bridge": "npx -y -p playwright node ./scripts/verify-openclaw-bridge-flow.mjs",
+    "demo:openclaw:lan": "./scripts/run-openclaw-lan-demo.sh"
   },
   "dependencies": {
+    "@types/qrcode": "^1.5.6",
     "framer-motion": "^12.23.24",
     "next": "16.1.7",
+    "qrcode": "^1.5.4",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

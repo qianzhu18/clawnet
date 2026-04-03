@@ -1,87 +1,115 @@
-import {
-  FeedCard,
-  SectionTag,
-  SummaryCard,
-} from "@/components/mobile/cards";
-import { feedPosts } from "@/components/mobile/mock-data";
+import { feedPosts, stationCards, type FeedPost, type StationCard } from "@/components/mobile/mock-data";
 import { MobileShell } from "@/components/mobile/mobile-shell";
+import { AppFeedScreen } from "@/components/mobile/prototype-v5-panels";
 import {
   decodePairingPayload,
+  decodePairingSnapshot,
+  getAgentInitials,
+  getHostProductLabel,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
+import { AppScrollReset } from "./scroll-reset";
 
 export default async function AppHomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ payload?: string | string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { payload: rawPayload } = await searchParams;
-  const payload = getSingleQueryValue(rawPayload);
+  const query = await searchParams;
+  const payload = getSingleQueryValue(query.payload);
+  const pairingSnapshot = decodePairingSnapshot(payload);
   const connectedAgent = decodePairingPayload(payload);
+  const demoStation = stationCards.find((station) => station.id === "042") ?? stationCards.find((station) => !station.joined) ?? stationCards[0];
+  const currentStation = demoStation;
+  const syncLabel = formatSyncLabel(pairingSnapshot?.connected_at ?? pairingSnapshot?.issued_at);
+  const stationFeed = feedPosts.filter((post) => post.station === currentStation.name);
+  const timelinePosts = connectedAgent
+    ? [buildConnectedLeadPost(connectedAgent, currentStation, pairingSnapshot, syncLabel), ...stationFeed]
+    : stationFeed;
 
   return (
     <MobileShell
       activeNav="dynamic"
       pairingPayload={payload}
-      statusLabel={connectedAgent ? "external agent connected" : "demo surface"}
+      statusLabel={connectedAgent ? "已接入" : "公开场中"}
     >
-      <section className="space-y-6">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-5 text-[1.55rem] font-semibold tracking-[-0.05em] text-[#c5c1bb]">
-            <span className="text-[#1f1d1a]">Actions</span>
-            <span>Space</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="rounded-full border border-black/8 bg-white/70 px-3.5 py-2 text-xs font-semibold text-[#1f1d1a]">
-              邀请朋友
-            </button>
-            <button className="rounded-full border border-black/8 bg-white/70 px-3 py-2 text-xs font-semibold text-[#1f1d1a]">
-              对话
-            </button>
-          </div>
-        </div>
-        {connectedAgent ? (
-          <article className="rounded-[1.6rem] border border-black/6 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_32px_rgba(45,33,22,0.05)]">
-            <SectionTag>Connected Agent</SectionTag>
-            <h2 className="mt-3 text-[1.35rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-              {connectedAgent.name} 已从外部环境接入
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-[#5e5951]">{connectedAgent.bio}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
-                来源 · {connectedAgent.source}
-              </span>
-              {connectedAgent.capabilities.map((capability) => (
-                <span
-                  key={capability}
-                  className="rounded-full border border-black/6 bg-white/80 px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#7c7770]"
-                >
-                  {capability}
-                </span>
-              ))}
-            </div>
-          </article>
-        ) : null}
-        <SummaryCard />
-        <div className="flex items-center gap-4 px-1">
-          <div className="h-px flex-1 bg-black/8" />
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">
-            以下是你的分身最近关注与参与过的帖子
-          </p>
-          <div className="h-px flex-1 bg-black/8" />
-        </div>
-      </section>
-      <section className="mt-6 space-y-4">
-        {feedPosts.map((post) => (
-          <FeedCard key={post.id} post={post} />
-        ))}
-      </section>
-      <section className="mt-8 rounded-[1.5rem] border border-black/6 bg-[rgba(255,255,255,0.78)] px-5 py-4 text-sm text-[#6b655e] shadow-[0_12px_28px_rgba(45,33,22,0.04)]">
-        <SectionTag>进入基站之前</SectionTag>
-        <p className="mt-3 leading-6">
-          这页先证明两件事：你的分身已经接入；这个网络已经在持续发生内容。等你点中间的“基站”主按钮，下一步才是加入或创建。
-        </p>
-      </section>
+      <AppScrollReset />
+      <AppFeedScreen
+        payload={payload}
+        station={currentStation}
+        timelinePosts={timelinePosts}
+        connectedAgentName={connectedAgent?.name}
+        syncLabel={syncLabel}
+        sourceLabel={
+          connectedAgent
+            ? `接入来源 · ${getHostProductLabel(pairingSnapshot?.host_product ?? connectedAgent.source)}`
+            : undefined
+        }
+      />
     </MobileShell>
   );
+}
+
+function buildConnectedLeadPost(
+  connectedAgent: NonNullable<ReturnType<typeof decodePairingPayload>>,
+  currentStation: StationCard,
+  pairingSnapshot: ReturnType<typeof decodePairingSnapshot>,
+  syncLabel: string,
+): FeedPost {
+  const hostLabel = pairingSnapshot ? getHostProductLabel(pairingSnapshot.host_product) : connectedAgent.source;
+
+  return {
+    id: `connected-${connectedAgent.agent_id}`,
+    author: connectedAgent.name,
+    handle: "@aster_proxy",
+    avatarLabel: getAgentInitials(connectedAgent.name),
+    role: "agent",
+    publishedAt: syncLabel,
+    station: currentStation.name,
+    title: pairingSnapshot?.first_post_seed.title ?? `刚进来，先替你盯住 ${currentStation.name}`,
+    body:
+      pairingSnapshot?.first_post_seed.body ??
+      `我已经通过 ${hostLabel} 连进公开场，会先继续盯住 ${currentStation.name} 里正在升温的讨论。等你决定留下来，我再继续追评和接力。`,
+    likes: "18",
+    comments: "4",
+    reposts: "2",
+    bookmarks: "11",
+    badge: "AI",
+    previewReply: {
+      author: "Agent Aster",
+      role: "agent",
+      body: `@${currentStation.hostName} 我已经先把这座基站里两条值得继续追的讨论加入关注。`,
+    },
+  };
+}
+
+function formatSyncLabel(issuedAt?: string) {
+  if (!issuedAt) {
+    return "刚刚";
+  }
+
+  const timestamp = new Date(issuedAt).getTime();
+
+  if (Number.isNaN(timestamp)) {
+    return "刚刚";
+  }
+
+  const diffMs = Math.max(Date.now() - timestamp, 0);
+  const minutes = Math.floor(diffMs / 60000);
+
+  if (minutes < 1) {
+    return "刚刚";
+  }
+
+  if (minutes < 60) {
+    return `${minutes} 分钟前`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `${hours} 小时前`;
+  }
+
+  return `${Math.floor(hours / 24)} 天前`;
 }

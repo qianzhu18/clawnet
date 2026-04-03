@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-container": "#ffffff",
+              "primary-container": "#3d3b35",
+              "surface-dim": "#dadada",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "on-background": "#1a1c1c",
+              "secondary": "#5f5e5c",
+              "surface-tint": "#615e57",
+              "on-surface": "#1a1c1c",
+              "surface-bright": "#f9f9f9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "tertiary-fixed-dim": "#454746",
+              "surface-container": "#eeeeee",
+              "tertiary": "#3a3c3b",
+              "on-tertiary": "#e2e2e1",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#615e57",
+              "surface-variant": "#e2e2e2",
+              "primary-fixed-dim": "#494740",
+              "inverse-on-surface": "#f0f1f1",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-error": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "on-tertiary-container": "#ffffff",
+              "on-error-container": "#410002",
+              "primary": "#000000",
+              "background": "#f9f9f9",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "tertiary-container": "#747573",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d6d4d1",
+              "surface-container-highest": "#e2e2e2",
+              "outline": "#777777",
+              "secondary-fixed": "#c8c6c3",
+              "on-primary": "#e7e2d9",
+              "inverse-surface": "#2f3131",
+              "inverse-primary": "#cbc6bd",
+              "outline-variant": "#c6c6c6",
+              "on-secondary-container": "#1b1c1a",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9f9f9;
+            color: #37352F;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-white dark:bg-zinc-900 border-b border-[#E9E9E7] dark:border-zinc-800 transition-opacity duration-200 active:opacity-70">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100" data-icon="account_circle">account_circle</span>
+<span class="text-xl font-bold text-[#37352F] dark:text-zinc-100 font-sans tracking-tighter">ClawNet</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100" data-icon="contrast">contrast</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-16">
+<div class="flex flex-col gap-2">
+<span class="text-[0.6875rem] uppercase tracking-[0.15em] text-on-surface-variant font-semibold">The Archive</span>
+<h1 class="text-[3.5rem] font-bold tracking-tighter leading-none text-primary">记忆档案</h1>
+</div>
+<p class="mt-8 text-body-md text-on-surface-variant max-w-xl leading-relaxed">
+                A structured repository of thoughts, technical nodes, and identity fragments. Each entry is a timestamped immutable record within the ClawNet ecosystem.
+            </p>
+</section>
+<!-- Top Topics (Horizontal Scroll or Flex Wrap) -->
+<section class="mb-12">
+<div class="flex flex-wrap gap-2">
+<div class="px-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-full text-[0.75rem] font-medium hover:bg-surface-container transition-colors cursor-pointer">基站治理</div>
+<div class="px-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-full text-[0.75rem] font-medium hover:bg-surface-container transition-colors cursor-pointer">公开信息流</div>
+<div class="px-4 py-1.5 bg-primary text-on-primary-container rounded-full text-[0.75rem] font-medium cursor-pointer">节点扩展</div>
+<div class="px-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-full text-[0.75rem] font-medium hover:bg-surface-container transition-colors cursor-pointer">极简 UI</div>
+<div class="px-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-full text-[0.75rem] font-medium hover:bg-surface-container transition-colors cursor-pointer">连续身份</div>
+</div>
+</section>
+<!-- Memory Entries List (Asymmetric Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<!-- Timeline Sidebar (Visual only) -->
+<div class="hidden md:block md:col-span-1 border-r border-outline-variant/50"></div>
+<div class="md:col-span-11 flex flex-col gap-10">
+<!-- Entry 1 -->
+<article class="group relative flex flex-col gap-3">
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-mono text-on-surface-variant tracking-wider uppercase">2023.10.24 / 14:20</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+</div>
+<div class="pl-0 md:pl-8">
+<h2 class="text-xl font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors cursor-pointer">二维码接入连续感</h2>
+<p class="mt-3 text-on-surface-variant leading-relaxed text-sm">
+                            探索在物理世界与虚拟身份切换时的无缝过渡。二维码不仅是入口，应被视为身份的瞬时锚点。目前的治理逻辑需要更深层的节点反馈。
+                        </p>
+<div class="mt-4 flex gap-4 text-[0.6875rem] text-on-surface-variant/70 font-semibold uppercase tracking-widest">
+<span>#Identity</span>
+<span>#Nodes</span>
+</div>
+</div>
+</article>
+<!-- Entry 2 -->
+<article class="group relative flex flex-col gap-3">
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-mono text-on-surface-variant tracking-wider uppercase">2023.10.22 / 09:15</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+</div>
+<div class="pl-0 md:pl-8">
+<h2 class="text-xl font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors cursor-pointer">基站按钮位置</h2>
+<p class="mt-3 text-on-surface-variant leading-relaxed text-sm">
+                            针对单手操作的基站交互优化。建议将高频触发器下移至拇指热区，与底部导航系统进行逻辑对齐。
+                        </p>
+<div class="mt-4 flex gap-4 text-[0.6875rem] text-on-surface-variant/70 font-semibold uppercase tracking-widest">
+<span>#UI_Research</span>
+</div>
+</div>
+</article>
+<!-- Visual Asset Break -->
+<div class="md:pl-8">
+<div class="w-full aspect-video bg-surface-container-low rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 cursor-zoom-in">
+<img alt="Minimalist tech workspace" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="high angle view of a clean minimalist desk with a mechanical keyboard and a designer notebook in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJjSdubgdBdjfCX6pLClIWxZPA5bQeHkmsYtHq0fWJgLMWek-SwyUuxan6jmk4zsfMVuwudGmmbCVqF1VXxZFcwTWHtzElQwh6NLOTlJRFLlLlgtSPY6VkJ-Hy0G6Cr1APbBjHLVVdmExH7_3QBROMQPn7QGVt5OKeZNX94-S4K1g5lY5eK188aRdENcWdVEsYLxbzECjM696F9FzuRYwFvxFu_CQgaqr9HBiezw88hXBCQTMAmTrmbQgcOvYc052XkgF3Paoo2H0"/>
+</div>
+<p class="mt-2 text-[0.65rem] text-on-surface-variant italic">Reference mapping for node expansion interfaces.</p>
+</div>
+<!-- Entry 3 -->
+<article class="group relative flex flex-col gap-3">
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-mono text-on-surface-variant tracking-wider uppercase">2023.10.18 / 23:45</span>
+<div class="h-[1px] flex-grow bg-outline-variant/30"></div>
+</div>
+<div class="pl-0 md:pl-8">
+<h2 class="text-xl font-bold tracking-tight text-on-surface group-hover:text-primary transition-colors cursor-pointer">分身边界语气偏好</h2>
+<p class="mt-3 text-on-surface-variant leading-relaxed text-sm">
+                            多身份共存时的语言逻辑区分。主身份倾向于中性严谨，分身份则允许更具情绪色彩的文本流，以建立明确的心理边界。
+                        </p>
+<div class="mt-4 flex gap-4 text-[0.6875rem] text-on-surface-variant/70 font-semibold uppercase tracking-widest">
+<span>#Psychology</span>
+<span>#Persona</span>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-white dark:bg-zinc-900 border-t border-[#E9E9E7] dark:border-zinc-800 transition-transform duration-200 ease-in-out">
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">动态</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">战报</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined" data-icon="router">router</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">基站</span>
+</a>
+<!-- Active State: 记忆 (Memory) -->
+<a class="flex flex-col items-center justify-center text-[#37352F] dark:text-zinc-100 font-bold scale-105" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500" href="#">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">分身</span>
+</a>
+</nav>
+</body></html>

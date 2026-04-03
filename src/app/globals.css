@@ -6,6 +6,7 @@
   --font-space-grotesk: "Space Grotesk", "Avenir Next", "Helvetica Neue", sans-serif;
   --font-instrument-serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", serif;
   --font-inter: "Inter", "Avenir Next", "Segoe UI", sans-serif;
+  --font-mobile-ui: "SF Pro Text", "SF Pro Display", "PingFang SC", "Hiragino Sans GB", var(--font-inter), sans-serif;
   --muted: #98a8ba;
   --line: rgba(169, 201, 255, 0.1);
   --line-strong: rgba(169, 201, 255, 0.18);
@@ -87,11 +88,67 @@ body {
 }
 
 .mobile-app-root {
+  --mobile-bg: #f5f6f8;
+  --mobile-bg-secondary: #fdfdfe;
+  --mobile-glow-primary: rgba(206, 210, 220, 0.12);
+  --mobile-glow-secondary: rgba(255, 255, 255, 0.72);
+  --mobile-text: #232631;
+  --mobile-text-secondary: #596075;
+  --mobile-text-muted: #939ab0;
+  --mobile-panel: rgba(255, 255, 255, 0.96);
+  --mobile-panel-strong: rgba(255, 255, 255, 0.985);
+  --mobile-panel-muted: rgba(249, 249, 252, 0.985);
+  --mobile-border: rgba(35, 39, 51, 0.066);
+  --mobile-border-strong: rgba(35, 39, 51, 0.108);
+  --mobile-shadow: 0 10px 24px rgba(24, 28, 41, 0.055);
+  --mobile-shadow-soft: 0 4px 14px rgba(24, 28, 41, 0.032);
+  --mobile-chip-bg: rgba(248, 249, 252, 0.985);
+  --mobile-chip-text: #747b90;
+  --mobile-primary: #232632;
+  --mobile-primary-contrast: #fcfcff;
+  --mobile-accent: #707996;
+  --mobile-accent-soft: rgba(112, 121, 150, 0.1);
+  --mobile-accent-border: rgba(112, 121, 150, 0.14);
+  --mobile-success: #10b981;
+  --mobile-danger: rgba(241, 243, 248, 0.98);
   min-height: 100vh;
+  color-scheme: light;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.95), rgba(249, 248, 244, 0.98) 36%, #f6f3ed 100%);
-  color: #37352f;
-  font-family: var(--font-inter), sans-serif;
+    radial-gradient(circle at 50% -8%, var(--mobile-glow-primary), transparent 32%),
+    radial-gradient(circle at 18% 14%, var(--mobile-glow-secondary), transparent 22%),
+    linear-gradient(180deg, var(--mobile-bg-secondary) 0%, #f8f8fa 18%, var(--mobile-bg) 100%);
+  color: var(--mobile-text);
+  font-family: var(--font-mobile-ui), sans-serif;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.mobile-app-root[data-mobile-theme="dark"] {
+  --mobile-bg: #101522;
+  --mobile-bg-secondary: #141b2a;
+  --mobile-glow-primary: rgba(69, 76, 100, 0.16);
+  --mobile-glow-secondary: rgba(18, 24, 39, 0.4);
+  --mobile-text: #f5f6fa;
+  --mobile-text-secondary: #d4d9e8;
+  --mobile-text-muted: #9097ac;
+  --mobile-panel: rgba(16, 23, 36, 0.95);
+  --mobile-panel-strong: rgba(21, 29, 45, 0.985);
+  --mobile-panel-muted: rgba(18, 26, 40, 0.975);
+  --mobile-border: rgba(229, 232, 240, 0.068);
+  --mobile-border-strong: rgba(229, 232, 240, 0.108);
+  --mobile-shadow: 0 12px 30px rgba(3, 8, 16, 0.28);
+  --mobile-shadow-soft: 0 6px 18px rgba(3, 8, 16, 0.18);
+  --mobile-chip-bg: rgba(255, 255, 255, 0.042);
+  --mobile-chip-text: #c4cadc;
+  --mobile-primary: #f5f6fa;
+  --mobile-primary-contrast: #131926;
+  --mobile-accent: #aeb6cc;
+  --mobile-accent-soft: rgba(174, 182, 204, 0.11);
+  --mobile-accent-border: rgba(174, 182, 204, 0.14);
+  --mobile-success: #95dfc6;
+  --mobile-danger: rgba(28, 37, 57, 0.94);
+  color-scheme: dark;
 }
 
 .mobile-app-shell {
@@ -101,10 +158,112 @@ body {
 }
 
 .mobile-ghost-border {
-  border: 1px solid rgba(233, 233, 231, 0.72);
+  border: 1px solid var(--mobile-border);
 }
 
 .mobile-soft-card {
-  background: rgba(255, 255, 255, 0.88);
+  background: var(--mobile-panel);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--mobile-shadow-soft);
+}
+
+.mobile-shell-panel {
+  border: 1px solid var(--mobile-border);
+  background: var(--mobile-panel);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--mobile-shadow);
+}
+
+.mobile-surface-strong {
+  background: var(--mobile-panel-strong);
+}
+
+.mobile-surface-muted {
+  background: var(--mobile-panel-muted);
+}
+
+.mobile-text-primary {
+  color: var(--mobile-text);
+}
+
+.mobile-text-secondary {
+  color: var(--mobile-text-secondary);
+}
+
+.mobile-text-muted {
+  color: var(--mobile-text-muted);
+}
+
+.mobile-section-label {
+  color: var(--mobile-text-muted);
+}
+
+.mobile-chip {
+  border: 1px solid var(--mobile-border);
+  background: var(--mobile-chip-bg);
+  color: var(--mobile-chip-text);
+}
+
+.mobile-chip-accent {
+  border: 1px solid var(--mobile-accent-border);
+  background: var(--mobile-accent-soft);
+  color: var(--mobile-accent);
+}
+
+.mobile-button-primary {
+  border: 1px solid transparent;
+  background: var(--mobile-primary);
+  color: var(--mobile-primary-contrast);
+  box-shadow: 0 5px 12px rgba(24, 28, 41, 0.072);
+}
+
+.mobile-button-secondary {
+  border: 1px solid var(--mobile-border-strong);
+  background: var(--mobile-panel-strong);
+  color: var(--mobile-text);
+}
+
+.mobile-button-muted {
+  border: 1px solid var(--mobile-border);
+  background: var(--mobile-danger);
+  color: var(--mobile-text-muted);
+}
+
+.mobile-input-line {
+  border-bottom: 1px solid var(--mobile-border-strong);
+  color: var(--mobile-text);
+}
+
+.mobile-input-line::placeholder {
+  color: var(--mobile-text-muted);
+}
+
+.mobile-dock {
+  border: 1px solid var(--mobile-border);
+  background: color-mix(in srgb, var(--mobile-panel-strong) 96%, transparent);
+  box-shadow: var(--mobile-shadow);
   backdrop-filter: blur(18px);
+}
+
+.mobile-fab-shadow {
+  box-shadow: 0 7px 16px rgba(24, 28, 41, 0.09);
+}
+
+.mobile-app-root input,
+.mobile-app-root textarea,
+.mobile-app-root button,
+.mobile-app-root a {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.mobile-touch-target {
+  min-height: 44px;
+  min-width: 44px;
 }

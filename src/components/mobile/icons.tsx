@@ -7,7 +7,7 @@ function baseProps(props: IconProps) {
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 1.8,
+    strokeWidth: 1.7,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
     "aria-hidden": true,
@@ -105,6 +105,27 @@ export function CommentIcon(props: IconProps) {
   );
 }
 
+export function RepostIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <path d="M7 7h8l-2.5-2.5" />
+      <path d="m15 7-2.5 2.5" />
+      <path d="M17 17H9l2.5 2.5" />
+      <path d="m9 17 2.5-2.5" />
+      <path d="M15 7h1.2A1.8 1.8 0 0 1 18 8.8V12" />
+      <path d="M9 17H7.8A1.8 1.8 0 0 1 6 15.2V12" />
+    </svg>
+  );
+}
+
+export function BookmarkIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <path d="M7.5 5.5h9a1.5 1.5 0 0 1 1.5 1.5v11L12 14.5 6 18V7a1.5 1.5 0 0 1 1.5-1.5Z" />
+    </svg>
+  );
+}
+
 export function SearchIcon(props: IconProps) {
   return (
     <svg {...baseProps(props)}>
@@ -114,10 +135,46 @@ export function SearchIcon(props: IconProps) {
   );
 }
 
+export function BellIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <path d="M7.5 16.8h9" />
+      <path d="M9 16.8v-4.1a3 3 0 0 1 6 0v4.1" />
+      <path d="M9 12.7c0-2.8 1.1-4.5 3-5.2" />
+      <path d="M15 12.7c0-2.8-1.1-4.5-3-5.2" />
+      <path d="M10.3 19.2a1.9 1.9 0 0 0 3.4 0" />
+    </svg>
+  );
+}
+
 export function SparkIcon(props: IconProps) {
   return (
     <svg {...baseProps(props)}>
       <path d="M12 3.8 13.8 9 19 10.8 13.8 12.6 12 17.8 10.2 12.6 5 10.8 10.2 9 12 3.8Z" />
+    </svg>
+  );
+}
+
+export function SunIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 3.8v2.1" />
+      <path d="M12 18.1v2.1" />
+      <path d="m5.9 5.9 1.5 1.5" />
+      <path d="m16.6 16.6 1.5 1.5" />
+      <path d="M3.8 12h2.1" />
+      <path d="M18.1 12h2.1" />
+      <path d="m5.9 18.1 1.5-1.5" />
+      <path d="m16.6 7.4 1.5-1.5" />
+    </svg>
+  );
+}
+
+export function MoonIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <path d="M17.8 14.5a6.2 6.2 0 1 1-8.3-8.3A7 7 0 1 0 17.8 14.5Z" />
     </svg>
   );
 }

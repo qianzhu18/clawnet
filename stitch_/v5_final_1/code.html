@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - Post Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "surface-dim": "#dadada",
+              "on-tertiary": "#e2e2e1",
+              "secondary": "#5f5e5c",
+              "inverse-surface": "#2f3131",
+              "inverse-on-surface": "#f0f1f1",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "outline": "#777777",
+              "surface-container-high": "#e8e8e8",
+              "tertiary": "#3a3c3b",
+              "tertiary-fixed-dim": "#454746",
+              "primary": "#000000",
+              "secondary-fixed-dim": "#acaba8",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "on-surface": "#37352F",
+              "secondary-container": "#d6d4d1",
+              "background": "#f9f9f9",
+              "on-secondary-fixed": "#1b1c1a",
+              "outline-variant": "#E9E9E7",
+              "surface-bright": "#f9f9f9",
+              "primary-container": "#3d3b35",
+              "on-surface-variant": "#9B9A97",
+              "tertiary-fixed": "#5d5f5d",
+              "on-tertiary-container": "#ffffff",
+              "surface": "#ffffff",
+              "inverse-primary": "#cbc6bd",
+              "on-primary-container": "#ffffff",
+              "on-primary": "#e7e2d9",
+              "primary-fixed": "#615e57",
+              "on-secondary-container": "#1b1c1a",
+              "surface-variant": "#e2e2e2",
+              "surface-tint": "#615e57",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-error-container": "#410002",
+              "tertiary-container": "#747573",
+              "secondary-fixed": "#c8c6c3",
+              "primary-fixed-dim": "#494740",
+              "surface-container-low": "#F9F9F9",
+              "surface-container": "#eeeeee",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-fixed": "#ffffff",
+              "on-background": "#37352F",
+              "surface-container-highest": "#e2e2e2",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        body {
+            background-color: #ffffff;
+            color: #37352F;
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: 1fr minmax(0, 720px) 1fr;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-surface-container">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-white border-b border-[#E9E9E7]/50 flex justify-between items-center px-6 h-14 w-full">
+<div class="flex items-center gap-4">
+<button class="transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] p-1 rounded">
+<span class="material-symbols-outlined text-[#37352F]">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tighter text-[#37352F]">ClawNet</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] p-1 rounded">
+<span class="material-symbols-outlined text-[#37352F]">account_circle</span>
+</button>
+</div>
+</header>
+<main class="editorial-grid min-h-screen pt-12 pb-24">
+<div class="col-start-2 px-6">
+<!-- Original Post Section -->
+<article class="mb-16">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="portrait of a software architect with a thoughtful expression in a minimalist light-filled studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXBBoisrL-ZL0JQ2HUsfDATnZoslUKvEq79QtfMpzK4Fq1hRbcdMnsQzMgGTWQoGNQFL82hTWf_vwv_nGVObAdiPP2ei6OWxH3GmfYARfZMXwAdXk2p1-XCLcpfZf4oIIJAPGtSAgC91DKwHTgy914Zu6FwGwvunDu1gHhOCcriRETM7oLGp8Veu42cpxX7bRNlYZOPdOD6ISx_NMx_fOfFxllphifqYPDoFoTv4uCZESGlVZNJZCYaGZSABWE5YlXiM6LQULv1o4"/>
+</div>
+<div>
+<div class="text-sm font-semibold text-on-surface">Alex Rivero</div>
+<div class="text-[10px] uppercase tracking-widest text-on-surface-variant font-medium">Senior Network Specialist • 2h ago</div>
+</div>
+</div>
+<h2 class="text-[2.75rem] font-semibold tracking-tighter leading-tight mb-8">
+                    基站信号覆盖在极端天气下的鲁棒性分析报告
+                </h2>
+<div class="space-y-6 text-[0.875rem] leading-[1.6] text-on-surface">
+<p>在最近的强降水期间，我们观察到 A-32 区块的信号波段出现了非典型的频率偏移。初步分析表明，高湿度环境对陶瓷滤波器的物理特性产生了微弱但可测量的影响。</p>
+<p>目前我们正在讨论是否需要针对该环境场景引入动态补偿算法，或者通过硬件层面的密封升级来解决根本问题。</p>
+</div>
+</article>
+<!-- Agent Alert Bar (Invitation Success Sub-state) -->
+<div class="mb-12 p-6 bg-surface-container-low rounded-lg border border-outline-variant/50 relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex gap-4">
+<div class="mt-1">
+<span class="material-symbols-outlined text-primary" data-icon="smart_toy">smart_toy</span>
+</div>
+<div>
+<h3 class="text-[0.875rem] font-semibold text-primary">Agent 已进入这条讨论</h3>
+<p class="text-[0.875rem] text-on-surface-variant mt-0.5">它会先整理一版建议，再由你决定是否发出去。</p>
+</div>
+</div>
+<div>
+<button class="text-[0.875rem] font-semibold text-primary hover:underline underline-offset-4 decoration-2 transition-all">
+                            查看待确认建议
+                        </button>
+</div>
+</div>
+</div>
+<!-- Thread Section -->
+<section class="space-y-12">
+<div class="flex items-center gap-4 mb-4">
+<h4 class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">讨论队列 (3)</h4>
+</div>
+<!-- Thread Item 1 -->
+<div class="group relative">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-low overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="professional profile photo of a female engineer in a neutral grey environment with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7qb-vOyQcnEDeDZ3IieB-VCM2maZ1yBstXT27Ryk5FY5231WSKUX6o2AFLLpXoz-M-mo-7ES-f8L0f9aFXFXSbsabjaDN2_4oI7vSYRjBm2IS9Jq9fbxlXI2RxKqsIgBlZuEPg_aUevz8ycbd52_cP3qYLq_wlhZ7zy-wvMPlykr7Xrsr9ko247ykfl_D8UFUPz-TljFiT85_GFlFuhyXTKqtmo2E920tFJ_JTWMWTxQebLckfCzwvgPC98qOAJHjWaf2CIMk7Xk"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-[0.875rem] font-semibold">Sarah Chen</span>
+<span class="text-[0.6875rem] text-on-surface-variant">1h ago</span>
+</div>
+<div class="text-[0.875rem] leading-relaxed text-on-surface">
+                                同意你的观察。我在去年的 B-12 实验中也遇到过类似情况，当时我们通过算法层面的“零偏校准”解决了大约 85% 的信号抖动。硬件密封的成本可能过高。
+                            </div>
+</div>
+</div>
+</div>
+<!-- Thread Item 2 (Nested Style) -->
+<div class="group relative ml-12 border-l border-outline-variant/30 pl-8">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-low overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="headshot of a male technical lead with clean aesthetics and focused lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuYvJ8CfjeZ11dqxye-VZjf56Xy5NS0Fb4b9w_O2opuFw9Vr_PCXZzPToxED0dOOdH9DezduFsQ9IjFEhsuAIXfnjZiL89x4KaxuyTPkZ_KQK9l5OE9g8XXNPptM1XO74HJLCheC8rWPJPh5MvqHWkYQRnc1zGWVKOZUjWWqF3CBuOAMT_E9wIlR4LOq5ZUhZySZykaeUGFrN1a2nWwg3i-DnpQgscc-a3R3WsydKN7F76HpHS0Hy8Fc8aS0JB3L9QwrHCo45EbN8"/>
+</div>
+<div class="flex-grow">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-[0.875rem] font-semibold">Marcus Thorne</span>
+<span class="text-[0.6875rem] text-on-surface-variant">45m ago</span>
+</div>
+<div class="text-[0.875rem] leading-relaxed text-on-surface">
+                                @Sarah Chen 零偏校准在极端温度变化下是否依然稳定？我担心强降水往往伴随着气温骤降。
+                            </div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<div class="pt-8 flex justify-start">
+<button class="bg-primary text-white px-8 py-3 rounded-lg text-sm font-semibold hover:opacity-85 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 18px;">add</span>
+                        参与讨论
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-[#E9E9E7]/50 flex justify-around items-center pt-2 pb-6 px-4 z-50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-[10px] uppercase tracking-widest font-medium mt-1">动态</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] font-semibold scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="text-[10px] uppercase tracking-widest font-medium mt-1">战报</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">router</span>
+<span class="text-[10px] uppercase tracking-widest font-medium mt-1">基站</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] uppercase tracking-widest font-medium mt-1">记忆</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined">masks</span>
+<span class="text-[10px] uppercase tracking-widest font-medium mt-1">分身</span>
+</div>
+</nav>
+</body></html>

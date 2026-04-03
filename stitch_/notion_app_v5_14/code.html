@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#f9f9f9",
+            "secondary-container": "#d6d4d1",
+            "tertiary": "#3a3c3b",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#747573",
+            "surface-tint": "#615e57",
+            "on-surface-variant": "#474747",
+            "secondary-fixed-dim": "#acaba8",
+            "primary-container": "#3d3b35",
+            "outline": "#777777",
+            "on-secondary-container": "#1b1c1a",
+            "primary": "#000000",
+            "outline-variant": "#c6c6c6",
+            "surface-variant": "#e2e2e2",
+            "surface-container": "#eeeeee",
+            "tertiary-fixed-dim": "#454746",
+            "surface-container-low": "#f3f3f4",
+            "on-primary": "#e7e2d9",
+            "background": "#f9f9f9",
+            "surface": "#f9f9f9",
+            "on-tertiary": "#e2e2e2",
+            "secondary-fixed": "#c8c6c3",
+            "inverse-primary": "#cbc6bd",
+            "tertiary-fixed": "#5d5f5d",
+            "primary-fixed": "#615e57",
+            "on-secondary-fixed-variant": "#3b3b39",
+            "on-primary-fixed": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#ffffff",
+            "on-background": "#1a1c1c",
+            "primary-fixed-dim": "#494740",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#e8e8e8",
+            "error": "#ba1a1a",
+            "surface-dim": "#dadada",
+            "inverse-surface": "#2f3131",
+            "secondary": "#5f5e5c",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#e2e2e1",
+            "surface-container-highest": "#e2e2e2",
+            "on-tertiary-fixed": "#ffffff",
+            "on-primary-container": "#ffffff",
+            "inverse-on-surface": "#f0f1f1",
+            "on-surface": "#1a1c1c",
+            "on-primary-fixed-variant": "#e7e2d9",
+            "on-error-container": "#410002",
+            "on-secondary-fixed": "#1b1c1a"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center p-0 m-0">
+<!-- Background App Content Simulation -->
+<main class="w-full max-w-md mx-auto h-screen bg-surface-container-lowest relative overflow-hidden flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-[#1A1A1A] text-[#37352F] dark:text-[#E9E9E7] border-b border-[#E9E9E7]/50 dark:border-[#37352F]/30 flex justify-between items-center w-full px-6 py-4 fixed top-0 z-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" data-icon="clinical_notes">clinical_notes</span>
+<h1 class="font-['Inter'] font-semibold tracking-tighter text-2xl">ClawNet</h1>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-outline-variant/30">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a professional individual with soft natural lighting and a minimalist white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrZchdfxqjIfZb7Uzm_uHCraR5Uhct04XnZsEWKOkWnVYPW0PTPt2DyQzTWLGrc10js6nTH2jKvjbfhHezOw_Ps5AkjDa0-2fKRcz9unjPPMTEjNeZKH0mm04dp00TgD0jwIoAlrzUurucPnofBNkNP8x0rooRE5LCsUYj5zATYsXdcwT7AqfGsDzc6UPIfxbsg9NSYmPa1eIDbgwylTYqpbyp-TkL2ARk7JyCyYWtgsckLu0KS7vZpMIG5NOfmbbNK3gMiwB3DPs"/>
+</div>
+</header>
+<!-- Main Content Canvas (Background) -->
+<div class="pt-20 px-8 flex-grow overflow-y-auto space-y-12">
+<section>
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-2">Station Feed</p>
+<h2 class="text-3xl font-semibold tracking-tighter text-on-surface mb-6">Recent Activity</h2>
+<div class="space-y-8">
+<div class="group">
+<div class="w-full aspect-[16/9] bg-surface-container mb-4 overflow-hidden rounded-lg">
+<img class="w-full h-full object-cover opacity-60" data-alt="Interior of a modern minimalist architectural space with soft daylight and clean lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQFOjdF3h1-bc_8sMbP_MJ-EUmCyuGHdb_O3wDyX8SXSu6kfv2VGYp6xK3CDVKBc_ti_Or96LfVmqFFWKWtjC6UqpfvMIIion2XDObZuvLhoYxEl9nuA880uzWG2Rk7rXx0Aybis2qSKtXCoigTAqs89DLVsDskBslg_b4iYqRdOe2xwufLTGmqr1fS2ICeP_yV8bMkjS66gGzs_bIEBV0_zEK93mgnfpZnJJVwcZA6plziRSNH_3E3SwUZfyt2Q_p25tHZgK1MKc"/>
+</div>
+<h3 class="text-lg font-medium">Design Archives</h3>
+<p class="text-on-surface-variant text-sm mt-1">Managed by Editorial Team</p>
+</div>
+</div>
+</section>
+</div>
+<!-- BottomNavBar (Hidden by overlay) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white dark:bg-[#1A1A1A] text-[#000000] dark:text-white border-t border-[#E9E9E7]/50 dark:border-[#37352F]/30 z-20">
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined" data-icon="dynamic_feed">dynamic_feed</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] dark:text-white font-bold">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Station</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Memory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</div>
+</nav>
+<!-- Overlay Backdrop -->
+<div class="absolute inset-0 bg-black/10 backdrop-blur-[2px] z-40"></div>
+<!-- Bottom Sheet Overlay -->
+<div class="absolute bottom-0 left-0 w-full bg-surface-container-lowest z-50 rounded-t-xl overflow-hidden border-t border-outline-variant/50">
+<!-- Handle -->
+<div class="flex justify-center py-3">
+<div class="w-10 h-1 bg-surface-container rounded-full"></div>
+</div>
+<div class="px-8 pb-12 pt-4">
+<!-- Title & Identification -->
+<div class="mb-10">
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant mb-2">Invitation Request</p>
+<h2 class="text-2xl font-semibold tracking-tighter text-on-surface">Confirm Station Entry</h2>
+</div>
+<!-- Station Card Placeholder (Asymmetric Layout) -->
+<div class="flex items-start gap-6 mb-12">
+<div class="w-24 h-24 bg-surface-container-low border border-outline-variant/30 flex-shrink-0 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Abstract architectural detail of white geometric shapes against a clear pale sky with sharp shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6kNvNeszfR4QRN93CqHbMYs7V0W5A4WA4409cDJWJuND_Mnh_esTS4oRksh0-efNyu_XuUwV3ycxMbPaJ--t_CIA6MGh3GrJTHcYr3HeavjeddjfoyDAJGNQ3dVhzPHK8XPf38FNJKXQR4UIg5lzT6RO4k4_Dk1D3gVxKWRbvT728vo_xr4GQGzypeAmCvj_L0jUgg6sVUyVt3m0V-IkSBlZV8_KgLViWPIBzFzXmPXxoZpRSPP1LPJ2zi57RSM4m555jW9VBJSo"/>
+</div>
+<div class="pt-1">
+<h3 class="text-lg font-bold text-on-surface leading-tight">Archive Alpha-09</h3>
+<p class="text-on-surface-variant text-sm mt-1 mb-2">Joined via Share Link</p>
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-surface-container rounded text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant">
+<span class="material-symbols-outlined text-[12px]" data-icon="lock">lock</span> Private Station
+            </div>
+</div>
+</div>
+<!-- Rules Content (Editorial Typography) -->
+<div class="mb-12 space-y-4">
+<p class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Membership Rules</p>
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="text-xs font-bold font-mono text-outline-variant">01</span>
+<p class="text-body-md text-on-surface-variant leading-relaxed">Contributions must adhere to the archival guidelines. All entries are peer-reviewed before being committed to the permanent memory.</p>
+</div>
+<div class="flex gap-4">
+<span class="text-xs font-bold font-mono text-outline-variant">02</span>
+<p class="text-body-md text-on-surface-variant leading-relaxed">External link sharing is restricted to level-3 curators. Your access profile will begin at 'Guest Observer' status.</p>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3">
+<button class="w-full py-4 bg-primary text-surface-container-lowest font-semibold rounded-md transition-opacity active:opacity-85">
+            Confirm Join
+          </button>
+<button class="w-full py-4 bg-transparent border border-outline-variant/50 text-on-surface font-medium rounded-md hover:bg-surface-container transition-colors active:opacity-80">
+            Cancel
+          </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

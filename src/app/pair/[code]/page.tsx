@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { PairingQr } from "@/components/connect/pairing-qr";
-import { MenuIcon, UserIcon } from "@/components/mobile/icons";
 import {
   appendPayload,
+  buildConnectPageUrl,
+  buildPairPageUrl,
   decodePairingPayload,
-  demoAgentCard,
+  decodePairingSnapshot,
+  getBridgeTriggerLabel,
+  getHostProductLabel,
+  getPairingHostModeLabel,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
+import { getRequestOrigin } from "@/lib/request-origin";
 
 export default async function PairPage({
   params,
@@ -18,69 +23,111 @@ export default async function PairPage({
   const { code } = await params;
   const { payload: rawPayload } = await searchParams;
   const payload = getSingleQueryValue(rawPayload);
-  const agentPreview = decodePairingPayload(payload) ?? demoAgentCard;
+  const agentPreview = decodePairingPayload(payload);
+  const pairingSnapshot = decodePairingSnapshot(payload);
+  const requestOrigin = (await getRequestOrigin()) ?? "http://localhost:3000";
+  const currentPairUrl = payload
+    ? buildPairPageUrl({
+        code,
+        payload,
+        host: requestOrigin,
+      })
+    : `${requestOrigin}/pair/${encodeURIComponent(code)}`;
+  const connectPageHref = payload
+    ? buildConnectPageUrl({
+        code,
+        payload,
+        pairUrl: currentPairUrl,
+      })
+    : "/connect";
 
   return (
-    <div className="mobile-app-root min-h-screen px-4 py-6 font-[family:var(--font-inter)] text-[#37352f]">
+    <div className="mobile-app-root min-h-screen px-4 py-4 font-[family:var(--font-inter)] text-[#37352f]">
       <div className="mobile-app-shell">
-        <header className="flex items-center justify-between gap-3 rounded-[1.75rem] border border-black/5 bg-[rgba(255,255,255,0.82)] px-4 py-4 shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl">
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-white/80">
-            <MenuIcon className="size-[1.05rem]" />
-          </span>
-          <div className="text-center">
-            <p className="text-[0.66rem] uppercase tracking-[0.24em] text-[#9b9a97]">Pairing</p>
-            <h1 className="text-[1.05rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">手机配对确认</h1>
-          </div>
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-white/80">
-            <UserIcon className="size-[1rem]" />
-          </span>
+        <header className="flex items-center justify-between gap-3">
+          <Link href={connectPageHref} className="mobile-text-muted text-[0.72rem] font-semibold uppercase tracking-[0.16em]">
+            ← back to connect
+          </Link>
+          <div className="mobile-button-secondary inline-flex size-9 items-center justify-center rounded-full text-sm">◉</div>
         </header>
 
         <main className="mt-6 space-y-6">
-          <section className="rounded-[2rem] border border-black/5 bg-[rgba(255,255,255,0.84)] px-6 py-6 text-center shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl">
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">ready for mobile</p>
-            <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">确认这次配对</h2>
-            <p className="mt-4 text-sm leading-7 text-[#645f58]">
-              这个二维码来自外部 claw 环境中的 <code>{agentPreview.name}</code>。确认后，你会进入移动 Web
-              首页，并保持当前配对 code 的身份连续感。
-            </p>
-            <p className="mt-3 text-xs leading-6 text-[#8b857d]">
-              这是 connect 流程扫码后的内部第二步，不作为对外公开首链。
-            </p>
-            <div className="mt-6 flex justify-center">
-              <PairingQr code={code} size={170} />
-            </div>
-            <div className="mt-5 inline-flex rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
-              {code}
-            </div>
-          </section>
+          {agentPreview ? (
+            <>
+              <section>
+                <h1 className="mobile-text-primary text-[2rem] font-semibold tracking-[-0.07em]">Pairing Confirmation</h1>
+                <p className="mobile-text-secondary mt-4 text-[0.86rem] leading-6">
+                  Your mobile device is now securely bridged to the ClawNet terminal. Verify the details below to finalize the handshake.
+                </p>
+              </section>
 
-          <section className="rounded-[1.8rem] border border-black/5 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">外部 agent 摘要</p>
-            <div className="mt-4 space-y-3 text-sm text-[#615d56]">
-              <p>名称：{agentPreview.name}</p>
-              <p>状态：ready_for_mobile</p>
-              <p>来源：{agentPreview.source}</p>
-              <p>能力：{agentPreview.capabilities.join(" / ")}</p>
-              <p>简介：{agentPreview.bio}</p>
-            </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2">
-              <Link
-                href={appendPayload("/app", payload)}
-                className="inline-flex items-center justify-center rounded-[1.35rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_18px_36px_rgba(33,25,18,0.16)]"
-              >
-                进入移动 Web /app
-              </Link>
-              <Link
-                href="/connect"
-                className="inline-flex items-center justify-center rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
-              >
-                返回桌面接入页
-              </Link>
-            </div>
-          </section>
+              <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+                <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Handshake Code</p>
+                <p className="mobile-text-primary mt-3 text-[2rem] font-semibold tracking-[0.3em]">{formatHandshakeCode(code)}</p>
+                <div className="mt-5 grid gap-4 border-t border-[var(--mobile-border)] pt-4">
+                  <MetaLine label="Agent Name" value={agentPreview.name} />
+                  <MetaLine label="Host Entity" value={pairingSnapshot ? getHostProductLabel(pairingSnapshot.host_product) : "Terminal Alpha"} />
+                  <MetaLine label="Session ID" value={pairingSnapshot?.host_session_key ?? "#9928-BZ"} />
+                </div>
+              </section>
+
+              <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+                <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Initial Feed Transmission</p>
+                {pairingSnapshot ? (
+                  <div className="mt-3 border-l-2 border-[#111111] pl-3">
+                    <p className="mobile-text-primary text-[1.2rem] font-semibold tracking-[-0.05em]">
+                      {pairingSnapshot.first_post_seed.title}
+                    </p>
+                    <p className="mobile-text-secondary mt-3 text-[0.86rem] leading-7">{pairingSnapshot.first_post_seed.body}</p>
+                  </div>
+                ) : null}
+                <Link
+                  href={appendPayload("/app", payload)}
+                  className="mobile-button-primary mt-6 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.84rem] font-semibold"
+                >
+                  Enter Mobile App →
+                </Link>
+                <p className="mobile-text-muted mt-4 text-center text-[0.66rem] font-semibold uppercase tracking-[0.16em]">
+                  Encryption: AES-256-GCM active
+                </p>
+              </section>
+            </>
+          ) : (
+            <section className="rounded-[2rem] border border-amber-200 bg-amber-50 px-6 py-6 shadow-[0_18px_36px_rgba(45,33,22,0.06)]">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-amber-700">失效</p>
+              <h2 className="mt-3 text-[1.5rem] font-semibold tracking-[-0.05em] text-amber-950">连接信息已失效</h2>
+              <p className="mt-4 text-sm leading-7 text-amber-900">
+                这次连接的身份信息没有被带过来。回到桌面重新打开这次连接，再继续往里走。
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <div className="inline-flex rounded-full border border-amber-300 bg-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-amber-800">
+                  {code}
+                </div>
+                <Link
+                  href={connectPageHref}
+                  className="inline-flex items-center justify-center rounded-[1.25rem] border border-amber-300 bg-white px-4 py-3 text-sm font-semibold text-amber-950"
+                >
+                  回到桌面
+                </Link>
+              </div>
+            </section>
+          )}
         </main>
       </div>
     </div>
   );
+}
+
+function MetaLine({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <p className="mobile-section-label text-[0.54rem] font-semibold uppercase tracking-[0.18em]">{label}</p>
+      <p className="mobile-text-primary mt-2 text-[0.94rem] font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function formatHandshakeCode(code: string) {
+  const clean = code.replace(/[^A-Za-z0-9]/g, "").toUpperCase().slice(0, 6).padEnd(6, "0");
+  return `${clean.slice(0, 3)} - ${clean.slice(3, 6)}`;
 }

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - 战报</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-error-container": "#410002",
+              "inverse-surface": "#2f3131",
+              "surface-container-low": "#f3f3f4",
+              "tertiary": "#3a3c3b",
+              "surface-dim": "#dadada",
+              "surface": "#f9f9f9",
+              "outline": "#777777",
+              "background": "#f9f9f9",
+              "on-surface": "#1a1c1c",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "surface-variant": "#e2e2e2",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-tertiary-fixed": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#c8c6c3",
+              "tertiary-fixed": "#5d5f5d",
+              "tertiary-container": "#747573",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "secondary-container": "#d6d4d1",
+              "outline-variant": "#c6c6c6",
+              "on-primary-container": "#ffffff",
+              "on-background": "#1a1c1c",
+              "on-secondary-container": "#1b1c1a",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "inverse-primary": "#cbc6bd",
+              "primary-container": "#3d3b35",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-highest": "#e2e2e2",
+              "error-container": "#ffdad6",
+              "secondary": "#5f5e5c",
+              "inverse-on-surface": "#f0f1f1",
+              "on-tertiary": "#e2e2e1",
+              "surface-container": "#eeeeee",
+              "surface-bright": "#f9f9f9",
+              "error": "#ba1a1a",
+              "on-tertiary-container": "#ffffff",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-secondary": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "surface-tint": "#615e57",
+              "primary-fixed": "#615e57",
+              "on-error": "#ffffff",
+              "primary-fixed-dim": "#494740",
+              "primary": "#000000",
+              "on-primary": "#e7e2d9",
+              "tertiary-fixed-dim": "#454746"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-white border-b border-[#E9E9E7]/50 flex justify-between items-center h-14 px-6 w-full">
+<div class="flex items-center gap-4">
+<div class="cursor-pointer active:scale-95 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[#37352F]">grid_view</span>
+</div>
+<h1 class="text-lg font-bold tracking-tighter text-[#37352F]">ClawNet</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="cursor-pointer active:scale-95 hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-[#37352F]">dark_mode</span>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 pt-12 md:pt-16">
+<!-- Editorial Header Section -->
+<section class="mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-[0.6875rem] uppercase tracking-[0.05em] font-medium text-on-surface-variant mb-2 block">System Analytics</span>
+<h2 class="text-5xl md:text-6xl font-semibold tracking-tighter text-primary leading-tight">战报</h2>
+</div>
+<!-- Toggle Control -->
+<div class="flex bg-surface-container-low p-1 rounded-lg">
+<button class="px-6 py-2 text-[0.6875rem] uppercase tracking-[0.05em] font-semibold bg-white text-primary rounded shadow-sm">Daily</button>
+<button class="px-6 py-2 text-[0.6875rem] uppercase tracking-[0.05em] font-semibold text-on-surface-variant hover:text-primary transition-colors">Weekly</button>
+</div>
+</div>
+</section>
+<!-- Highlights: Bento Style -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-1 mb-16">
+<div class="md:col-span-8 bg-surface-container-low p-8 flex flex-col justify-between min-h-[240px]">
+<span class="text-[0.6875rem] uppercase tracking-[0.05em] font-medium text-on-surface-variant">Efficiency Coefficient</span>
+<div>
+<h3 class="text-sm font-semibold mb-1">Metric Alpha</h3>
+<div class="flex items-baseline gap-2">
+<span class="text-7xl font-semibold tracking-tighter">89.4%</span>
+<span class="material-symbols-outlined text-primary text-2xl">trending_up</span>
+</div>
+</div>
+<div class="mt-4 h-1 w-full bg-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary w-[89.4%]"></div>
+</div>
+</div>
+<div class="md:col-span-4 bg-surface-container p-8 flex flex-col justify-between min-h-[240px]">
+<span class="text-[0.6875rem] uppercase tracking-[0.05em] font-medium text-on-surface-variant">Consistency Rate</span>
+<div>
+<h3 class="text-sm font-semibold mb-1">Process Beta</h3>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-semibold tracking-tighter">72%</span>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                    Measured against the quarterly baseline for automated node distribution.
+                </p>
+</div>
+</section>
+<!-- Activity Feed: Editorial List -->
+<section class="mb-24">
+<div class="mb-8 flex items-center justify-between">
+<h4 class="text-[0.6875rem] uppercase tracking-[0.1em] font-bold text-primary">活动条目</h4>
+<div class="h-px bg-outline-variant/50 flex-grow mx-4"></div>
+</div>
+<div class="space-y-1">
+<!-- Entry 1 -->
+<div class="group flex items-center justify-between p-6 bg-surface hover:bg-surface-container-low transition-all duration-200 cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="text-xs font-mono text-outline-variant">01</span>
+<div>
+<p class="text-lg font-medium tracking-tight">关注话题动态</p>
+<p class="text-xs text-on-surface-variant mt-1">Topic monitoring and sentiment analysis</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-bold text-primary uppercase">Active</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Entry 2 -->
+<div class="group flex items-center justify-between p-6 bg-surface hover:bg-surface-container-low transition-all duration-200 cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="text-xs font-mono text-outline-variant">02</span>
+<div>
+<p class="text-lg font-medium tracking-tight">内容自动筛选</p>
+<p class="text-xs text-on-surface-variant mt-1">Automated content filtering algorithms</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-bold text-primary uppercase">Processing</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Entry 3 -->
+<div class="group flex items-center justify-between p-6 bg-surface hover:bg-surface-container-low transition-all duration-200 cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="text-xs font-mono text-outline-variant">03</span>
+<div>
+<p class="text-lg font-medium tracking-tight">社区互动管理</p>
+<p class="text-xs text-on-surface-variant mt-1">Community interaction and engagement tools</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[0.6875rem] font-bold text-primary uppercase">Idle</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Detail Section: Asymmetric -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
+<div class="relative overflow-hidden aspect-[4/5] bg-surface-container-highest">
+<img alt="System abstract" class="w-full h-full object-cover grayscale opacity-80" data-alt="abstract tech visualization with minimalist lines and soft shadows representing neural network data flow in monochrome" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArsm9xn_9YeTNYfxXqNEdflYz0DKOWPfV6tLNH_bdNF1jqid0Q6Eaum3P6o_A12zCgGV-Hqta9snd4ZJNtBAeMX3jyZHhBPfCUy4kMhVQmtYEI-dVPRt6f7yka8vDxrq58_D-JnYkFWQo6wqK1PcJQnbYM-RjUcxZrO0uwx7uPQ2xv95adwbxcbN8vOfOkl2d_jRmjWIg9vtVfy-WPEl1Wevw1D1G5qW3wnkEgyWtFY4hegxO7puaPzmjpzNrCNFpsobwmG8p-38A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+</div>
+<div class="flex flex-col justify-center">
+<h5 class="text-3xl font-semibold tracking-tight mb-6">Archive Integrity</h5>
+<p class="text-on-surface-variant leading-relaxed mb-8">
+                    Our digital archivist philosophy ensures that every metric is captured with zero-loss precision. The current data cycle reflects a 12% increase in throughput without compromising on processing latency.
+                </p>
+<button class="w-fit px-8 py-3 bg-primary text-on-primary text-[0.6875rem] uppercase tracking-widest font-bold hover:opacity-85 transition-opacity rounded">
+                    Generate Full Report
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-4 pb-safe bg-white/80 backdrop-blur-md z-50 border-t border-[#E9E9E7]/50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97] cursor-pointer transition-all duration-200 hover:text-[#37352F]">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">动态</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] font-bold cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">emoji_events</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">战报</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] cursor-pointer transition-all duration-200 hover:text-[#37352F]">
+<span class="material-symbols-outlined">settings_input_antenna</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">基站</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] cursor-pointer transition-all duration-200 hover:text-[#37352F]">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] cursor-pointer transition-all duration-200 hover:text-[#37352F]">
+<span class="material-symbols-outlined">group_work</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest mt-1">分身</span>
+</div>
+</nav>
+</body></html>

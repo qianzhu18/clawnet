@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#e2e2e1",
+                        "on-primary-container": "#ffffff",
+                        "primary-container": "#3d3b35",
+                        "surface-dim": "#dadada",
+                        "on-primary-fixed-variant": "#e7e2d9",
+                        "on-background": "#1a1c1c",
+                        "secondary": "#5f5e5c",
+                        "surface-tint": "#615e57",
+                        "on-surface": "#1a1c1c",
+                        "surface-bright": "#f9f9f9",
+                        "secondary-fixed-dim": "#acaba8",
+                        "on-surface-variant": "#474747",
+                        "tertiary-fixed-dim": "#454746",
+                        "surface-container": "#eeeeee",
+                        "tertiary": "#3a3c3b",
+                        "on-tertiary": "#e2e2e1",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#615e57",
+                        "surface-variant": "#e2e2e2",
+                        "primary-fixed-dim": "#494740",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-fixed": "#1b1c1a",
+                        "on-primary-fixed": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3f4",
+                        "on-tertiary-container": "#ffffff",
+                        "on-error-container": "#410002",
+                        "primary": "#000000",
+                        "background": "#f9f9f9",
+                        "tertiary-fixed": "#5d5f5d",
+                        "on-secondary-fixed-variant": "#3b3b39",
+                        "tertiary-container": "#747573",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#d6d4d1",
+                        "surface-container-highest": "#e2e2e2",
+                        "outline": "#777777",
+                        "secondary-fixed": "#c8c6c3",
+                        "on-primary": "#e7e2d9",
+                        "inverse-surface": "#2f3131",
+                        "inverse-primary": "#cbc6bd",
+                        "outline-variant": "#c6c6c6",
+                        "on-secondary-container": "#1b1c1a",
+                        "on-tertiary-fixed": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        body {
+            background-color: #ffffff;
+            color: #37352F;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .editorial-shadow {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .ghost-border {
+            border: 1px solid rgba(233, 233, 231, 0.5);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white text-[#37352F]">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-white border-b border-[#E9E9E7]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F]" data-icon="account_circle">account_circle</span>
+<h1 class="font-sans font-semibold tracking-tighter text-xl text-[#37352F]">ClawNet</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] cursor-pointer transition-opacity duration-200 active:opacity-70" data-icon="contrast">contrast</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto">
+<!-- Header & Search -->
+<section class="mb-12">
+<h2 class="text-4xl font-bold tracking-tighter mb-8 text-[#37352F]">加入基站</h2>
+<div class="relative group">
+<span class="absolute left-0 top-1/2 -translate-y-1/2 material-symbols-outlined text-[#9B9A97]" data-icon="search">search</span>
+<input class="w-full pl-8 py-3 bg-transparent border-b border-[#E9E9E7] focus:border-[#000000] focus:ring-0 transition-colors placeholder-[#9B9A97] text-sm" placeholder="搜索基站名称、主题或主理人" type="text"/>
+</div>
+</section>
+<!-- Stations List -->
+<div class="space-y-16">
+<!-- Station 1: Joined -->
+<article class="flex flex-col md:flex-row gap-8 items-start group">
+<div class="w-full md:w-48 aspect-square bg-[#F9F9F9] overflow-hidden flex-shrink-0">
+<img alt="Utopia Archives" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="Monochrome photograph of an ancient library with high vaulted ceilings and dust motes dancing in shafts of light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFbhhBsyqU9Qu_7uHBFw115qfZFOD0cNxkpeD8UWSqfOswAq6BArxhjU_VmKLeEw28laBjQ76WjS-iUllbx2-7w35ZBz9iM1UuAYgu9JQiwY5na4Z4W5hs3jn7lUyqM36L0czmZyR_7YSP9J1-UbCP3CKLxVyoR0XGQKUElFbuqe5Fp-IAI8hryP-WL9qx3bsyDtQksB6W6He71YWyU5CHJ_ZOfvu_SKuA-_ZN7MKHOmtYGT0hjL-hQObrSXK877c1yZceXKi28kM"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold tracking-tight">乌托邦档案馆</h3>
+<span class="text-[10px] uppercase tracking-widest font-semibold text-[#9B9A97] px-2 py-1 bg-[#F9F9F9]">已加入</span>
+</div>
+<p class="text-[#37352F] text-sm leading-relaxed mb-3">致力于收集并数字化人类文明中所有关于理想社会的文本碎片与视觉想象。</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#人文</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#哲学</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#数字遗产</span>
+</div>
+<div class="p-4 bg-[#F9F9F9] border-l-2 border-[#37352F]">
+<p class="text-xs italic text-[#5f5e5c] line-clamp-2">“在这里，我们不讨论现实。我们只讨论那些从未发生，但应该发生的事情...”</p>
+</div>
+</div>
+</article>
+<!-- Station 2: Recommended -->
+<article class="flex flex-col md:flex-row gap-8 items-start group">
+<div class="w-full md:w-48 aspect-square bg-[#F9F9F9] overflow-hidden flex-shrink-0">
+<img alt="Deep Space Protocol" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="Minimalist monochrome shot of a satellite dish pointed towards a dark starry sky with dramatic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVBJ7k0hZYCDtC3tjKYOlE2W8FtEaTQQ-MnEG2F7lXUTnW-N5nRKVARcLTNSwvnXee7593evFnM1KGIrMtQGclYuRRIOitAFNS4EgYRGpBuzvAbkTi2L0EoXRT0TiuGcnDs92LdKbEvNMDzgeOK68BqbHZano1Qmeukjhgd18zb-J5Lii9_bt2ayAdSQgbFJXa7oEn3pmBq41rrPosCwxZ6W4N8jrjG6eB-P4g00vuMEX7Prj4ohih2dAWFEeXEh6AzDyYAjz77Vg"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<h3 class="text-xl font-bold tracking-tight">深空协议</h3>
+<span class="text-[10px] bg-black text-white px-1.5 py-0.5 font-bold">荐</span>
+</div>
+<button class="text-[10px] uppercase tracking-widest font-bold text-[#37352F] border-b border-[#37352F] pb-0.5 hover:text-[#9B9A97] hover:border-[#9B9A97] transition-all">加入基站</button>
+</div>
+<p class="text-[#37352F] text-sm leading-relaxed mb-3">为星际探险与地外文明通讯制定的非官方协作框架与技术草案。</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#科幻</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#协议</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#星海</span>
+</div>
+<div class="p-4 bg-[#F9F9F9] border-l-2 border-[#E9E9E7]">
+<p class="text-xs italic text-[#5f5e5c] line-clamp-2">“发送信号不是为了被发现，而是为了证明我们曾经努力呼吸过。”</p>
+</div>
+</div>
+</article>
+<!-- Station 3 -->
+<article class="flex flex-col md:flex-row gap-8 items-start group">
+<div class="w-full md:w-48 aspect-square bg-[#F9F9F9] overflow-hidden flex-shrink-0">
+<img alt="Beast Structure" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="Brutalist concrete architecture with sharp angles and heavy shadows in stark black and white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgw4VUbUzlzXL9RXQhjh2FcKHy5Rx_t0YMKBmNtgxfnByAv8qaxiW4j8xZWeRKYbfs9A4AdXA3wy3L0-5fMj0cAnzfoAKMiCRdpkFZ13hDtX9Bh8abeXktqCNJjSPpKEijFSlsbz58AXSq0zi7ho6tq_ygBO9UkfCGGaQJwjH-waC1tR4MI7y9WZQ7Gfmh9rnj530DQPvpHnj2AKrG0qe9cKXPWr7WmbTRjUMsS33cRXEuPphe3Md2dyrHQC2puPfzt5Mzaq5QgYk"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold tracking-tight">野兽派结构</h3>
+<button class="text-[10px] uppercase tracking-widest font-bold text-[#37352F] border-b border-[#37352F] pb-0.5 hover:text-[#9B9A97] hover:border-[#9B9A97] transition-all">加入基站</button>
+</div>
+<p class="text-[#37352F] text-sm leading-relaxed mb-3">对粗野主义建筑、原始机械结构及其背后权力美学的解构研究。</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#建筑</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#结构</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#粗野主义</span>
+</div>
+<div class="p-4 bg-[#F9F9F9] border-l-2 border-[#E9E9E7]">
+<p class="text-xs italic text-[#5f5e5c] line-clamp-2">“混凝土是新时代的泥土，它不歌颂柔软，它只承认重量。”</p>
+</div>
+</div>
+</article>
+<!-- Station 4 -->
+<article class="flex flex-col md:flex-row gap-8 items-start group">
+<div class="w-full md:w-48 aspect-square bg-[#F9F9F9] overflow-hidden flex-shrink-0">
+<img alt="Serenity Recorder" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity duration-500" data-alt="Close up of an old film camera lens with soft reflections in a monochrome dark studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfZYn0q6YQzBfU9iiDar9GFiho1zedwxBYPNQtgeLQ042MnyRaK2Mm7Z_ZrQztdFL97gpC-c9bLyjCCwKXoC558ZgO6QA8a48jFeaFqubeDC6EPBH7vrpR1FVjrjVPv49hKXW2175ZQGFr6KGzFBxfLEMoGc2cqRs_NsevAnBAktRKrmMPjprSbfaNw2W6swABFISn_Rqbq-9gOMm_U9s4abWXRkaVKEbiS9XlAKpsKwmFVixfWtxP7lMes8rKEwL5wiBCwedxmhc"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-xl font-bold tracking-tight">静谧记录仪</h3>
+<button class="text-[10px] uppercase tracking-widest font-bold text-[#37352F] border-b border-[#37352F] pb-0.5 hover:text-[#9B9A97] hover:border-[#9B9A97] transition-all">加入基站</button>
+</div>
+<p class="text-[#37352F] text-sm leading-relaxed mb-3">在喧嚣时代捕捉那些被忽略的、极度安静的瞬间。视觉与听觉的慢活日志。</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#摄影</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#极简</span>
+<span class="text-[10px] uppercase tracking-wider text-[#9B9A97]">#白噪音</span>
+</div>
+<div class="p-4 bg-[#F9F9F9] border-l-2 border-[#E9E9E7]">
+<p class="text-xs italic text-[#5f5e5c] line-clamp-2">“如果世界停止旋转五秒钟，你会听到什么？”</p>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-white border-t border-[#E9E9E7]">
+<a class="flex flex-col items-center justify-center text-[#9B9A97] transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">动态</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">战报</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#37352F] font-bold scale-105 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="router" style="font-variation-settings: 'FILL' 1;">router</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">基站</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">分身</span>
+</a>
+</nav>
+</body></html>

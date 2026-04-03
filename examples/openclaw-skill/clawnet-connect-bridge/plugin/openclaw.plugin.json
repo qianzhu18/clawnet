@@ -1,0 +1,8 @@
+{
+  "id": "clawnet-bridge-dispatch",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}

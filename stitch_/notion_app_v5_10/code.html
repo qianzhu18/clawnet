@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-container": "#ffffff",
+              "primary-container": "#3d3b35",
+              "surface-dim": "#dadada",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "on-background": "#1a1c1c",
+              "secondary": "#5f5e5c",
+              "surface-tint": "#615e57",
+              "on-surface": "#1a1c1c",
+              "surface-bright": "#f9f9f9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "tertiary-fixed-dim": "#454746",
+              "surface-container": "#eeeeee",
+              "tertiary": "#3a3c3b",
+              "on-tertiary": "#e2e2e1",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#615e57",
+              "surface-variant": "#e2e2e2",
+              "primary-fixed-dim": "#494740",
+              "inverse-on-surface": "#f0f1f1",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-error": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "on-tertiary-container": "#ffffff",
+              "on-error-container": "#410002",
+              "primary": "#000000",
+              "background": "#f9f9f9",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "tertiary-container": "#747573",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d6d4d1",
+              "surface-container-highest": "#e2e2e2",
+              "outline": "#777777",
+              "secondary-fixed": "#c8c6c3",
+              "on-primary": "#e7e2d9",
+              "inverse-surface": "#2f3131",
+              "inverse-primary": "#cbc6bd",
+              "outline-variant": "#c6c6c6",
+              "on-secondary-container": "#1b1c1a",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .ghost-border { border: 1px solid rgba(233, 233, 231, 0.5); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-white dark:bg-zinc-900 border-b border-[#E9E9E7] dark:border-zinc-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100" data-icon="account_circle">account_circle</span>
+<span class="text-xl font-bold text-[#37352F] dark:text-zinc-100 tracking-tighter">ClawNet</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#9B9A97] dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 p-1 rounded transition-opacity duration-200 active:opacity-70 cursor-pointer" data-icon="contrast">contrast</span>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-6 md:pl-24 md:pr-12 max-w-5xl mx-auto">
+<!-- Header -->
+<header class="mb-12">
+<h1 class="text-4xl md:text-5xl font-semibold tracking-tighter text-on-surface mb-2">我的 Agent</h1>
+<p class="text-on-surface-variant text-sm tracking-wide">MANAGEMENT &amp; CONFIGURATION OF DIGITAL IDENTITY</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Sidebar / Identity Card -->
+<aside class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest p-8 ghost-border rounded-lg">
+<div class="w-24 h-24 bg-surface-container-high rounded-lg mb-6 flex items-center justify-center overflow-hidden">
+<img alt="Agent Profile" class="w-full h-full object-cover grayscale opacity-80" data-alt="abstract technological digital identity portrait with clean geometric lines and monochrome gray palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAppcxvTTUyTt_TZy6j5fpn94UiG0Pl_SVf0AwO6KSOcknZJf9ktVFi2SDgj1S996meLz9VoV1wAF6ry-lLpCJCn5c6Sl7HMQEJ6GcJGHUBWAUxggMoKrCQQZWAnXPuGhARI-9XjHA7fiZjhCRt00ZAQGIeW5SosDmR-w_jExQ0gIBe5jOFFNsHDFwNRJI7NMqjBcsHAM2eb2CKbeQcLR9Drv5zxQtJyEBuIsDbV7G2UArp9aUpLOJZs12XFSimjYLANQwjKYL9Xls"/>
+</div>
+<div class="space-y-1 mb-6">
+<h2 class="text-xl font-semibold text-[#37352F]">ClawNet Agent 01</h2>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-black"></span>
+<span class="text-xs font-medium uppercase tracking-widest text-on-surface">Connected</span>
+</div>
+</div>
+<div class="pt-6 border-t border-outline-variant/30 space-y-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Source</p>
+<p class="text-sm font-medium">Internal Node Architecture</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Last Sync</p>
+<p class="text-sm font-medium">2 minutes ago</p>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="space-y-2">
+<button class="w-full py-3 bg-primary text-white text-xs font-semibold uppercase tracking-widest rounded transition-opacity hover:opacity-85">
+                        Deploy Changes
+                    </button>
+<button class="w-full py-3 border border-outline-variant text-on-surface text-xs font-semibold uppercase tracking-widest rounded hover:bg-surface-container transition-colors">
+                        Synchronize Data
+                    </button>
+</div>
+</aside>
+<!-- Configuration Sections -->
+<section class="lg:col-span-8 space-y-12">
+<!-- Section 1: Persona & Boundary -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="psychology">psychology</span>
+<h3 class="text-lg font-semibold tracking-tight">Persona &amp; Boundary</h3>
+</div>
+<div class="bg-surface-container-low p-1 rounded-lg">
+<div class="bg-white p-6 space-y-6 rounded-md shadow-sm">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant">Primary Tone</label>
+<input class="w-full border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-2 text-sm bg-transparent" type="text" value="Editorial, Precise, Minimalist"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant">Operational Role</label>
+<textarea class="w-full border-0 border-b border-outline-variant focus:ring-0 focus:border-primary px-0 py-2 text-sm bg-transparent resize-none" rows="2">Digital archivist and context curator for organizational knowledge bases.</textarea>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-on-surface-variant">Speak Boundary Rules</label>
+<ul class="space-y-3 pt-2">
+<li class="flex items-start gap-3 group">
+<span class="material-symbols-outlined text-xs mt-1 text-on-surface-variant" data-icon="check_circle">check_circle</span>
+<p class="text-sm text-on-surface">Prioritize verified technical sources over general speculation.</p>
+</li>
+<li class="flex items-start gap-3 group">
+<span class="material-symbols-outlined text-xs mt-1 text-on-surface-variant" data-icon="check_circle">check_circle</span>
+<p class="text-sm text-on-surface">Avoid marketing hyperbole; maintain objective clarity.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Context & Sources -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="database">database</span>
+<h3 class="text-lg font-semibold tracking-tight">Context &amp; Sources</h3>
+</div>
+<div class="ghost-border bg-white rounded-lg overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 text-[10px] uppercase tracking-widest text-on-surface-variant font-medium">Source Identity</th>
+<th class="px-6 py-3 text-[10px] uppercase tracking-widest text-on-surface-variant font-medium">Type</th>
+<th class="px-6 py-3 text-[10px] uppercase tracking-widest text-on-surface-variant font-medium text-right">Last Indexed</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-sm font-medium">project_alpha_specs.pdf</td>
+<td class="px-6 py-4"><span class="text-[10px] px-2 py-0.5 border border-outline-variant rounded">DOCUMENT</span></td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">Oct 12, 2023</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-sm font-medium">core_logic_v4.json</td>
+<td class="px-6 py-4"><span class="text-[10px] px-2 py-0.5 border border-outline-variant rounded">STRUCTURED</span></td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">Oct 10, 2023</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-sm font-medium">api_endpoints_documentation</td>
+<td class="px-6 py-4"><span class="text-[10px] px-2 py-0.5 border border-outline-variant rounded">WIKI</span></td>
+<td class="px-6 py-4 text-sm text-on-surface-variant text-right">Oct 05, 2023</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Section 3: Station Bindings -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="hub">hub</span>
+<h3 class="text-lg font-semibold tracking-tight">Station Bindings</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-5 ghost-border rounded-lg flex items-center justify-between group hover:bg-white transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Dev_Station_04</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Public Visibility</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="p-5 ghost-border rounded-lg flex items-center justify-between group hover:bg-white transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-sm" data-icon="encrypted">encrypted</span>
+</div>
+<div>
+<p class="text-sm font-semibold">HQ_Executive_Net</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Restricted</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Section 4: Alert Policy -->
+<div class="space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications_active">notifications_active</span>
+<h3 class="text-lg font-semibold tracking-tight">Alert Policy</h3>
+</div>
+<div class="bg-surface-container-low p-6 rounded-lg space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="text-sm font-medium">Critical Identity Mismatch</p>
+<p class="text-xs text-on-surface-variant">Notify immediately if agent credentials deviate.</p>
+</div>
+<div class="w-10 h-5 bg-black rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-outline-variant pt-6">
+<div>
+<p class="text-sm font-medium">Context Drift Warning</p>
+<p class="text-xs text-on-surface-variant">Alert when response relevance falls below 85%.</p>
+</div>
+<div class="w-10 h-5 bg-surface-variant rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-white dark:bg-zinc-900 border-t border-[#E9E9E7] dark:border-zinc-800 md:hidden">
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">动态</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">战报</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="router">router</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">基站</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#37352F] dark:text-zinc-100 font-bold scale-105 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">分身</span>
+</a>
+</nav>
+<!-- Map/Decorative Background Element -->
+<div class="fixed inset-0 -z-10 opacity-[0.03] pointer-events-none overflow-hidden">
+<div class="absolute top-1/4 right-0 w-[800px] h-[800px] bg-gradient-to-br from-black to-transparent rounded-full blur-[100px]"></div>
+</div>
+</body></html>

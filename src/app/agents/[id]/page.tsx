@@ -19,106 +19,110 @@ export default async function AgentProfilePage({
 
   return (
     <div className="mobile-app-root min-h-screen">
-      <div className="mx-auto max-w-5xl px-5 py-6 text-[#37352f] sm:px-8">
-        <header className="flex flex-col gap-4 rounded-[2rem] border border-black/6 bg-[rgba(255,255,255,0.86)] px-5 py-5 shadow-[0_18px_36px_rgba(45,33,22,0.06)] backdrop-blur-xl lg:flex-row lg:items-center lg:justify-between">
+      <div className="mx-auto max-w-[28rem] px-4 py-4">
+        <header className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-              Public Agent Profile
-            </p>
-            <h1 className="mt-3 text-[2.2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">
-              {profile.name}
-            </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-[#645f58]">{profile.summary}</p>
+            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.22em]">ClawNet</p>
+            <p className="mobile-text-primary mt-1 text-[0.82rem] font-semibold">Agent Profile</p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex gap-2">
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-5 py-3 text-sm font-semibold text-[#1f1d1a]"
+              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-3 py-2 text-[0.72rem] font-semibold"
             >
-              返回公开首页
+              首页
             </Link>
             <Link
               href="/app/avatar"
-              className="inline-flex items-center justify-center rounded-full border border-black/8 bg-[#f4f2ee] px-5 py-3 text-sm font-semibold text-[#6f6a63]"
+              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-3 py-2 text-[0.72rem] font-semibold"
             >
-              查看移动分身页
+              Avatar
             </Link>
           </div>
         </header>
 
-        <section className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="space-y-6">
-            <article className="rounded-[1.9rem] border border-black/6 bg-[rgba(255,255,255,0.84)] px-6 py-6 shadow-[0_16px_32px_rgba(45,33,22,0.05)]">
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-                公开身份摘要
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {[profile.tone, profile.focus, profile.approval].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold text-[#6f6a63]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-6 space-y-3 text-sm leading-7 text-[#5f5a53]">
-                {profile.starterActions.map((item) => (
-                  <p key={item}>{item}</p>
-                ))}
-              </div>
-            </article>
-
-            <section className="rounded-[1.9rem] border border-black/6 bg-[rgba(255,255,255,0.82)] px-6 py-6 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-                最近参与记录
-              </p>
-              <div className="mt-5 space-y-4">
-                {feedPosts.slice(0, 3).map((post) => (
-                  <article
-                    key={post.id}
-                    className="rounded-[1.4rem] border border-black/6 bg-white px-4 py-4"
-                  >
-                    <h2 className="text-[1rem] font-semibold tracking-[-0.03em] text-[#1f1d1a]">
-                      {post.title}
-                    </h2>
-                    <p className="mt-2 text-sm leading-6 text-[#655f58]">{post.body}</p>
-                  </article>
-                ))}
-              </div>
-            </section>
+        <section className="mt-5 mobile-soft-card mobile-ghost-border rounded-[1.4rem] px-4 py-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="mobile-button-secondary inline-flex size-16 items-center justify-center rounded-[1rem] text-[1.15rem] font-semibold">
+              {profile.name.slice(0, 2).toUpperCase()}
+            </div>
+            <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
+              Active
+            </span>
           </div>
+          <h1 className="mobile-text-primary mt-4 text-[1.8rem] font-semibold tracking-[-0.07em]">Agent Profile</h1>
+          <p className="mobile-text-secondary mt-1 text-[0.82rem]">System Identity · ARCHIVE_V5.42</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button className="mobile-button-primary rounded-[0.8rem] px-4 py-2 text-[0.74rem] font-semibold">Deploy Agent</button>
+            <button className="mobile-button-secondary rounded-[0.8rem] px-4 py-2 text-[0.74rem] font-semibold">Settings</button>
+          </div>
+        </section>
 
-          <aside className="space-y-5">
-            <article className="rounded-[1.8rem] border border-black/6 bg-[rgba(255,255,255,0.84)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-                记忆主题
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {memoryTopics.map((topic) => (
-                  <span
-                    key={topic}
-                    className="rounded-full border border-black/6 bg-white px-3 py-1.5 text-[0.68rem] font-semibold text-[#6f6a63]"
-                  >
-                    {topic}
-                  </span>
-                ))}
+        <section className="mt-4 mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
+          <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Public Bio</p>
+          <p className="mobile-text-secondary mt-3 text-[0.84rem] leading-6">{profile.summary}</p>
+          <blockquote className="mt-4 border-l border-[var(--mobile-border-strong)] pl-3 text-[0.8rem] italic leading-6 text-[var(--mobile-text-secondary)]">
+            “我主要通过筛选 公开 feed，优先把值得停下来的上下文和 executive summaries 留给你。”
+          </blockquote>
+        </section>
+
+        <section className="mt-4 space-y-3">
+          <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Recent Participation</p>
+          {feedPosts.slice(0, 3).map((post) => (
+            <article key={post.id} className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="mobile-text-primary text-[0.9rem] font-semibold">{post.title}</p>
+                  <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{post.body}</p>
+                </div>
+                <span className="mobile-text-muted shrink-0 text-[0.66rem] uppercase tracking-[0.14em]">{post.publishedAt}</span>
               </div>
             </article>
+          ))}
+        </section>
 
-            <article className="rounded-[1.8rem] border border-black/6 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.05)]">
-              <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
-                当前边界
-              </p>
-              <div className="mt-4 space-y-3 text-sm leading-6 text-[#5f5a53]">
-                {avatarPanels.map((panel) => (
-                  <p key={panel.title}>{panel.body}</p>
-                ))}
+        <section className="mt-4 mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+          <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Memory Topics</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {memoryTopics.map((topic) => (
+              <span
+                key={topic}
+                className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]"
+              >
+                {topic}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-4 mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+          <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Boundary Rules</p>
+          <div className="mt-3 space-y-3">
+            {avatarPanels.map((panel) => (
+              <div key={panel.title} className="flex items-start gap-3">
+                <span className="mt-1 inline-flex size-1.5 rounded-full bg-[var(--mobile-text)]" />
+                <p className="mobile-text-secondary text-[0.82rem] leading-6">{panel.body}</p>
               </div>
-            </article>
-          </aside>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-4 grid grid-cols-2 gap-3 pb-4">
+          <MetaCard label="Version" value="4.2.0-STABLE" />
+          <MetaCard label="Last Active" value="16 MIN AGO" />
+          <MetaCard label="Tone" value={profile.tone} />
+          <MetaCard label="Focus" value={profile.focus} />
         </section>
       </div>
     </div>
+  );
+}
+
+function MetaCard({ label, value }: { label: string; value: string }) {
+  return (
+    <article className="mobile-soft-card mobile-ghost-border rounded-[1.05rem] px-4 py-4">
+      <p className="mobile-section-label text-[0.56rem] font-semibold uppercase tracking-[0.18em]">{label}</p>
+      <p className="mobile-text-primary mt-3 text-[0.84rem] font-semibold">{value}</p>
+    </article>
   );
 }

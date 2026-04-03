@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "surface-dim": "#dadada",
+              "on-tertiary": "#e2e2e1",
+              "secondary": "#5f5e5c",
+              "inverse-surface": "#2f3131",
+              "inverse-on-surface": "#f0f1f1",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "outline": "#777777",
+              "surface-container-high": "#e8e8e8",
+              "tertiary": "#3a3c3b",
+              "tertiary-fixed-dim": "#454746",
+              "primary": "#000000",
+              "secondary-fixed-dim": "#acaba8",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "on-surface": "#37352F",
+              "secondary-container": "#d6d4d1",
+              "background": "#ffffff",
+              "on-secondary-fixed": "#1b1c1a",
+              "outline-variant": "#E9E9E7",
+              "surface-bright": "#f9f9f9",
+              "primary-container": "#3d3b35",
+              "on-surface-variant": "#9B9A97",
+              "tertiary-fixed": "#5d5f5d",
+              "on-tertiary-container": "#ffffff",
+              "surface": "#ffffff",
+              "inverse-primary": "#cbc6bd",
+              "on-primary-container": "#ffffff",
+              "on-primary": "#e7e2d9",
+              "primary-fixed": "#615e57",
+              "on-secondary-container": "#1b1c1a",
+              "surface-variant": "#e2e2e2",
+              "surface-tint": "#615e57",
+              "on-secondary": "#ffffff",
+              "on-error": "#ffffff",
+              "on-error-container": "#410002",
+              "tertiary-container": "#747573",
+              "secondary-fixed": "#c8c6c3",
+              "primary-fixed-dim": "#494740",
+              "surface-container-low": "#F9F9F9",
+              "surface-container": "#eeeeee",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-fixed": "#ffffff",
+              "on-background": "#37352F",
+              "surface-container-highest": "#e2e2e2",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            font-size: 20px;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-white dark:bg-[#191919] border-b border-[#E9E9E7]/50 dark:border-[#2F2F2F] flex justify-between items-center px-6 h-14 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#D4D4D4] transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] p-1.5 rounded" data-icon="grid_view">grid_view</span>
+<h1 class="text-lg font-bold tracking-tighter text-[#37352F] dark:text-white">ClawNet</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-6">
+<a class="text-[#9B9A97] dark:text-[#808080] font-sans tracking-tight text-sm font-semibold transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] px-2 py-1 rounded" href="#">动态</a>
+<a class="text-[#9B9A97] dark:text-[#808080] font-sans tracking-tight text-sm font-semibold transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] px-2 py-1 rounded" href="#">战报</a>
+<a class="text-[#000000] dark:text-white font-bold font-sans tracking-tight text-sm transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] px-2 py-1 rounded" href="#">基站</a>
+<a class="text-[#9B9A97] dark:text-[#808080] font-sans tracking-tight text-sm font-semibold transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] px-2 py-1 rounded" href="#">记忆</a>
+<a class="text-[#9B9A97] dark:text-[#808080] font-sans tracking-tight text-sm font-semibold transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] px-2 py-1 rounded" href="#">分身</a>
+</nav>
+<span class="material-symbols-outlined text-[#37352F] dark:text-[#D4D4D4] transition-opacity duration-200 active:opacity-70 hover:bg-[#F9F9F9] dark:hover:bg-[#252525] p-1.5 rounded" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="flex min-h-[calc(100vh-3.5rem-4.5rem)] md:min-h-[calc(100vh-3.5rem)]">
+<!-- NavigationDrawer (Hidden on mobile) -->
+<aside class="hidden lg:flex flex-col gap-4 p-8 h-full w-80 bg-[#F9F9F9] dark:bg-[#202020] border-r border-outline-variant/30">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="minimalist user profile avatar with abstract geometric shapes in monochrome gray scale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo8_YpE7jeWIaIEB9gXEfnjPap_eMGRkxBWawoKtv_S74IoBu_EJTtE114dVH2tK58dDJDtIiVyqb1a5UiNGLnHzHwSZdo1twheRpJ_igqb0kuGKS-56euRtdQAvNEDlHWus6PRF8JvhyeO_K3taTQ59XWj8QrELOLBcJNfIstvB2cTaRb2hafBEFp3r8I_6kwBaioBsX2n0s8GSS3ldizaENfA-AwdVhhfW5_PS0mB9VTn8yI9SBYMt3-REP9qATz1e2GhOilBtM"/>
+</div>
+<div class="flex flex-col">
+<span class="text-on-surface font-semibold tracking-tighter text-sm">ClawNet Admin</span>
+<span class="text-on-surface-variant text-[10px] uppercase tracking-widest font-medium">Premium Tier</span>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-[#9B9A97] dark:text-[#808080] hover:bg-[#EEEEEE] dark:hover:bg-[#2A2A2A] transition-colors duration-200 rounded body-md font-sans" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 font-semibold text-[#000000] dark:text-white bg-[#EEEEEE] dark:bg-[#2A2A2A] transition-colors duration-200 rounded body-md font-sans" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span>Network Status</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#9B9A97] dark:text-[#808080] hover:bg-[#EEEEEE] dark:hover:bg-[#2A2A2A] transition-colors duration-200 rounded body-md font-sans" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>Archive</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#9B9A97] dark:text-[#808080] hover:bg-[#EEEEEE] dark:hover:bg-[#2A2A2A] transition-colors duration-200 rounded body-md font-sans" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Profiles</span>
+</a>
+</nav>
+<div class="mt-auto pt-8">
+<span class="text-on-surface-variant text-[10px] uppercase tracking-widest font-medium">v1.0.4</span>
+</div>
+</aside>
+<!-- Content Canvas -->
+<section class="flex-1 px-6 md:px-24 py-16 max-w-6xl mx-auto w-full">
+<div class="mb-12">
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium text-on-surface-variant mb-2 block">Network Interface</span>
+<h2 class="text-[2.75rem] font-semibold tracking-tighter leading-none mb-4">连接设备</h2>
+<p class="text-on-surface-variant body-md leading-relaxed max-w-xl">通过扫描二维码或输入授权码，将你的移动设备接入 ClawNet 云端基站，同步多端数据。</p>
+</div>
+<!-- Warning Card Container (Asymmetric Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<div class="md:col-span-7">
+<!-- The Warning Card -->
+<div class="bg-surface border border-outline-variant/50 rounded-xl p-10 md:p-16 flex flex-col items-center justify-center text-center aspect-square md:aspect-auto md:min-h-[480px]">
+<div class="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-4xl text-on-surface" data-icon="wifi_off">wifi_off</span>
+</div>
+<h3 class="text-2xl font-semibold tracking-tight text-on-surface mb-4">当前是本地模式</h3>
+<p class="text-on-surface-variant body-md leading-relaxed mb-10 max-w-xs">你现在运行在 localhost，下一个设备无法直接访问这次连接。</p>
+<div class="flex flex-col w-full gap-3">
+<button class="w-full py-3 bg-primary text-white rounded-lg font-semibold text-sm hover:opacity-85 transition-opacity duration-200">
+                                切换到局域网模式
+                            </button>
+<button class="w-full py-3 border border-outline-variant text-on-surface rounded-lg font-semibold text-sm hover:bg-surface-container-low transition-colors duration-200">
+                                继续在本机查看
+                            </button>
+</div>
+</div>
+</div>
+<!-- Secondary Editorial Info -->
+<div class="md:col-span-5 flex flex-col justify-center">
+<div class="space-y-12">
+<div class="group">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-on-surface" data-icon="info">info</span>
+<h4 class="font-semibold text-on-surface">为什么需要切换？</h4>
+</div>
+<p class="text-on-surface-variant body-md leading-relaxed pl-8">Localhost 仅限当前机器内部通讯。若要跨设备发现，基站必须监听真实的局域网 IP 地址（如 192.168.x.x）。</p>
+</div>
+<div class="group">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-on-surface" data-icon="security">security</span>
+<h4 class="font-semibold text-on-surface">安全性说明</h4>
+</div>
+<p class="text-on-surface-variant body-md leading-relaxed pl-8">局域网模式下，同一 WiFi 环境内的设备可能通过探测发现此端口。请确保你在受信任的网络环境下操作。</p>
+</div>
+<div class="pt-6 border-t border-outline-variant/30">
+<a class="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline decoration-1 underline-offset-4" href="#">
+                                查看详细组网指南
+                                <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Visible on mobile) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center pt-2 pb-safe px-4 bg-white dark:bg-[#191919] border-t border-[#E9E9E7]/50 dark:border-[#2F2F2F] z-50 h-18">
+<button class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-[#808080] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium mt-1">动态</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-[#808080] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium mt-1">战报</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#000000] dark:text-white font-semibold scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="router">router</span>
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium mt-1">基站</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-[#808080] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium mt-1">记忆</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-[#808080] scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined" data-icon="masks">masks</span>
+<span class="label-sm uppercase tracking-widest text-[10px] font-medium mt-1">分身</span>
+</button>
+</footer>
+</body></html>

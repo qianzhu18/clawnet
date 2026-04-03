@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-bright": "#f9f9f9",
+            "secondary-container": "#d6d4d1",
+            "tertiary": "#3a3c3b",
+            "on-secondary": "#ffffff",
+            "tertiary-container": "#747573",
+            "surface-tint": "#615e57",
+            "on-surface-variant": "#474747",
+            "secondary-fixed-dim": "#acaba8",
+            "primary-container": "#3d3b35",
+            "outline": "#777777",
+            "on-secondary-container": "#1b1c1a",
+            "primary": "#000000",
+            "outline-variant": "#c6c6c6",
+            "surface-variant": "#e2e2e2",
+            "surface-container": "#eeeeee",
+            "tertiary-fixed-dim": "#454746",
+            "surface-container-low": "#f3f3f4",
+            "on-primary": "#e7e2d9",
+            "background": "#f9f9f9",
+            "surface": "#f9f9f9",
+            "on-tertiary": "#e2e2e1",
+            "secondary-fixed": "#c8c6c3",
+            "inverse-primary": "#cbc6bd",
+            "tertiary-fixed": "#5d5f5d",
+            "primary-fixed": "#615e57",
+            "on-secondary-fixed-variant": "#3b3b39",
+            "on-primary-fixed": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#ffffff",
+            "on-background": "#1a1c1c",
+            "primary-fixed-dim": "#494740",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#e8e8e8",
+            "error": "#ba1a1a",
+            "surface-dim": "#dadada",
+            "inverse-surface": "#2f3131",
+            "secondary": "#5f5e5c",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#e2e2e1",
+            "surface-container-highest": "#e2e2e2",
+            "on-tertiary-fixed": "#ffffff",
+            "on-primary-container": "#ffffff",
+            "inverse-on-surface": "#f0f1f1",
+            "on-surface": "#1a1c1c",
+            "on-primary-fixed-variant": "#e7e2d9",
+            "on-error-container": "#410002",
+            "on-secondary-fixed": "#1b1c1a"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    .mono-font { font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen selection:bg-surface-variant">
+<!-- TopAppBar Section -->
+<nav class="bg-white dark:bg-[#1A1A1A] text-[#37352F] dark:text-[#E9E9E7] border-b border-[#E9E9E7]/50 dark:border-[#37352F]/30 flex justify-between items-center w-full px-6 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl">clinical_notes</span>
+<span class="font-['Inter'] font-semibold tracking-tighter text-2xl">ClawNet</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#9B9A97] hover:bg-[#EEEEEE] transition-colors px-2 py-1 rounded-sm label-sm uppercase tracking-widest font-medium text-[0.6875rem]" href="#">Dynamic</a>
+<a class="text-[#9B9A97] hover:bg-[#EEEEEE] transition-colors px-2 py-1 rounded-sm label-sm uppercase tracking-widest font-medium text-[0.6875rem]" href="#">Reports</a>
+<a class="font-semibold text-[#000000] dark:text-white label-sm uppercase tracking-widest text-[0.6875rem]" href="#">Connect</a>
+<a class="text-[#9B9A97] hover:bg-[#EEEEEE] transition-colors px-2 py-1 rounded-sm label-sm uppercase tracking-widest font-medium text-[0.6875rem]" href="#">Memory</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 hover:bg-[#EEEEEE] rounded-full transition-colors">search</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="professional male headshot with neutral background soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAupuCDEDYMBSV2PQtAQBALG8ekuRh1v_Om5NUBoRx09Z17AAOCtD7x2fKq2GYC_7H7IrgmokVr83OP_fJZDeVd-Hu6pH69Btnxw03N51jIQTs_ShIj_KfTxskvxZgsp41HC3HGycfwjzjemJCAt75z3Az8N05qewjZFSR8TvC463UFUCvnTGpjBLFKsvjWtKUcWirM7FQ3HiJXX_1VlVrBpp27yDaalvs3DyN_zD9GKy6LQEiJS6LwJvfUKxTfzOGMYylejoO0EcE"/>
+</div>
+</div>
+</nav>
+<main class="max-w-4xl mx-auto px-6 pt-24 pb-32">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="flex items-center gap-2 mb-4">
+<span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[0.65rem] font-bold uppercase tracking-widest rounded-sm">Device Pairing</span>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface-variant text-[0.65rem] font-medium uppercase tracking-widest">Connect</span>
+</div>
+<h1 class="text-[3.5rem] font-semibold tracking-tighter leading-tight text-primary mb-4">ClawNet Connect</h1>
+<p class="text-on-surface-variant text-lg leading-relaxed max-w-2xl">
+        Securely bridge your desktop workspace with the mobile agent. Follow the sequential steps below to establish a low-latency, encrypted tunnel.
+      </p>
+</header>
+<!-- Step 1: Command Block -->
+<section class="mb-16">
+<div class="flex items-baseline justify-between mb-6">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-semibold text-primary opacity-20">01</span>
+<h2 class="text-xl font-semibold tracking-tight">Initialize Tunnel</h2>
+</div>
+<span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant font-medium">Terminal Interface</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-6 relative group">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-3 h-3 rounded-full bg-outline-variant/50"></div>
+<div class="w-3 h-3 rounded-full bg-outline-variant/50"></div>
+<div class="w-3 h-3 rounded-full bg-outline-variant/50"></div>
+</div>
+<div class="mono-font text-sm text-on-surface leading-relaxed">
+<span class="text-outline-variant select-none">$</span> curl -sSL https://clawnet.io/connect | bash -s -- --pair-id <span class="text-primary font-bold">CN-8829-XQ</span>
+</div>
+<button class="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 bg-primary text-on-primary text-xs font-semibold rounded transition-opacity hover:opacity-85">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+          Copy Command
+        </button>
+</div>
+</section>
+<!-- Asymmetric Layout for Step 2 & 3 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+<!-- Step 2: JSON Output -->
+<section class="md:col-span-7">
+<div class="flex items-center gap-4 mb-8">
+<span class="text-2xl font-semibold text-primary opacity-20">02</span>
+<h2 class="text-xl font-semibold tracking-tight">Verify Payload</h2>
+</div>
+<div class="border border-outline-variant/30 rounded-lg overflow-hidden bg-surface-container-lowest">
+<div class="bg-surface-container px-4 py-2 border-b border-outline-variant/30 flex justify-between">
+<span class="text-[0.65rem] font-bold uppercase tracking-widest text-on-surface-variant">manifest.json</span>
+<span class="text-[0.65rem] font-bold uppercase tracking-widest text-on-secondary-fixed-variant">Ready</span>
+</div>
+<div class="p-6 mono-font text-[0.8125rem] leading-relaxed text-on-surface-variant">
+<div>{</div>
+<div class="pl-4">"pairing_node": <span class="text-primary">"claw-station-01"</span>,</div>
+<div class="pl-4">"encryption": <span class="text-primary">"AES-256-GCM"</span>,</div>
+<div class="pl-4">"protocol": <span class="text-primary">"v3.4.1-stable"</span>,</div>
+<div class="pl-4">"handshake": <span class="text-primary">true</span>,</div>
+<div class="pl-4">"timestamp": <span class="text-primary">"2023-10-24T14:22:01Z"</span></div>
+<div>}</div>
+</div>
+</div>
+<p class="mt-4 text-sm text-on-surface-variant leading-relaxed italic">
+          Ensure the manifest details match your local station configuration before proceeding.
+        </p>
+</section>
+<!-- Step 3: QR Code -->
+<section class="md:col-span-5 flex flex-col items-center md:items-start">
+<div class="flex items-center gap-4 mb-8 w-full">
+<span class="text-2xl font-semibold text-primary opacity-20">03</span>
+<h2 class="text-xl font-semibold tracking-tight">Sync Mobile</h2>
+</div>
+<div class="w-full aspect-square bg-white border border-outline-variant/50 p-6 flex items-center justify-center relative mb-8">
+<!-- Stylized QR Code using CSS Grids and Blocks -->
+<div class="w-full h-full border border-surface-container-high grid grid-cols-8 grid-rows-8 gap-1 p-2">
+<!-- Decorative QR patterns -->
+<div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div class="bg-primary"></div>
+<div class="bg-primary"></div><div></div><div class="bg-primary"></div><div></div><div></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div>
+<div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div>
+<div></div><div></div><div></div><div class="bg-primary"></div><div></div><div></div><div></div><div></div>
+<div class="bg-primary"></div><div></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div>
+<div></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div></div><div></div><div class="bg-primary"></div><div></div>
+<div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div><div></div><div class="bg-primary"></div><div class="bg-primary"></div><div class="bg-primary"></div>
+<div class="bg-primary"></div><div></div><div></div><div class="bg-primary"></div><div class="bg-primary"></div><div></div><div></div><div class="bg-primary"></div>
+</div>
+<!-- Overlay Phone Icon -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white p-3 rounded-xl border border-outline-variant/20 shadow-sm">
+<span class="material-symbols-outlined text-4xl text-primary">smartphone</span>
+</div>
+</div>
+</div>
+<div class="text-center md:text-left w-full">
+<p class="text-[0.6875rem] uppercase tracking-widest font-bold text-on-surface mb-6">Open Pairing on Mobile</p>
+<button class="w-full py-4 bg-primary text-on-primary font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-3">
+            Establish Connection
+            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Help Footer -->
+<footer class="mt-32 pt-12 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-6">
+<a class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Security Audit</a>
+<a class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-xs text-on-surface-variant mono-font">All systems operational</span>
+</div>
+</footer>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white dark:bg-[#1A1A1A] border-t border-[#E9E9E7]/50 dark:border-[#37352F]/30 z-50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] dark:text-white font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hub</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Connect</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">database</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Memory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</div>
+</nav>
+</body></html>

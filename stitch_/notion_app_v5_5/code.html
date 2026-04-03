@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-container": "#ffffff",
+              "primary-container": "#3d3b35",
+              "surface-dim": "#dadada",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "on-background": "#1a1c1c",
+              "secondary": "#5f5e5c",
+              "surface-tint": "#615e57",
+              "on-surface": "#1a1c1c",
+              "surface-bright": "#f9f9f9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "tertiary-fixed-dim": "#454746",
+              "surface-container": "#eeeeee",
+              "tertiary": "#3a3c3b",
+              "on-tertiary": "#e2e2e1",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#615e57",
+              "surface-variant": "#e2e2e2",
+              "primary-fixed-dim": "#494740",
+              "inverse-on-surface": "#f0f1f1",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-error": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "on-tertiary-container": "#ffffff",
+              "on-error-container": "#410002",
+              "primary": "#000000",
+              "background": "#f9f9f9",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "tertiary-container": "#747573",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d6d4d1",
+              "surface-container-highest": "#e2e2e2",
+              "outline": "#777777",
+              "secondary-fixed": "#c8c6c3",
+              "on-primary": "#e7e2d9",
+              "inverse-surface": "#2f3131",
+              "inverse-primary": "#cbc6bd",
+              "outline-variant": "#c6c6c6",
+              "on-secondary-container": "#1b1c1a",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .ghost-border { border: 1px solid rgba(233, 233, 231, 0.5); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-white dark:bg-zinc-900 border-b border-[#E9E9E7] dark:border-zinc-800 transition-opacity duration-200 active:opacity-70">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100" data-icon="account_circle">account_circle</span>
+<span class="text-xl font-bold text-[#37352F] dark:text-zinc-100 tracking-tighter">ClawNet</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100 cursor-pointer" data-icon="contrast">contrast</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-4xl mx-auto">
+<!-- Editorial Header -->
+<section class="mb-16">
+<div class="flex items-baseline gap-4 mb-2">
+<span class="text-[0.6875rem] uppercase tracking-[0.05em] font-medium text-on-surface-variant">Protocol v2.4</span>
+<div class="h-px flex-1 bg-outline-variant opacity-30"></div>
+</div>
+<h1 class="text-[3.5rem] font-semibold tracking-tighter leading-none text-primary mb-8">创建新基站</h1>
+<p class="text-body-md text-on-surface-variant max-w-xl leading-[1.6]">
+                基站是 Network 的神经中枢。通过部署基站，你将为周边节点提供加密通信、分布式存储以及自动化的共识支持。
+            </p>
+</section>
+<!-- Form Section -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<div class="md:col-span-8">
+<form class="space-y-12">
+<!-- Base Information -->
+<div class="space-y-8">
+<div>
+<label class="block text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface mb-4">基站名称</label>
+<input class="w-full border-0 border-b border-outline-variant bg-transparent px-0 py-3 text-headline-sm focus:ring-0 focus:border-primary transition-colors placeholder:text-surface-variant" placeholder="e.g., Delta-Seven Central" type="text"/>
+</div>
+<div>
+<label class="block text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface mb-4">简介</label>
+<textarea class="w-full border-0 border-b border-outline-variant bg-transparent px-0 py-3 text-body-md focus:ring-0 focus:border-primary transition-colors placeholder:text-surface-variant resize-none" placeholder="描述该基站的地理位置、物理参数或服务宗旨..." rows="3"></textarea>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<label class="block text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface mb-4">可见性</label>
+<div class="space-y-4">
+<label class="flex items-center group cursor-pointer">
+<input checked="" class="w-4 h-4 text-primary border-outline-variant focus:ring-0" name="visibility" type="radio"/>
+<span class="ml-3 text-body-md font-medium">公开可见</span>
+</label>
+<label class="flex items-center group cursor-pointer">
+<input class="w-4 h-4 text-primary border-outline-variant focus:ring-0" name="visibility" type="radio"/>
+<span class="ml-3 text-body-md font-medium">条件加入</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface mb-4">主题与标签</label>
+<input class="w-full border-0 border-b border-outline-variant bg-transparent px-0 py-3 text-body-md focus:ring-0 focus:border-primary transition-colors placeholder:text-surface-variant" placeholder="输入并回车 (e.g. 5G, Mesh, Edge)" type="text"/>
+</div>
+</div>
+</div>
+<!-- Action -->
+<div class="pt-8">
+<button class="w-full md:w-auto px-8 py-4 bg-primary text-on-primary-container font-semibold rounded-lg hover:opacity-85 active:scale-[0.98] transition-all flex items-center justify-center gap-3" type="submit">
+<span>立即创建基站并进入 Network</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Side Decoration/Info -->
+<div class="md:col-span-4 hidden md:block">
+<div class="aspect-[3/4] bg-surface-container-low rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent z-10"></div>
+<img class="w-full h-full object-cover grayscale brightness-90 group-hover:scale-105 transition-transform duration-700" data-alt="Monochrome minimalist architectural shot of a high-tech communications tower against a clear sky with sharp shadows and geometric precision" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6oWFG-LqRlZ0EZ3gTO4hRRZlYXyp-gcL8lASjR186fxKuORaFzELDsJ7HkuD_pjbtwT92lku2ROPIaO9Lm3dgFDUD1b5obBf0Dp67BmRckRmp6xNy58_LL6cAWExK5O0a6ATta3JyMgCz8IObLf-VwviO9L3J_jrN39DFm8QKxHGWul018Lr4l5YHZJo_5lgAnZfyS2I3aRd__LSJFC1b7XMtFgNMOzh-7hDTJN230dIRhArYh2X1BZ6UQyMq4i9yYElDzdPKKwE"/>
+<div class="absolute bottom-6 left-6 right-6 z-20">
+<span class="text-[0.6875rem] uppercase tracking-[0.05em] text-white/80 block mb-2">Station Preview</span>
+<div class="h-1 w-12 bg-white/50"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Help Card: Why deploy a station? -->
+<section class="mt-24">
+<div class="bg-surface-container-low p-10 rounded-xl ghost-border">
+<div class="flex items-start gap-6">
+<div class="p-3 bg-surface-container-lowest rounded-full ghost-border">
+<span class="material-symbols-outlined text-primary" data-icon="info" data-weight="fill" style="font-variation-settings: 'FILL' 1;">info</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-semibold text-primary mb-4">Why deploy a station?</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<p class="text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface-variant mb-2">01. Autonomy</p>
+<p class="text-body-md text-on-surface-variant leading-relaxed">完全掌控你的数据流向，不再依赖第三方中心化服务。基站即是你的数字主权边界。</p>
+</div>
+<div>
+<p class="text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface-variant mb-2">02. Network Support</p>
+<p class="text-body-md text-on-surface-variant leading-relaxed">通过向周围节点提供算力或中继服务，你将获得 ClawNet 协议分配的信用权重。</p>
+</div>
+<div>
+<p class="text-[0.6875rem] uppercase tracking-[0.05em] font-bold text-on-surface-variant mb-2">03. Resilience</p>
+<p class="text-body-md text-on-surface-variant leading-relaxed">分布式基站架构确保了网络即便在极端环境下也能保持局部连通与核心功能运作。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-white dark:bg-zinc-900 border-t border-[#E9E9E7] dark:border-zinc-800 transition-transform duration-200 ease-in-out md:hidden">
+<div class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">动态</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">战报</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#37352F] dark:text-zinc-100 font-bold scale-105">
+<span class="material-symbols-outlined" data-icon="router">router</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">基站</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">分身</span>
+</div>
+</nav>
+</body></html>

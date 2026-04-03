@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#e2e2e2",
+              "primary-fixed-dim": "#494740",
+              "primary-fixed": "#615e57",
+              "on-tertiary": "#e2e2e1",
+              "error-container": "#ffdad6",
+              "on-secondary-fixed": "#1b1c1a",
+              "inverse-on-surface": "#f0f1f1",
+              "secondary": "#5f5e5c",
+              "surface-tint": "#615e57",
+              "primary-container": "#3d3b35",
+              "surface-dim": "#dadada",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "on-background": "#1a1c1c",
+              "surface": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-container": "#ffffff",
+              "surface-container": "#eeeeee",
+              "tertiary": "#3a3c3b",
+              "tertiary-fixed-dim": "#454746",
+              "surface-bright": "#f9f9f9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "on-surface": "#1a1c1c",
+              "outline": "#777777",
+              "secondary-fixed": "#c8c6c3",
+              "surface-container-highest": "#e2e2e2",
+              "secondary-container": "#d6d4d1",
+              "on-secondary": "#ffffff",
+              "on-tertiary-fixed": "#ffffff",
+              "outline-variant": "#c6c6c6",
+              "on-secondary-container": "#1b1c1a",
+              "inverse-surface": "#2f3131",
+              "inverse-primary": "#cbc6bd",
+              "on-primary": "#e7e2d9",
+              "background": "#f9f9f9",
+              "on-error-container": "#410002",
+              "primary": "#000000",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "on-tertiary-container": "#ffffff",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "tertiary-container": "#747573",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9f9f9; color: #37352F; }
+        .material-symbols-outlined { font-size: 20px; vertical-align: middle; }
+        .ghost-border { border: 1px solid rgba(233, 233, 231, 0.5); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface min-h-screen flex flex-col items-center justify-start">
+<header class="w-full sticky top-0 z-50 border-b border-[#E9E9E7]/50 bg-white flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#37352F]">menu</span>
+<span class="font-sans font-semibold tracking-tighter text-2xl text-[#37352F]">ARCHIVE</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F]">search</span>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a professional man with a neutral expression in high-key minimalist studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMc9Pi5v6oyExlOAWrVlDY7kQf8xoQr--jp9cPcYwNco4TT1eO6uzz_wMmgGyy9VOWsGfKGFeGIDgtnFias5HvPrEjh5mp4XtFlbUv8laycAa5WVoSPZkJLB6jEEtf27eE0zo-15WYlDgPgi4LJ_zyY7H-ywGf-IQ-cvLVwJjTFCNjnaF_nwndzYv7Fmb9pjiUCe1nPUurydWLEKZWooKxcR2QEM6XbbvQgs32oakmMM3SYqEVfGyQFljWJrIwohN_pIv5XifCBWY"/>
+</div>
+</div>
+</header>
+<main class="w-full max-w-4xl px-6 py-12 md:py-24 space-y-12">
+<section class="space-y-4">
+<h1 class="text-[2.75rem] font-semibold tracking-tighter leading-none text-[#37352F]">Source Files</h1>
+<p class="text-[0.875rem] leading-relaxed text-on-surface-variant max-w-md">
+                These documents shape the core intelligence of your agent. Each file provides context, rules, and behavioral samples for high-fidelity responses.
+            </p>
+</section>
+<div class="bg-surface-container-lowest border border-[#E9E9E7]/50 rounded-xl overflow-hidden">
+<div class="px-6 py-4 flex items-center justify-between border-b border-[#E9E9E7]/50">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-on-surface-variant">Repository Contents</span>
+<button class="flex items-center gap-2 px-3 py-1.5 bg-primary text-white text-[0.6875rem] uppercase tracking-widest font-medium rounded-lg hover:opacity-85 transition-all active:scale-95">
+<span class="material-symbols-outlined !text-[14px]">add</span>
+                    + Add Source
+                </button>
+</div>
+<div class="divide-y divide-[#E9E9E7]/30">
+<!-- File Item 1 -->
+<div class="group flex items-center justify-between px-6 py-5 hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center rounded bg-surface-container text-[#37352F]">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div>
+<p class="text-[0.875rem] font-medium text-[#37352F]">Urban Notes.md</p>
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Text Document</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Updated 2h ago</p>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_horiz</span>
+</div>
+</div>
+<!-- File Item 2 -->
+<div class="group flex items-center justify-between px-6 py-5 hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center rounded bg-surface-container text-[#37352F]">
+<span class="material-symbols-outlined">audio_file</span>
+</div>
+<div>
+<p class="text-[0.875rem] font-medium text-[#37352F]">Speech Samples.txt</p>
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Audio Log</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Updated Oct 24</p>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_horiz</span>
+</div>
+</div>
+<!-- File Item 3 -->
+<div class="group flex items-center justify-between px-6 py-5 hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 flex items-center justify-center rounded bg-surface-container text-[#37352F]">
+<span class="material-symbols-outlined">settings_input_component</span>
+</div>
+<div>
+<p class="text-[0.875rem] font-medium text-[#37352F]">System_Instructions.yaml</p>
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Config</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant">Updated 1d ago</p>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
+<div class="p-8 bg-surface-container-low rounded-xl flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary">data_object</span>
+<h3 class="text-headline-sm font-semibold tracking-tight text-[#37352F]">Knowledge Density</h3>
+<p class="text-body-md text-on-surface-variant">The agent currently processes 14.2k tokens of specialized context across these files.</p>
+<div class="h-1 bg-outline-variant w-full rounded-full overflow-hidden mt-2">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div class="p-8 border border-outline-variant/30 rounded-xl flex flex-col gap-4 justify-center">
+<div class="flex -space-x-2">
+<img alt="team" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Portrait of a woman with short dark hair, minimal aesthetic, high contrast black and white photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLs-P8kBo6nbh8a684BYiW335sjRIdT4RRTa9xy86nDIC7TXF9cKQOfnAC1F_X-VgY9bWqsv8nbTAEtKaUseyB6_cEhsPuG-T5TNtoMj7l78EDXZ6WzcIvnNKc_ck5VB1JCzLPwBP1gEF-Ono2TTui3h64fp5H8XJfEtKymPLXj5Xx18XOq9rrSQXign00UgI2AGIC4qj5SlyG_ek4Vbq8xDdiDREzPCS8UIZirB3gZSnD8QloiMjvSt_qZTO0-30opEN2wCmzVRY"/>
+<img alt="team" class="w-8 h-8 rounded-full border-2 border-white" data-alt="Portrait of a young man with sharp features looking directly at camera, soft morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM_QilGg4YJrnODIKWvFldK2feXBT8rc7Y5x4Wse5kIUkT4imk-8OLaNV9eC5cjK5IAz8P3hf1qUv7rp_3ZaUh_AzgYv0m6PNgRvYMhiua9ejWAj_qMlWQM9LovPKJYt2-P3_IOfFrmM9ZKNSda5h7aO4TJagwx1KTzoh3pfGdv2M-RFvORbloAWEgVzi6CtYP28a0WEkLOa4UniY3pbsdTrBT7n-TH0NplxSxowdXc3sNey0AWCfMikq_Urpc63bMDugwZuNcfvQ"/>
+</div>
+<h3 class="text-headline-sm font-semibold tracking-tight text-[#37352F]">Shared Assets</h3>
+<p class="text-body-md text-on-surface-variant">2 collaborators have access to modify these core intelligence files.</p>
+</div>
+</section>
+</main>
+<div class="h-24"></div>
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-white dark:bg-[#1A1A1A] border-t border-[#E9E9E7]/50 z-50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="label-sm uppercase tracking-widest font-medium text-[10px] mt-1">Dynamic</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="label-sm uppercase tracking-widest font-medium text-[10px] mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined">radio</span>
+<span class="label-sm uppercase tracking-widest font-medium text-[10px] mt-1">Station</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#000000] font-bold transition-all duration-200 active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="label-sm uppercase tracking-widest font-medium text-[10px] mt-1">Memory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97] transition-all duration-200 active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+<span class="label-sm uppercase tracking-widest font-medium text-[10px] mt-1">Avatar</span>
+</div>
+</nav>
+</body></html>

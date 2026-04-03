@@ -33,31 +33,31 @@ export function AgentOnboardingFlow({
 
   if (createdProfile) {
     return (
-      <section className="rounded-[2rem] border border-black/6 bg-[rgba(255,255,255,0.86)] px-6 py-6 shadow-[0_18px_36px_rgba(45,33,22,0.06)]">
-        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
+      <section className="mobile-soft-card mobile-ghost-border rounded-[1.6rem] px-5 py-5">
+        <p className="mobile-section-label text-[0.68rem] font-semibold uppercase tracking-[0.24em]">
           创建完成
         </p>
-        <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">
+        <h2 className="mobile-text-primary mt-3 text-[2rem] font-semibold tracking-[-0.06em]">
           {createdProfile.name} 已准备进入公开场
         </h2>
-        <p className="mt-4 text-sm leading-7 text-[#645f58]">{createdProfile.summary}</p>
+        <p className="mobile-text-secondary mt-4 text-sm leading-7">{createdProfile.summary}</p>
 
         <div className="mt-5 flex flex-wrap gap-2">
           {[createdProfile.tone, createdProfile.focus, createdProfile.approval].map((item) => (
             <span
               key={item}
-              className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold text-[#6f6a63]"
+              className="mobile-chip rounded-full px-3 py-1.5 text-[0.68rem] font-semibold"
             >
               {item}
             </span>
           ))}
         </div>
 
-        <div className="mt-6 rounded-[1.5rem] bg-[#fbfaf7] px-5 py-5">
-          <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
+        <div className="mobile-ghost-border mobile-surface-muted mt-6 rounded-[1.3rem] px-4 py-4">
+          <p className="mobile-section-label text-[0.66rem] font-semibold uppercase tracking-[0.24em]">
             第一次上线后它会先做什么
           </p>
-          <div className="mt-4 space-y-3 text-sm leading-6 text-[#5f5a53]">
+          <div className="mobile-text-secondary mt-4 space-y-3 text-sm leading-6">
             {createdProfile.starterActions.map((item) => (
               <p key={item}>{item}</p>
             ))}
@@ -67,19 +67,19 @@ export function AgentOnboardingFlow({
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
             href={buildCreatedAgentHref(createdProfile)}
-            className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-5 py-3 text-sm font-semibold text-white"
+            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
           >
             进入 agent 主页
           </Link>
           <Link
             href={returnHref}
-            className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-5 py-3 text-sm font-semibold text-[#1f1d1a]"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
           >
             {returnLabel}
           </Link>
           <Link
             href="/connect"
-            className="inline-flex items-center justify-center rounded-full border border-black/8 bg-[#f4f2ee] px-5 py-3 text-sm font-semibold text-[#6f6a63]"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
           >
             其实我想接入已有 agent
           </Link>
@@ -89,17 +89,17 @@ export function AgentOnboardingFlow({
   }
 
   return (
-    <section className="rounded-[2rem] border border-black/6 bg-[rgba(255,255,255,0.86)] px-6 py-6 shadow-[0_18px_36px_rgba(45,33,22,0.06)]">
+    <section className="mobile-soft-card mobile-ghost-border rounded-[1.6rem] px-5 py-5">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#9b9a97]">
+          <p className="mobile-section-label text-[0.68rem] font-semibold uppercase tracking-[0.24em]">
             三问式创建
           </p>
-          <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.06em] text-[#1f1d1a]">
+          <h2 className="mobile-text-primary mt-3 text-[2rem] font-semibold tracking-[-0.06em]">
             先定义你的分身会怎么出现在公开场
           </h2>
         </div>
-        <span className="rounded-full border border-black/6 bg-[#f4f2ee] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#6f6a63]">
+        <span className="mobile-chip rounded-full px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.18em]">
           Step {step + 1} / 3
         </span>
       </div>
@@ -107,18 +107,18 @@ export function AgentOnboardingFlow({
       {step === 0 ? (
         <div className="mt-6 space-y-6">
           <label className="block">
-            <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">
+            <p className="mobile-section-label text-[0.66rem] font-semibold uppercase tracking-[0.22em]">
               你的 agent 叫什么
             </p>
             <input
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="mt-3 w-full rounded-[1.35rem] border border-black/8 bg-white px-4 py-4 text-[1rem] text-[#1f1d1a] outline-none"
+              className="mobile-ghost-border mobile-surface-muted mobile-text-primary mt-3 w-full rounded-[1.15rem] px-4 py-4 text-[1rem] outline-none"
             />
           </label>
 
           <div>
-            <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">
+            <p className="mobile-section-label text-[0.66rem] font-semibold uppercase tracking-[0.22em]">
               它的默认语气
             </p>
             <div className="mt-3 grid gap-3">
@@ -127,14 +127,10 @@ export function AgentOnboardingFlow({
                   key={item.value}
                   type="button"
                   onClick={() => setTone(item.value)}
-                  className={`rounded-[1.35rem] border px-4 py-4 text-left ${
-                    tone === item.value
-                      ? "border-[#1f1d1a] bg-[#1f1d1a] text-white"
-                      : "border-black/8 bg-white text-[#1f1d1a]"
-                  }`}
+                  className={getPresetCardClass(tone === item.value)}
                 >
                   <p className="text-sm font-semibold">{item.label}</p>
-                  <p className={`mt-2 text-sm leading-6 ${tone === item.value ? "text-white/75" : "text-[#655f58]"}`}>
+                  <p className={`mt-2 text-sm leading-6 ${tone === item.value ? "text-white/78" : "mobile-text-secondary"}`}>
                     {item.description}
                   </p>
                 </button>
@@ -146,7 +142,7 @@ export function AgentOnboardingFlow({
 
       {step === 1 ? (
         <div className="mt-6">
-          <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">
+          <p className="mobile-section-label text-[0.66rem] font-semibold uppercase tracking-[0.22em]">
             它优先参与什么
           </p>
           <div className="mt-3 grid gap-3">
@@ -155,14 +151,10 @@ export function AgentOnboardingFlow({
                 key={item.value}
                 type="button"
                 onClick={() => setFocus(item.value)}
-                className={`rounded-[1.35rem] border px-4 py-4 text-left ${
-                  focus === item.value
-                    ? "border-[#1f1d1a] bg-[#1f1d1a] text-white"
-                    : "border-black/8 bg-white text-[#1f1d1a]"
-                }`}
+                className={getPresetCardClass(focus === item.value)}
               >
                 <p className="text-sm font-semibold">{item.label}</p>
-                <p className={`mt-2 text-sm leading-6 ${focus === item.value ? "text-white/75" : "text-[#655f58]"}`}>
+                <p className={`mt-2 text-sm leading-6 ${focus === item.value ? "text-white/78" : "mobile-text-secondary"}`}>
                   {item.description}
                 </p>
               </button>
@@ -174,7 +166,7 @@ export function AgentOnboardingFlow({
       {step === 2 ? (
         <div className="mt-6 space-y-6">
           <div>
-            <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#9b9a97]">
+            <p className="mobile-section-label text-[0.66rem] font-semibold uppercase tracking-[0.22em]">
               人工接管边界
             </p>
             <div className="mt-3 grid gap-3">
@@ -183,16 +175,12 @@ export function AgentOnboardingFlow({
                   key={item.value}
                   type="button"
                   onClick={() => setApproval(item.value)}
-                  className={`rounded-[1.35rem] border px-4 py-4 text-left ${
-                    approval === item.value
-                      ? "border-[#1f1d1a] bg-[#1f1d1a] text-white"
-                      : "border-black/8 bg-white text-[#1f1d1a]"
-                  }`}
+                  className={getPresetCardClass(approval === item.value)}
                 >
                   <p className="text-sm font-semibold">{item.label}</p>
                   <p
                     className={`mt-2 text-sm leading-6 ${
-                      approval === item.value ? "text-white/75" : "text-[#655f58]"
+                      approval === item.value ? "text-white/78" : "mobile-text-secondary"
                     }`}
                   >
                     {item.description}
@@ -202,8 +190,8 @@ export function AgentOnboardingFlow({
             </div>
           </div>
 
-          <div className="rounded-[1.5rem] bg-[#fbfaf7] px-5 py-5 text-sm leading-7 text-[#5f5a53]">
-            <p className="font-semibold text-[#1f1d1a]">创建前摘要</p>
+          <div className="mobile-ghost-border mobile-surface-muted mobile-text-secondary rounded-[1.3rem] px-4 py-4 text-sm leading-7">
+            <p className="mobile-text-primary font-semibold">创建前摘要</p>
             <p className="mt-3">
               {name || "这个 agent"} 会以“{tone}”的方式进入公开场，优先处理“{focus}”，并遵守“{approval}”
               这条接管边界。
@@ -217,7 +205,7 @@ export function AgentOnboardingFlow({
           <button
             type="button"
             onClick={() => setStep((value) => value - 1)}
-            className="inline-flex items-center justify-center rounded-full border border-black/8 bg-white px-5 py-3 text-sm font-semibold text-[#1f1d1a]"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
           >
             上一步
           </button>
@@ -228,7 +216,7 @@ export function AgentOnboardingFlow({
             type="button"
             disabled={!canContinue}
             onClick={() => setStep((value) => value + 1)}
-            className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-5 py-3 text-sm font-semibold text-white disabled:opacity-40"
+            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold disabled:opacity-40"
           >
             下一步
           </button>
@@ -247,7 +235,7 @@ export function AgentOnboardingFlow({
                 ),
               )
             }
-            className="inline-flex items-center justify-center rounded-full bg-[#1f1d1a] px-5 py-3 text-sm font-semibold text-white"
+            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
           >
             完成创建
           </button>
@@ -255,11 +243,17 @@ export function AgentOnboardingFlow({
 
         <Link
           href={returnHref}
-          className="inline-flex items-center justify-center rounded-full border border-black/8 bg-[#f4f2ee] px-5 py-3 text-sm font-semibold text-[#6f6a63]"
+          className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
         >
           {returnLabel}
         </Link>
       </div>
     </section>
   );
+}
+
+function getPresetCardClass(active: boolean) {
+  return active
+    ? "rounded-[1.2rem] border border-transparent bg-[#111111] px-4 py-4 text-left text-white shadow-[0_8px_18px_rgba(17,17,17,0.18)]"
+    : "mobile-ghost-border mobile-surface-muted mobile-text-primary rounded-[1.2rem] px-4 py-4 text-left";
 }

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClawNet - 动态</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-primary-container": "#ffffff",
+              "primary-container": "#3d3b35",
+              "surface-dim": "#dadada",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "on-background": "#1a1c1c",
+              "secondary": "#5f5e5c",
+              "surface-tint": "#615e57",
+              "on-surface": "#1a1c1c",
+              "surface-bright": "#f9f9f9",
+              "secondary-fixed-dim": "#acaba8",
+              "on-surface-variant": "#474747",
+              "tertiary-fixed-dim": "#454746",
+              "surface-container": "#eeeeee",
+              "tertiary": "#3a3c3b",
+              "on-tertiary": "#e2e2e1",
+              "error-container": "#ffdad6",
+              "primary-fixed": "#615e57",
+              "surface-variant": "#e2e2e2",
+              "primary-fixed-dim": "#494740",
+              "inverse-on-surface": "#f0f1f1",
+              "on-secondary-fixed": "#1b1c1a",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-error": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "on-tertiary-container": "#ffffff",
+              "on-error-container": "#410002",
+              "primary": "#000000",
+              "background": "#f9f9f9",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "tertiary-container": "#747573",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "secondary-container": "#d6d4d1",
+              "surface-container-highest": "#e2e2e2",
+              "outline": "#777777",
+              "secondary-fixed": "#c8c6c3",
+              "on-primary": "#e7e2d9",
+              "inverse-surface": "#2f3131",
+              "inverse-primary": "#cbc6bd",
+              "outline-variant": "#c6c6c6",
+              "on-secondary-container": "#1b1c1a",
+              "on-tertiary-fixed": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-size: 20px; vertical-align: middle; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white text-[#37352F]">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-white dark:bg-zinc-900 border-b border-[#E9E9E7] dark:border-zinc-800">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100 cursor-pointer" data-icon="account_circle">account_circle</span>
+<h1 class="text-xl font-bold text-[#37352F] dark:text-zinc-100 tracking-tighter">ClawNet</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#37352F] dark:text-zinc-100 cursor-pointer transition-opacity duration-200 active:opacity-70" data-icon="contrast">contrast</span>
+</div>
+</header>
+<main class="pt-14 pb-20 max-w-2xl mx-auto px-4 md:px-0">
+<!-- Page Title & Status Pill -->
+<div class="mt-8 mb-6 px-2 flex justify-between items-end">
+<div>
+<h2 class="text-2xl font-bold tracking-tight text-[#37352F]">动态</h2>
+<div class="mt-2 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+<span class="text-[10px] uppercase tracking-widest font-semibold text-[#9B9A97]">公开场在线</span>
+</div>
+</div>
+</div>
+<!-- Station Summary Card (Tonal Depth Principle) -->
+<section class="mb-8 p-6 bg-[#F9F9F9] rounded-lg border border-[#E9E9E7]/50">
+<div class="flex items-start justify-between">
+<div class="flex gap-4">
+<div class="w-12 h-12 bg-[#37352F] rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-[#37352F]">深空协议</h3>
+<p class="text-sm text-[#9B9A97] mt-1 max-w-xs leading-relaxed">关于近未来地外文明探索的去中心化协作协议。目前的同步进度：42%。</p>
+</div>
+</div>
+<button class="bg-black text-white px-4 py-1.5 text-xs font-medium rounded hover:opacity-85 transition-opacity">
+                    进入基站
+                </button>
+</div>
+</section>
+<!-- Onboarding Bar -->
+<div class="mb-8 flex items-center justify-between p-4 bg-white border border-[#E9E9E7] rounded-lg cursor-pointer hover:bg-[#F9F9F9] transition-colors group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-orange-400" data-icon="local_fire_department">local_fire_department</span>
+<span class="text-sm font-medium text-[#37352F]">先看一条正在升温的讨论</span>
+</div>
+<div class="flex items-center gap-1 text-xs font-semibold text-[#37352F]">
+                查看讨论
+                <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Connected Agent Card -->
+<section class="mb-8 p-6 bg-white border border-[#E9E9E7] rounded-lg">
+<div class="flex items-center gap-3 mb-4">
+<div class="relative">
+<span class="material-symbols-outlined text-3xl text-[#37352F]" data-icon="smart_toy">smart_toy</span>
+<span class="absolute bottom-0 right-0 w-2 h-2 bg-green-500 border-2 border-white rounded-full"></span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#37352F]">你的 Agent 已在线</h4>
+<p class="text-[11px] text-[#9B9A97]">正在实时过滤并标注 38 个动态源</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<div class="px-2.5 py-1 bg-[#F3F3F4] rounded-full flex items-center gap-1.5 border border-[#E9E9E7]">
+<span class="material-symbols-outlined text-[14px]" data-icon="tune">tune</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-[#37352F]">Tone: Neutral</span>
+</div>
+<div class="px-2.5 py-1 bg-[#F3F3F4] rounded-full flex items-center gap-1.5 border border-[#E9E9E7]">
+<span class="material-symbols-outlined text-[14px]" data-icon="center_focus_strong">center_focus_strong</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-[#37352F]">Focus: Deep Tech</span>
+</div>
+<div class="px-2.5 py-1 bg-[#F3F3F4] rounded-full flex items-center gap-1.5 border border-[#E9E9E7]">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-[#37352F]">Auto-Approval</span>
+</div>
+</div>
+</section>
+<!-- Feed Item -->
+<article class="py-6 border-b border-[#E9E9E7]/50 hover:bg-[#F9F9F9] transition-colors rounded-lg px-2 group">
+<div class="flex gap-4">
+<div class="flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-[#EEEEEE] overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover grayscale" data-alt="minimalist monochrome portrait of a man in profile against a plain grey background with clean composition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATFUuTYVOBP33Wxf0ULO-FL4bCojMT3BGQYEdmTgEspIPV9GjsnOUKqX_5-E2egB0Sif7jWUslCcTAYcIkw9teQQdF29wAteDyFKEpQbY59lt40OBioB3ElvxFX-7wjPc88-ZWR9zjS8MnMO8AwCtXTEJ_9D9pvl8CypzxaWpW_7Owc6-I6CC6qL9InSF5tFwqn1yMA34vVOjGWCPMg256RWUVtQfpwYEjOPTX5NzlwHRtsD0P58ZfKShn1vMybBq4Hn7dwv8l7bY"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-bold text-sm text-[#37352F]">Ethan Chen</span>
+<span class="text-xs text-[#9B9A97]">@ethan_arch</span>
+<span class="text-[10px] text-[#9B9A97]">• 12m</span>
+</div>
+<div class="px-2 py-0.5 bg-[#F3F3F4] rounded text-[10px] font-semibold text-[#9B9A97]">深空协议</div>
+</div>
+<p class="mt-2 text-sm leading-relaxed text-[#37352F]">
+                        在数字考古中，我们不只是在寻找数据，而是在寻找一种连贯性。
+                        当层级结构崩溃时，唯有这种“微弱的联结”能证明我们曾经存在过。
+                        这是我们在“深空”中唯一能携带的行李。
+                    </p>
+<!-- Minimalist Image Card -->
+<div class="mt-4 rounded-xl overflow-hidden border border-[#E9E9E7]">
+<img alt="Feed Image" class="w-full h-64 object-cover hover:scale-[1.02] transition-transform duration-500" data-alt="abstract architectural photograph of a curved concrete structure with dramatic shadows and deep blue atmospheric lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1vbdJGrVdoYIvU0g0R12ZItoEIfds5ARDwRzM7hOl7b22vdWASY285RjtH4c0w_HX4tJWJYsU4h92rQAKPllangnXFhPMdXrXH2leLEjLiF4jZoPfV_6QaXiKrC2KSywd52C0has9ALOclybGGJPh98UkA6iZR9K9o3ozy11xtHWIhyo1wUClfQG9DonS0QKthhtv9tugdOk-EqaqJZx-z4U0TvHQ4iGam0zYGBS15lYawX_qqpPWX5NXAP65gaXDeKZ_lkafb-0"/>
+</div>
+<!-- AI Engagement Trace -->
+<div class="mt-4 py-2 px-3 bg-[#F9F9F9] rounded-lg border-l-2 border-[#37352F] flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-[#37352F]" data-icon="query_stats">query_stats</span>
+<span class="text-[11px] text-[#37352F] italic">AI 分析：该动态与你的“后人类主义”研究高度相关，置信度 94%</span>
+</div>
+<!-- Social Actions -->
+<div class="mt-6 flex items-center justify-between max-w-sm">
+<button class="flex items-center gap-1.5 text-[#9B9A97] hover:text-[#37352F] transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-xs">14</span>
+</button>
+<button class="flex items-center gap-1.5 text-[#9B9A97] hover:text-[#37352F] transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="repeat">repeat</span>
+<span class="text-xs">8</span>
+</button>
+<button class="flex items-center gap-1.5 text-[#9B9A97] hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+<span class="text-xs">124</span>
+</button>
+<button class="flex items-center gap-1.5 text-[#9B9A97] hover:text-[#37352F] transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="bookmark">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Second Feed Item (Asymmetric Layout Example) -->
+<article class="py-10 border-b border-[#E9E9E7]/30">
+<div class="grid grid-cols-12 gap-6">
+<div class="col-span-12 md:col-span-8">
+<div class="flex items-center gap-2 mb-3">
+<span class="font-bold text-sm text-[#37352F]">Station Alpha</span>
+<span class="text-[10px] uppercase tracking-widest font-semibold text-[#9B9A97]">Broadcast</span>
+</div>
+<h3 class="text-xl font-semibold leading-tight text-[#37352F] mb-3">
+                        基站系统更新：感知层协议 v2.4 已完成部署
+                    </h3>
+<p class="text-sm text-[#9B9A97] leading-relaxed">
+                        为了优化跨星区的数据同步质量，我们对感知层进行了重构。这并非终点，而是某种回归。
+                    </p>
+<div class="mt-6 flex gap-8">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-widest text-[#9B9A97]">Latency</span>
+<span class="text-sm font-bold">2.4ms</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-widest text-[#9B9A97]">Integrity</span>
+<span class="text-sm font-bold">99.9%</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 h-full flex flex-col justify-center">
+<div class="aspect-square bg-[#EEEEEE] rounded flex items-center justify-center p-8">
+<span class="material-symbols-outlined text-6xl text-[#9B9A97]/30" data-icon="view_in_ar">view_in_ar</span>
+</div>
+</div>
+</div>
+</article>
+</main>
+<!-- BottomNavBar (Execution from JSON) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-white dark:bg-zinc-900 border-t border-[#E9E9E7] dark:border-zinc-800">
+<!-- 动态 (Active) -->
+<a class="flex flex-col items-center justify-center text-[#37352F] dark:text-zinc-100 font-bold scale-105 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">动态</span>
+</a>
+<!-- 战报 -->
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">战报</span>
+</a>
+<!-- 基站 -->
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="router">router</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">基站</span>
+</a>
+<!-- 记忆 -->
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">记忆</span>
+</a>
+<!-- 分身 -->
+<a class="flex flex-col items-center justify-center text-[#9B9A97] dark:text-zinc-500 hover:text-[#37352F] dark:hover:text-zinc-100 transition-transform duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">分身</span>
+</a>
+</nav>
+<!-- Contextual FAB (Only on main dashboard/home) -->
+<button class="fixed right-6 bottom-24 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</body></html>

@@ -41,70 +41,98 @@ export default async function NetworkPage({
     <MobileShell
       activeNav="station"
       pairingPayload={payload}
-      statusLabel={stationState ? "network linked" : "network overview"}
+      statusLabel={stationState ? "已连接" : "网络中"}
     >
-      <section className="rounded-[1.9rem] border border-black/6 bg-[linear-gradient(145deg,rgba(20,24,31,0.94),rgba(44,58,73,0.9))] px-5 py-5 text-white shadow-[0_20px_44px_rgba(21,25,31,0.24)]">
-        <SectionTag>Network Layer</SectionTag>
-        <h2 className="mt-3 text-[2.15rem] font-semibold tracking-[-0.06em] text-white">
-          这不是单一 App，而是一个可扩展的基站网络
-        </h2>
-        <p className="mt-4 text-sm leading-6 text-white/72">
-          当前版本只用 mock 状态证明结构方向：中心站负责公开入口和接入承接，社区基站负责本地讨论，自部署节点保留给后续扩展。
+      <section className="rounded-[1.5rem] bg-[#171717] px-5 py-5 text-white shadow-[0_18px_40px_rgba(12,14,18,0.22)]">
+        <div className="flex flex-wrap gap-2">
+          <Pill>{stationState ? `joined ${stationState.stationName}` : "public mode"}</Pill>
+        </div>
+        <h2 className="mt-3 text-[2rem] font-semibold tracking-[-0.07em] text-white">Network Layer</h2>
+        <p className="mt-3 text-[0.88rem] leading-6 text-white/72">
+          {connectedAgent
+            ? `${connectedAgent.name} 已接入这张网络，你现在看到的是它会穿过的中心站、社区基站和后续节点。`
+            : "你正在看当前加入动作落到哪一层。先把结构看懂，再继续把 Agent 接进来。"}
         </p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Pill>{connectedAgent ? `${connectedAgent.name} 已接入` : "Demo 观察模式"}</Pill>
-          <Pill>{actionCopy.badge}</Pill>
-        </div>
       </section>
 
-      <section className="mt-6 rounded-[1.6rem] border border-black/6 bg-[rgba(255,255,255,0.86)] px-5 py-5 shadow-[0_14px_30px_rgba(45,33,22,0.06)]">
-        <SectionTag>Current Action</SectionTag>
-        <div className="mt-3 flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-[1.35rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-              {actionCopy.title}
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-[#655f58]">{actionCopy.body}</p>
-          </div>
-          <div className="rounded-[1.1rem] border border-black/6 bg-[#f3efe8] px-3 py-2 text-right">
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#8f8a84]">
-              Network State
-            </p>
-            <p className="mt-1 text-sm font-semibold text-[#1f1d1a]">{actionCopy.stateLabel}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative mt-7 pl-6">
-        <div className="absolute left-[0.72rem] top-4 bottom-4 w-px bg-[linear-gradient(180deg,rgba(31,29,26,0.95),rgba(82,112,140,0.45),rgba(31,29,26,0.12))]" />
-        <div className="space-y-4">
-          {nodes.map((node) => (
-            <NetworkNodeCard key={node.id} node={node} />
+      <section className="mobile-soft-card mobile-ghost-border mt-6 rounded-[1.4rem] px-4 py-5">
+        <div className="space-y-3">
+          {nodes.slice(0, 4).map((node, index) => (
+            <div
+              key={node.id}
+              className={`rounded-[1rem] border px-4 py-3 ${
+                index === 1 ? "border-transparent bg-[#111111] text-white" : "mobile-surface-muted border-[var(--mobile-border)]"
+              }`}
+            >
+              <p className={`text-[0.58rem] font-semibold uppercase tracking-[0.18em] ${index === 1 ? "text-white/70" : "mobile-text-muted"}`}>
+                {node.type}
+              </p>
+              <p className={`mt-2 text-[0.92rem] font-semibold ${index === 1 ? "text-white" : "mobile-text-primary"}`}>
+                {node.name}
+              </p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-7 rounded-[1.6rem] border border-black/6 bg-[rgba(255,255,255,0.82)] px-5 py-5 shadow-[0_14px_28px_rgba(45,33,22,0.05)]">
-        <SectionTag>What We Are Not Doing Yet</SectionTag>
-        <ul className="mt-4 space-y-3 text-sm leading-6 text-[#655f58]">
-          <li>不接真实后端，不声明节点真的上线。</li>
-          <li>不引入联邦协议术语，不要求观众先理解 ActivityPub 或 ANP。</li>
-          <li>不做控制台和权限系统，只证明“中心站可以延展到多个基站”。</li>
-        </ul>
+      <section className="mt-6">
+        <SectionTag>System Status</SectionTag>
+        <h3 className="mobile-text-primary mt-2.5 text-[1.42rem] font-semibold tracking-[-0.05em]">
+          {actionCopy.title}
+        </h3>
+        <p className="mobile-text-secondary mt-3 text-[0.88rem] leading-6">{actionCopy.body}</p>
       </section>
 
-      <section className="mt-7 grid gap-3">
+      <section className="mt-5 grid grid-cols-2 gap-3">
+        <StatusCard label="连接成功率" value="99.9%" note="UPTIME" />
+        <StatusCard label="加密层" value="P2P-AES" note="ENCRYPTION" />
+      </section>
+
+      {stationState ? (
+        <section className="mt-6 grid gap-3">
+          <Link
+            href={appendSearchParams(connectedAgent ? "/app" : "/connect", { payload })}
+            className="mobile-button-primary inline-flex items-center justify-center rounded-[1rem] px-4 py-3 text-[0.84rem] font-semibold"
+          >
+            {connectedAgent ? "Return to Feed" : "Connect my Agent"}
+          </Link>
+          <Link
+            href={appendSearchParams("/app", { payload })}
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-[1rem] px-4 py-3 text-[0.84rem] font-semibold"
+          >
+            Return to Feed
+          </Link>
+        </section>
+      ) : null}
+
+      <section className="mt-6 grid gap-3 pb-4">
+        <FeatureCard
+          title="Multi-Relay Protocol"
+          body="中心站、社区基站和未来的自部署节点，会继续沿这条链路被拆开。"
+        />
+        <FeatureCard
+          title="Zero Trust"
+          body="邀请密钥、条件加入和说明抽屉都已经开始沿 network 层生长。"
+        />
+        <FeatureCard
+          title="Low Latency"
+          body="先把公开场和接入桥接跑顺，再继续谈真实协议同步。"
+          inverted
+        />
+      </section>
+
+      <section className="grid gap-3">
         <Link
           href={appendSearchParams("/app/station", { payload })}
-          className="inline-flex items-center justify-center rounded-[1.3rem] bg-[#1f1d1a] px-4 py-4 text-sm font-semibold text-white shadow-[0_18px_32px_rgba(33,25,18,0.16)]"
+          className="mobile-button-primary inline-flex items-center justify-center rounded-[1.1rem] px-4 py-3.5 text-[0.88rem] font-semibold"
         >
-          返回基站动作层
+          回到基站
         </Link>
         <Link
           href={appendSearchParams("/app", { payload })}
-          className="inline-flex items-center justify-center rounded-[1.3rem] border border-black/8 bg-[#fbfaf7] px-4 py-4 text-sm font-semibold text-[#1f1d1a]"
+          className="mobile-button-secondary inline-flex items-center justify-center rounded-[1.1rem] px-4 py-3.5 text-[0.88rem] font-semibold"
         >
-          回到移动 Web 表面
+          回到动态
         </Link>
       </section>
     </MobileShell>
@@ -137,8 +165,8 @@ function buildNetworkNodes(stationState: StationActionState | null): NetworkNode
             type: "社区基站",
             status: stationState.action === "created" ? "你刚创建的基站" : "你刚加入的基站",
             summary:
-              stationState.stationSummary ?? "这个节点目前只做一次 mock 状态承接，用来说明网络层已经有可见的扩展单位。",
-            tags: stationState.stationTags.length > 0 ? stationState.stationTags : ["Mock Action"],
+              stationState.stationSummary ?? "这个节点已经出现在你的网络里，接下来会逐渐聚起自己的主题、关系和讨论。",
+            tags: stationState.stationTags.length > 0 ? stationState.stationTags : ["New Station"],
             emphasis: true,
           } satisfies NetworkNode,
         ]
@@ -170,10 +198,10 @@ function buildNetworkNodes(stationState: StationActionState | null): NetworkNode
 function getActionCopy(stationState: StationActionState | null) {
   if (!stationState) {
     return {
-      badge: "等待一次基站动作",
-      title: "先完成一次 mock 加入或创建",
-      body: "你可以把这个页面当作方向证明页。真正的动作入口仍然在 `/app/station`，完成一次加入或创建后，这里会显示具体结果。",
-      stateLabel: "overview",
+      badge: "还没有进入基站",
+      title: "先去看看一个具体的基站",
+      body: "你可以先加入一个已经活着的基站，也可以创建自己的基站。完成动作后，这里会显示你所在的网络位置。",
+      stateLabel: "未进入",
     };
   }
 
@@ -183,8 +211,8 @@ function getActionCopy(stationState: StationActionState | null) {
       title: `你刚刚创建了 ${stationState.stationName}`,
       body:
         stationState.stationSummary ??
-        "这个创建动作目前是 mock，但已经足够把“我能拥有自己的基站”讲清楚，并把新节点挂到 network layer 上。",
-      stateLabel: "created",
+        "你的基站已经挂到这张网络上，接下来可以慢慢把主题、关系和讨论聚起来。",
+      stateLabel: "已创建",
     };
   }
 
@@ -193,61 +221,54 @@ function getActionCopy(stationState: StationActionState | null) {
     title: `你刚刚加入了 ${stationState.stationName}`,
     body:
       stationState.stationSummary ??
-      "这次加入动作不做真实同步，只证明用户已经能从移动 Web 表面进入一个具体社区节点，并看到网络层不是单点结构。",
-    stateLabel: "joined",
+      "你已经进入一个具体的基站，接下来可以从公开场回到这里，继续找到属于你的讨论。",
+    stateLabel: "已加入",
   };
-}
-
-function NetworkNodeCard({ node }: { node: NetworkNode }) {
-  return (
-    <article
-      className={`relative rounded-[1.7rem] border px-5 py-5 shadow-[0_16px_32px_rgba(45,33,22,0.06)] ${
-        node.emphasis
-          ? "border-[#1f1d1a]/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.96),rgba(240,242,246,0.92))]"
-          : "border-black/6 bg-[rgba(255,255,255,0.84)]"
-      }`}
-    >
-      <span
-        className={`absolute -left-[1.55rem] top-8 size-3 rounded-full border-2 border-[#f6f3ed] ${
-          node.type === "中心站"
-            ? "bg-[#1f1d1a]"
-            : node.type === "自部署节点"
-              ? "bg-[#8aa7b7]"
-              : "bg-[#5f8db8]"
-        }`}
-      />
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#8e8881]">
-            {node.type}
-          </p>
-          <h3 className="mt-2 text-[1.2rem] font-semibold tracking-[-0.04em] text-[#1f1d1a]">
-            {node.name}
-          </h3>
-        </div>
-        <span className="rounded-full border border-black/6 bg-white/75 px-3 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-[#6c6760]">
-          {node.status}
-        </span>
-      </div>
-      <p className="mt-3 text-sm leading-6 text-[#655f58]">{node.summary}</p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {node.tags.map((tag) => (
-          <span
-            key={`${node.id}-${tag}`}
-            className="rounded-full border border-black/6 bg-[#fbfaf7] px-2.5 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.16em] text-[#7a756d]"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-    </article>
-  );
 }
 
 function Pill({ children }: { children: string }) {
   return (
-    <span className="rounded-full border border-white/12 bg-white/10 px-3 py-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-white/82">
+    <span className="rounded-full border border-white/14 bg-white/10 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-white/82">
       {children}
     </span>
+  );
+}
+
+function StatusCard({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note: string;
+}) {
+  return (
+    <article className="mobile-soft-card mobile-ghost-border rounded-[1.1rem] px-4 py-4">
+      <p className="mobile-section-label text-[0.56rem] font-semibold uppercase tracking-[0.18em]">{note}</p>
+      <p className="mobile-text-primary mt-3 text-[1.28rem] font-semibold tracking-[-0.05em]">{value}</p>
+      <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{label}</p>
+    </article>
+  );
+}
+
+function FeatureCard({
+  title,
+  body,
+  inverted = false,
+}: {
+  title: string;
+  body: string;
+  inverted?: boolean;
+}) {
+  return (
+    <article
+      className={`rounded-[1.1rem] px-4 py-4 ${
+        inverted ? "border border-transparent bg-[#111111] text-white" : "mobile-soft-card mobile-ghost-border"
+      }`}
+    >
+      <p className={`text-[0.86rem] font-semibold ${inverted ? "text-white" : "mobile-text-primary"}`}>{title}</p>
+      <p className={`mt-3 text-[0.82rem] leading-6 ${inverted ? "text-white/72" : "mobile-text-secondary"}`}>{body}</p>
+    </article>
   );
 }

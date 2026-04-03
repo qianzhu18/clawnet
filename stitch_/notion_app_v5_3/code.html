@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Source Files Panel - Editorial Minimalism</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#454746",
+              "outline-variant": "#E9E9E7", // Updated to match Editorial Minimalism
+              "secondary-fixed": "#c8c6c3",
+              "primary-fixed": "#615e57",
+              "surface-variant": "#e2e2e2",
+              "tertiary-container": "#747573",
+              "secondary-fixed-dim": "#acaba8",
+              "outline": "#777777",
+              "on-secondary-container": "#1b1c1a",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#e7e2d9",
+              "primary-container": "#3d3b35",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f3f4",
+              "tertiary-fixed": "#5d5f5d",
+              "on-secondary-fixed-variant": "#3b3b39",
+              "primary-fixed-dim": "#494740",
+              "on-tertiary-fixed": "#ffffff",
+              "on-surface-variant": "#474747",
+              "on-error-container": "#410002",
+              "surface-container-highest": "#e2e2e2",
+              "surface": "#ffffff", // Pure white for Editorial Minimalism
+              "secondary-container": "#d6d4d1",
+              "surface-dim": "#dadada",
+              "inverse-on-surface": "#f0f1f1",
+              "tertiary": "#3a3c3b",
+              "surface-bright": "#f9f9f9",
+              "on-tertiary-fixed-variant": "#e2e2e1",
+              "on-tertiary-container": "#ffffff",
+              "on-error": "#ffffff",
+              "background": "#ffffff",
+              "inverse-surface": "#2f3131",
+              "surface-container": "#eeeeee",
+              "secondary": "#5f5e5c",
+              "on-surface": "#37352F", // Specific charcoal from design system
+              "on-tertiary": "#e2e2e1",
+              "on-primary-fixed": "#ffffff",
+              "on-primary-container": "#ffffff",
+              "surface-tint": "#615e57",
+              "error": "#ba1a1a",
+              "on-background": "#37352F",
+              "on-secondary-fixed": "#1b1c1a",
+              "inverse-primary": "#cbc6bd",
+              "surface-container-high": "#e8e8e8",
+              "primary": "#000000",
+              "on-primary-fixed-variant": "#e7e2d9",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+        font-size: 20px;
+      }
+      body {
+        background-color: #ffffff;
+        color: #37352F;
+        font-family: 'Inter', sans-serif;
+      }
+      /* Hide scrollbar for clean aesthetic */
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex min-h-screen">
+<!-- NavigationDrawer (JSON Authority) -->
+<aside class="hidden md:flex h-full w-64 bg-[#F9F9F9] dark:bg-[#1F1F1F] flex-col py-6 px-3 gap-1 border-r border-[#E9E9E7] dark:border-[#37352F]/20 fixed left-0 top-0">
+<div class="px-3 mb-8">
+<span class="text-xs uppercase tracking-widest font-bold text-[#9B9A97]">Private</span>
+</div>
+<nav class="flex flex-col gap-0.5">
+<div class="flex items-center px-3 py-1.5 gap-3 text-[#9B9A97] hover:bg-[#EEEEEE] dark:hover:bg-[#2C2C2C] cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">home</span>
+<span class="font-sans text-[13px] leading-relaxed">Workspace</span>
+</div>
+<div class="flex items-center px-3 py-1.5 gap-3 text-[#9B9A97] hover:bg-[#EEEEEE] dark:hover:bg-[#2C2C2C] cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">search</span>
+<span class="font-sans text-[13px] leading-relaxed">Search</span>
+</div>
+<div class="flex items-center px-3 py-1.5 gap-3 text-[#9B9A97] hover:bg-[#EEEEEE] dark:hover:bg-[#2C2C2C] cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-sans text-[13px] leading-relaxed">Updates</span>
+</div>
+<div class="flex items-center px-3 py-1.5 gap-3 font-semibold text-[#37352F] dark:text-white hover:bg-[#EEEEEE] dark:hover:bg-[#2C2C2C] cursor-pointer duration-150 ease-in-out">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-sans text-[13px] leading-relaxed">Settings</span>
+</div>
+</nav>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 md:ml-64 bg-surface min-h-screen">
+<!-- TopAppBar (JSON Authority) -->
+<header class="fixed top-0 md:left-64 right-0 z-50 flex items-center h-12 px-4 justify-between bg-white dark:bg-[#1A1A1A] border-b border-[#E9E9E7] dark:border-[#37352F]/20">
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-[#37352F] dark:text-[#E9E9E7] hover:bg-[#F9F9F9] dark:hover:bg-[#252525] p-1 transition-colors active:opacity-70">arrow_back</button>
+<span class="font-sans tracking-tight text-sm font-semibold text-[#37352F] dark:text-[#E9E9E7]">Document</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs uppercase tracking-widest font-bold text-[#9B9A97] dark:text-[#E9E9E7]">Source Files</span>
+<div class="h-6 w-6 rounded-full bg-surface-container flex items-center justify-center">
+<span class="text-[10px] font-bold">JD</span>
+</div>
+</div>
+</header>
+<!-- Editorial Content Area -->
+<div class="pt-24 pb-20 px-8 md:px-24 max-w-5xl">
+<!-- Header Section -->
+<div class="mb-16">
+<span class="label-sm text-on-surface-variant uppercase tracking-widest font-medium text-[10px] mb-4 block">Knowledge Base</span>
+<h1 class="text-5xl font-semibold tracking-tighter text-on-surface mb-6">Source Files</h1>
+<p class="body-md text-on-surface-variant max-w-xl leading-relaxed">
+                    These documents shape the core intelligence of your agent. The file contents are indexed and processed to provide contextual depth for all interactions.
+                </p>
+</div>
+<!-- Asymmetric Bento-style Stats -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-1 mb-16">
+<div class="md:col-span-8 bg-surface-container-low p-8 flex flex-col justify-between min-h-[160px]">
+<span class="label-sm text-on-surface-variant uppercase tracking-widest text-[10px]">Total Knowledge</span>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-semibold">14.2</span>
+<span class="text-on-surface-variant text-lg">MB</span>
+</div>
+</div>
+<div class="md:col-span-4 bg-surface-container-low p-8 flex flex-col justify-between min-h-[160px]">
+<span class="label-sm text-on-surface-variant uppercase tracking-widest text-[10px]">Active Files</span>
+<span class="text-4xl font-semibold tracking-tighter">08</span>
+</div>
+</div>
+<!-- Document List Section -->
+<section class="space-y-12">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-4">
+<h2 class="headline-sm text-lg font-semibold uppercase tracking-tight">File Inventory</h2>
+<button class="bg-primary text-white px-4 py-1.5 rounded-md text-xs font-medium hover:opacity-85 transition-opacity flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                        Add Source
+                    </button>
+</div>
+<!-- List Items (No-Line Rule Applied: Spacing & Tonal Shifts) -->
+<div class="space-y-1">
+<!-- File 1 -->
+<div class="group flex flex-col md:flex-row md:items-center justify-between p-4 -mx-4 hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">description</span>
+</div>
+<div>
+<h3 class="text-[14px] font-semibold text-on-surface">Urban Notes.md</h3>
+<div class="flex gap-3 mt-1">
+<span class="text-[11px] px-1.5 py-0.5 bg-surface-container text-on-surface-variant rounded-sm uppercase tracking-wider font-medium">Text</span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                                        Updated 2h ago
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1 text-[12px] font-medium text-on-surface hover:bg-surface-container transition-colors">View</button>
+<button class="px-3 py-1 text-[12px] font-medium text-error hover:bg-error-container/20 transition-colors">Remove</button>
+</div>
+</div>
+<!-- File 2 -->
+<div class="group flex flex-col md:flex-row md:items-center justify-between p-4 -mx-4 hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">mic</span>
+</div>
+<div>
+<h3 class="text-[14px] font-semibold text-on-surface">Speech Samples.txt</h3>
+<div class="flex gap-3 mt-1">
+<span class="text-[11px] px-1.5 py-0.5 bg-surface-container text-on-surface-variant rounded-sm uppercase tracking-wider font-medium">Audio Log</span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                                        Updated Oct 12
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1 text-[12px] font-medium text-on-surface hover:bg-surface-container transition-colors">View</button>
+<button class="px-3 py-1 text-[12px] font-medium text-error hover:bg-error-container/20 transition-colors">Remove</button>
+</div>
+</div>
+<!-- File 3 -->
+<div class="group flex flex-col md:flex-row md:items-center justify-between p-4 -mx-4 hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+</div>
+<div>
+<h3 class="text-[14px] font-semibold text-on-surface">System_Instructions.yaml</h3>
+<div class="flex gap-3 mt-1">
+<span class="text-[11px] px-1.5 py-0.5 bg-surface-container text-on-surface-variant rounded-sm uppercase tracking-wider font-medium">Config</span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                                        Updated Oct 10
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1 text-[12px] font-medium text-on-surface hover:bg-surface-container transition-colors">View</button>
+<button class="px-3 py-1 text-[12px] font-medium text-error hover:bg-error-container/20 transition-colors">Remove</button>
+</div>
+</div>
+<!-- File 4 -->
+<div class="group flex flex-col md:flex-row md:items-center justify-between p-4 -mx-4 hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">table_view</span>
+</div>
+<div>
+<h3 class="text-[14px] font-semibold text-on-surface">Persona_Matrix.csv</h3>
+<div class="flex gap-3 mt-1">
+<span class="text-[11px] px-1.5 py-0.5 bg-surface-container text-on-surface-variant rounded-sm uppercase tracking-wider font-medium">Data</span>
+<span class="text-[11px] text-on-surface-variant flex items-center gap-1">
+                                        Updated Oct 08
+                                    </span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="px-3 py-1 text-[12px] font-medium text-on-surface hover:bg-surface-container transition-colors">View</button>
+<button class="px-3 py-1 text-[12px] font-medium text-error hover:bg-error-container/20 transition-colors">Remove</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Editorial Section -->
+<footer class="mt-32 pt-16 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="max-w-xs">
+<span class="label-sm text-on-surface uppercase tracking-widest font-bold text-[11px] mb-4 block">Archive Status</span>
+<p class="text-[13px] text-on-surface-variant leading-relaxed">
+                        All sources are encrypted at rest and processed locally. Deleting a file permanently removes its associated embeddings.
+                    </p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="label-sm text-on-surface uppercase tracking-widest font-bold text-[11px] mb-2 block">Quick Actions</span>
+<a class="text-[13px] text-on-surface hover:underline decoration-1 underline-offset-4" href="#">Refresh All Vectors</a>
+<a class="text-[13px] text-on-surface hover:underline decoration-1 underline-offset-4" href="#">Export Knowledge Set</a>
+<a class="text-[13px] text-error hover:underline decoration-1 underline-offset-4" href="#">Purge All Sources</a>
+</div>
+</footer>
+</div>
+<!-- Floating Action Button (FAB - Contextual Suppression Check) -->
+<!-- Suppressed for Details/Settings screen as per mandate -->
+</main>
+<!-- Mobile Bottom NavBar (JSON Contextual Mapping) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-outline-variant/30 flex items-center justify-around px-4 z-50">
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] mt-1">Workspace</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] mt-1">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#9B9A97]">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-[10px] mt-1">Updates</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] mt-1">Settings</span>
+</div>
+</nav>
+</body></html>

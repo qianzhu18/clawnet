@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>创建我的 Agent - ClawNet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-bright": "#f9f9f9",
+                        "secondary-container": "#d6d4d1",
+                        "tertiary": "#3a3c3b",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#747573",
+                        "surface-tint": "#615e57",
+                        "on-surface-variant": "#474747",
+                        "secondary-fixed-dim": "#acaba8",
+                        "primary-container": "#3d3b35",
+                        "outline": "#777777",
+                        "on-secondary-container": "#1b1c1a",
+                        "primary": "#000000",
+                        "outline-variant": "#c6c6c6",
+                        "surface-variant": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#454746",
+                        "surface-container-low": "#f3f3f4",
+                        "on-primary": "#e7e2d9",
+                        "background": "#f9f9f9",
+                        "surface": "#f9f9f9",
+                        "on-tertiary": "#e2e2e2",
+                        "secondary-fixed": "#c8c6c3",
+                        "inverse-primary": "#cbc6bd",
+                        "tertiary-fixed": "#5d5f5d",
+                        "primary-fixed": "#615e57",
+                        "on-secondary-fixed-variant": "#3b3b39",
+                        "on-primary-fixed": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#ffffff",
+                        "on-background": "#1a1c1c",
+                        "primary-fixed-dim": "#494740",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e8e8e8",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dadada",
+                        "inverse-surface": "#2f3131",
+                        "secondary": "#5f5e5c",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#e2e2e1",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-tertiary-fixed": "#ffffff",
+                        "on-primary-container": "#ffffff",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-surface": "#1a1c1c",
+                        "on-primary-fixed-variant": "#e7e2d9",
+                        "on-error-container": "#410002",
+                        "on-secondary-fixed": "#1b1c1a"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #ffffff; color: #37352F; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .ghost-border { border: 1px solid rgba(233, 233, 231, 0.5); }
+        .sidebar-transition { transition: background-color 0.2s ease; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col md:flex-row">
+<aside class="hidden md:flex flex-col w-64 bg-surface-container-low min-h-screen py-8 px-6 space-y-8">
+<div class="flex items-center gap-3 px-2">
+<span class="material-symbols-outlined text-[#37352F]">clinical_notes</span>
+<span class="text-xl font-bold tracking-tighter text-[#37352F]">ClawNet</span>
+</div>
+<nav class="flex flex-col space-y-1">
+<a class="sidebar-transition flex items-center gap-3 px-3 py-2 text-[#9B9A97] hover:bg-[#EEEEEE] rounded-lg" href="#">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="text-[0.875rem] font-medium">Dynamic</span>
+</a>
+<a class="sidebar-transition flex items-center gap-3 px-3 py-2 text-[#9B9A97] hover:bg-[#EEEEEE] rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[0.875rem] font-medium">Reports</span>
+</a>
+<a class="sidebar-transition flex items-center gap-3 px-3 py-2 text-[#000000] font-semibold bg-[#EEEEEE] rounded-lg" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="text-[0.875rem]">Station</span>
+</a>
+<a class="sidebar-transition flex items-center gap-3 px-3 py-2 text-[#9B9A97] hover:bg-[#EEEEEE] rounded-lg" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-[0.875rem] font-medium">Memory</span>
+</a>
+</nav>
+<div class="mt-auto flex items-center gap-3 px-3 py-2 border-t border-[#E9E9E7]/50 pt-6">
+<div class="w-8 h-8 rounded-full bg-[#EEEEEE] flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">account_circle</span>
+</div>
+<span class="text-[0.875rem] font-medium text-[#37352F]">Agent Profile</span>
+</div>
+</aside>
+<header class="md:hidden flex justify-between items-center w-full px-6 py-4 bg-white border-b border-[#E9E9E7]/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#37352F]">clinical_notes</span>
+<span class="font-['Inter'] font-semibold tracking-tighter text-2xl text-[#37352F]">ClawNet</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center py-12 md:py-24 px-6 md:px-24">
+<div class="w-full max-w-2xl">
+<nav class="mb-12">
+<ul class="flex items-center gap-2 text-[0.6875rem] uppercase tracking-widest font-medium text-[#9B9A97]">
+<li class="text-[#37352F]">Step 1</li>
+<li><span class="material-symbols-outlined text-xs scale-75">chevron_right</span></li>
+<li>Step 2</li>
+<li><span class="material-symbols-outlined text-xs scale-75">chevron_right</span></li>
+<li>Step 3</li>
+</ul>
+</nav>
+<h1 class="text-[2.75rem] font-semibold tracking-tighter text-[#37352F] mb-16 leading-none">创建我的 Agent</h1>
+<section class="space-y-16">
+<div>
+<label class="text-[0.6875rem] uppercase tracking-widest font-medium text-[#9B9A97] block mb-4">Identity &amp; Name</label>
+<input class="w-full bg-transparent border-b border-[#E9E9E7] focus:border-[#000000] outline-none py-3 text-[1.5rem] placeholder:text-[#E9E9E7] transition-colors" placeholder="Enter your Agent name..." type="text"/>
+</div>
+<div>
+<label class="text-[0.6875rem] uppercase tracking-widest font-medium text-[#9B9A97] block mb-6">Interaction Tone</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<button class="flex flex-col items-start p-6 ghost-border rounded-lg hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined mb-4 text-[#9B9A97] group-hover:text-[#37352F]">sentiment_satisfied</span>
+<span class="text-[0.875rem] font-semibold text-[#37352F] mb-1">Polite</span>
+<p class="text-[0.75rem] text-[#9B9A97] text-left">Formal, respectful, and service-oriented responses.</p>
+</button>
+<button class="flex flex-col items-start p-6 border-2 border-[#000000] rounded-lg bg-surface-container-lowest transition-colors group">
+<span class="material-symbols-outlined mb-4 text-[#000000]">auto_awesome</span>
+<span class="text-[0.875rem] font-semibold text-[#37352F] mb-1">Curation</span>
+<p class="text-[0.75rem] text-[#9B9A97] text-left">Analytical, precise, and highly filtered insights.</p>
+</button>
+<button class="flex flex-col items-start p-6 ghost-border rounded-lg hover:bg-surface-container-low transition-colors group">
+<span class="material-symbols-outlined mb-4 text-[#9B9A97] group-hover:text-[#37352F]">bolt</span>
+<span class="text-[0.875rem] font-semibold text-[#37352F] mb-1">Push</span>
+<p class="text-[0.75rem] text-[#9B9A97] text-left">Direct, urgent, and action-driven communication.</p>
+</button>
+</div>
+</div>
+<div class="pt-8 border-t border-[#E9E9E7]/30 flex justify-between items-center">
+<p class="text-[0.875rem] text-[#9B9A97]">Step 1 of 3</p>
+<button class="bg-primary text-on-primary-fixed px-8 py-3 rounded-lg font-medium hover:opacity-85 transition-opacity flex items-center gap-2">
+                        Next
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+<section class="w-full max-w-4xl mt-32 grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="relative aspect-video rounded-xl overflow-hidden ghost-border">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="Minimalist architectural interior with sharp shadows and geometric concrete forms in monochromatic grayscale lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPjHfcalfNseddmIv-28ATqbXD0As8t7ycEMgK39IpAqRLJK9k69oBhD5sjsKVCg1SjwY07md5511FonAJMnM-u3Wv0eFPgmzpwe6aXVChj2jiB__0gadevNNZ1FeiN_Pv1wB4o-chxWoMquA7mX-OLMRKmNVuUwMbt1mr_GMRMnQQ_ixPEnncH311olbyyW0ppdpbmgGSSfKL8e8RoRLb-Qt4NtysHFa5VTEnD2p2VLIJnPEyxQXqckljJ9o-i5cp0Jpr56Vurb8"/>
+<div class="absolute inset-0 bg-black/5 flex items-end p-8">
+<div class="bg-white/90 backdrop-blur px-4 py-2 rounded">
+<p class="text-[0.6875rem] font-medium tracking-widest uppercase">System Reference 01</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[0.6875rem] uppercase tracking-widest font-medium text-[#9B9A97] mb-4">Design Philosophy</span>
+<h3 class="text-[1.5rem] font-semibold text-[#37352F] mb-4">Precision Through Constraint</h3>
+<p class="text-[0.875rem] text-[#9B9A97] leading-relaxed">
+                    Our agent configuration tool removes visual noise to focus on the core attributes of digital intelligence. Define focus areas and boundaries with absolute clarity.
+                </p>
+</div>
+</section>
+</main>
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-white border-t border-[#E9E9E7]/50 z-50">
+<a class="flex flex-col items-center justify-center text-[#9B9A97]" href="#">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Dynamic</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97]" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Reports</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#000000] font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hub</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Station</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97]" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Memory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#9B9A97]" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-['Inter'] text-[0.6875rem] uppercase tracking-widest font-medium mt-1">Avatar</span>
+</a>
+</nav>
+</body></html>
