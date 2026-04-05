@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type ThreadControlPanelProps = {
-  postId: string;
   invitedAgent: string;
   suggestionBody: string;
   suggestionRationale: string;
@@ -16,6 +15,11 @@ type ThreadControlPanelProps = {
     candidates: string[];
     rewardState: string;
   };
+  settingsLabel: string;
+  settingsScopeLabel: string;
+  settingsHref: string;
+  connectHref: string;
+  autoPreviewEnabled: boolean;
   onInviteAgent?: () => void;
   onSuggestionApproved?: (body: string) => void;
   onSuggestionRejected?: () => void;
@@ -23,250 +27,226 @@ type ThreadControlPanelProps = {
 };
 
 export function ThreadControlPanel({
-  postId,
   invitedAgent,
   suggestionBody,
   suggestionRationale,
   taskReceiptHref,
   taskDraft,
+  settingsLabel,
+  settingsScopeLabel,
+  settingsHref,
+  connectHref,
+  autoPreviewEnabled,
   onInviteAgent,
   onSuggestionApproved,
   onSuggestionRejected,
   onTaskStateChange,
 }: ThreadControlPanelProps) {
-  const [inviteNote, setInviteNote] = useState("当前还没有新增 agent 被拉入这条讨论。");
-  const [decision, setDecision] = useState<"pending" | "editing" | "approved" | "rejected">("pending");
+  const [previewState, setPreviewState] = useState<"hidden" | "preview" | "editing" | "approved">(
+    autoPreviewEnabled ? "preview" : "hidden",
+  );
   const [draftText, setDraftText] = useState(suggestionBody);
   const [taskState, setTaskState] = useState<"hidden" | "draft" | "confirmed">("hidden");
-  const invited = inviteNote !== "当前还没有新增 agent 被拉入这条讨论。";
+
+  useEffect(() => {
+    setDraftText(suggestionBody);
+  }, [suggestionBody]);
+
+  useEffect(() => {
+    if (autoPreviewEnabled && previewState === "hidden") {
+      setPreviewState("preview");
+    }
+  }, [autoPreviewEnabled, previewState]);
 
   function updateTaskState(nextState: "hidden" | "draft" | "confirmed") {
     setTaskState(nextState);
     onTaskStateChange?.(nextState);
   }
 
-  function approveSuggestion(nextBody: string) {
-    setDecision("approved");
-    onSuggestionApproved?.(nextBody);
+  function openPreviewByMention() {
+    setPreviewState("preview");
+    onInviteAgent?.();
+  }
+
+  function approveSuggestion() {
+    setPreviewState("approved");
+    onSuggestionApproved?.(draftText);
+  }
+
+  function hidePreview() {
+    setPreviewState("hidden");
+    onSuggestionRejected?.();
   }
 
   return (
-    <div className="space-y-4">
-      <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
+    <div className="space-y-3">
+      <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
-            AI Agent
+          <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+            AI
           </span>
-          {invited ? (
-            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
-              已进入讨论
-            </span>
-          ) : null}
+          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+            {settingsLabel}
+          </span>
+          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+            {settingsScopeLabel}
+          </span>
         </div>
-        <h3 className="mobile-text-primary mt-3 text-[1rem] font-semibold tracking-[-0.04em]">
-          先让它看一眼，再决定要不要真的发出去
-        </h3>
         <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={() => {
-              setInviteNote(`${invitedAgent} 已被拉入当前讨论，下一条建议会先进入待确认状态。`);
-              onInviteAgent?.();
-            }}
-            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.18em]"
+            onClick={openPreviewByMention}
+            className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.16em]"
           >
             @{invitedAgent}
           </button>
           <Link
-            href={`/agents/new?post=${postId}`}
+            href={settingsHref}
             className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
-            创建我的 agent
+            参与设置
           </Link>
           <Link
-            href={`/connect?post=${postId}`}
+            href={connectHref}
             className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
-            接入已有 agent
+            接入 Agent
           </Link>
           <button
             type="button"
             onClick={() => updateTaskState("draft")}
             className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
           >
-            升级成任务草案
+            转成任务
           </button>
         </div>
-        <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.82rem] leading-6">
-          {inviteNote}
-        </p>
       </section>
 
-      <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Pending Recommendation</p>
-            <h3 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">先确认，再公开发出</h3>
+      {previewState !== "hidden" ? (
+        <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+          <div className="flex items-start gap-3">
+            <div className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-[0.9rem] text-[0.72rem] font-semibold">
+              AI
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="mobile-text-primary text-[0.9rem] font-semibold">{invitedAgent}</p>
+                <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
+                  AI
+                </span>
+                <span className="mobile-chip-accent rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
+                  {previewState === "approved" ? "已公开" : previewState === "editing" ? "编辑中" : "预览中"}
+                </span>
+              </div>
+              <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{suggestionRationale}</p>
+            </div>
           </div>
-          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
-            {decision === "approved"
-              ? "已批准"
-              : decision === "rejected"
-                ? "已拒绝"
-                : decision === "editing"
-                  ? "编辑中"
-              : "等待你决定"}
-          </span>
-        </div>
 
-        <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.82rem] leading-6">
-          {suggestionRationale}
-        </p>
-
-        {decision === "editing" ? (
-          <textarea
-            value={draftText}
-            onChange={(event) => setDraftText(event.target.value)}
-            rows={5}
-            className="mobile-ghost-border mobile-surface-strong mobile-text-primary mt-4 w-full resize-none rounded-[1rem] px-4 py-4 text-[0.84rem] leading-6 outline-none"
-          />
-        ) : (
-          <div className="mobile-ghost-border mobile-surface-strong mobile-text-secondary mt-4 rounded-[1rem] border-dashed px-4 py-4 text-[0.84rem] leading-7">
-            {draftText}
-          </div>
-        )}
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {decision === "editing" ? (
-            <>
-              <button
-                type="button"
-                onClick={() => approveSuggestion(draftText)}
-                className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
-              >
-                保存并批准
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setDraftText(suggestionBody);
-                  setDecision("pending");
-                }}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
-              >
-                取消编辑
-              </button>
-            </>
+          {previewState === "editing" ? (
+            <textarea
+              value={draftText}
+              onChange={(event) => setDraftText(event.target.value)}
+              rows={5}
+              className="mobile-ghost-border mobile-surface-strong mobile-text-primary mt-4 w-full resize-none rounded-[1rem] px-4 py-4 text-[0.84rem] leading-6 outline-none"
+            />
           ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => approveSuggestion(draftText)}
-                className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
-              >
-                批准
-              </button>
-              <button
-                type="button"
-                onClick={() => setDecision("editing")}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
-              >
-                编辑后发送
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setDecision("rejected");
-                  onSuggestionRejected?.();
-                }}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
-              >
-                拒绝
-              </button>
-            </>
+            <div className="mobile-ghost-border mobile-surface-strong mt-4 rounded-[1rem] px-4 py-4">
+              <p className="mobile-text-secondary text-[0.84rem] leading-7">{draftText}</p>
+            </div>
           )}
-        </div>
 
-        {decision === "approved" ? (
-          <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
-            这条建议已经被你批准，并且应该立刻写回上方讨论流，不再只是停在待确认区里。
-          </p>
-        ) : null}
-
-        {decision === "rejected" ? (
-          <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
-            这条建议已经被折叠，不会公开发出；如果后面要重启，只能重新生成一条新的待确认建议。
-          </p>
-        ) : null}
-      </section>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {previewState === "editing" ? (
+              <>
+                <button
+                  type="button"
+                  onClick={approveSuggestion}
+                  className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+                >
+                  同意公开
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDraftText(suggestionBody);
+                    setPreviewState("preview");
+                  }}
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+                >
+                  取消
+                </button>
+              </>
+            ) : previewState === "approved" ? (
+              <p className="mobile-text-muted text-[0.74rem]">这条 AI 回复已经出现在主评论流里。</p>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={approveSuggestion}
+                  className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+                >
+                  同意公开
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewState("editing")}
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+                >
+                  改一下
+                </button>
+                <button
+                  type="button"
+                  onClick={hidePreview}
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+                >
+                  隐藏
+                </button>
+              </>
+            )}
+          </div>
+        </section>
+      ) : null}
 
       {taskState !== "hidden" ? (
-        <section className="mobile-soft-card mobile-ghost-border rounded-[1.3rem] px-4 py-4">
+        <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Task Draft</p>
-              <h3 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">从讨论里长出一个对象卡</h3>
+              <p className="mobile-section-label text-[0.56rem] font-semibold uppercase tracking-[0.14em]">Task</p>
+              <h3 className="mobile-text-primary mt-2 text-[0.96rem] font-semibold">{taskDraft.title}</h3>
             </div>
-            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
-              {taskState === "confirmed" ? "已记录" : "草案中"}
+            <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
+              {taskState === "confirmed" ? "已记录" : "草案"}
             </span>
           </div>
-
-          <div className="mobile-ghost-border mobile-surface-muted mobile-text-secondary mt-4 space-y-3 rounded-[1rem] px-4 py-4 text-[0.82rem] leading-6">
-            <p>
-              <span className="mobile-text-primary font-semibold">标题：</span>
-              {taskDraft.title}
-            </p>
-            <p>
-              <span className="mobile-text-primary font-semibold">目标：</span>
-              {taskDraft.goal}
-            </p>
-            <p>
-              <span className="mobile-text-primary font-semibold">预期结果：</span>
-              {taskDraft.expectedResult}
-            </p>
-            <p>
-              <span className="mobile-text-primary font-semibold">候选执行者：</span>
-              {taskDraft.candidates.join(" / ")}
-            </p>
-            <p>
-              <span className="mobile-text-primary font-semibold">奖励状态：</span>
-              {taskDraft.rewardState}
-            </p>
+          <div className="mt-4 space-y-2 text-[0.82rem] leading-6">
+            <p className="mobile-text-secondary">{taskDraft.goal}</p>
+            <p className="mobile-text-muted">候选执行者：{taskDraft.candidates.join(" / ")}</p>
+            <p className="mobile-text-muted">状态：{taskDraft.rewardState}</p>
           </div>
-
           <div className="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => updateTaskState("confirmed")}
-              className="mobile-button-primary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.16em]"
+              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
             >
-              确认这张任务卡
+              记录任务
             </button>
             <button
               type="button"
               onClick={() => updateTaskState("hidden")}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded px-4 py-2 text-[0.72rem] font-semibold"
+              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
             >
-              先放回讨论
+              先留在讨论里
             </button>
+            {taskState === "confirmed" && taskReceiptHref ? (
+              <Link
+                href={taskReceiptHref}
+                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+              >
+                查看回执
+              </Link>
+            ) : null}
           </div>
-
-          {taskState === "confirmed" ? (
-            <div className="mt-4 space-y-3">
-              <p className="mobile-ghost-border mobile-surface-muted mobile-text-secondary rounded-[1rem] px-4 py-3 text-[0.8rem] leading-6">
-                当前这张任务卡已经不只是留一个“已记录”标签，而是已经接到回执页，后面可以继续往战报和资料沉淀里走。
-              </p>
-              {taskReceiptHref ? (
-                <Link
-                  href={taskReceiptHref}
-                  className="mobile-button-secondary inline-flex items-center justify-center rounded-[1rem] px-4 py-3 text-[0.78rem] font-semibold"
-                >
-                  查看任务回执
-                </Link>
-              ) : null}
-            </div>
-          ) : null}
         </section>
       ) : null}
     </div>

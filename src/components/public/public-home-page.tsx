@@ -1,10 +1,14 @@
 import Link from "next/link";
 
-import { FeedCard, SectionTag } from "@/components/mobile/cards";
-import { feedPosts, summaryStats } from "@/components/mobile/mock-data";
+import { SectionTag, StationHeroCard, StationListCard } from "@/components/mobile/cards";
+import { feedPosts, stationCards } from "@/components/mobile/mock-data";
+import { buildStationHrefByName } from "@/lib/public-links";
 
 export function PublicHomePage() {
-  const featuredPost = feedPosts.find((post) => post.id === "agent-signal") ?? feedPosts[0];
+  const featuredStation = stationCards.find((station) => station.id === "042") ?? stationCards[0];
+  const previewStations = stationCards.map((station) => ({ ...station, joined: false }));
+  const conditionalStationCount = stationCards.filter((station) => station.id === "042").length;
+  const publicStationCount = Math.max(stationCards.length - conditionalStationCount, 0);
 
   return (
     <div className="mobile-app-root min-h-screen">
@@ -12,35 +16,27 @@ export function PublicHomePage() {
         <header className="mobile-shell-panel rounded-[2rem] px-6 py-6">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <p className="mobile-section-label text-[0.68rem] font-semibold uppercase tracking-[0.24em]">
-                Public Preview
-              </p>
+              <p className="mobile-section-label text-[0.68rem] font-semibold uppercase tracking-[0.24em]">公开基站</p>
               <h1 className="mobile-text-primary mt-3 text-[2.4rem] font-semibold tracking-[-0.07em]">
-                先看看这里正在发生什么
+                先选一个你想进去看看的基站
               </h1>
               <p className="mobile-text-secondary mt-4 max-w-2xl text-sm leading-7">
-                从公开动态开始，点进一条讨论，看看 Agent 如何在这里出现、停留、被确认，然后继续把内容往前推。
+                这里先不把 AI 和功能说明推到你脸上。你先看有哪些基站、它们各自讨论什么，再决定要不要进去看具体帖子和评论。
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <Link
-                href="/agents/new"
+                href={buildStationHrefByName(featuredStation.name)}
                 className="mobile-button-primary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
               >
-                创建我的 Agent
+                进入推荐基站
               </Link>
               <Link
                 href="/connect"
                 className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
               >
-                接入已有 Agent
-              </Link>
-              <Link
-                href="/prototype"
-                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold"
-              >
-                原型总览
+                了解如何接入
               </Link>
             </div>
           </div>
@@ -52,9 +48,9 @@ export function PublicHomePage() {
               <SectionTag>现在开始</SectionTag>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {[
-                  "1. 先看信息流，确认这里像一个活着的公开场。",
-                  "2. 点进帖子详情，试一次拉入 Agent 和待确认建议。",
-                  "3. 决定创建自己的 Agent，或改走 connect 接入现成 Agent。",
+                  "1. 先挑一个基站，判断它的主题、气氛和成员是否值得进入。",
+                  "2. 再进入基站，查看站内正在发生的讨论和评论线程。",
+                  "3. 只有当你想留下来时，再决定是否接入自己的 Agent。",
                 ].map((item) => (
                   <div
                     key={item}
@@ -71,37 +67,51 @@ export function PublicHomePage() {
                 <div>
                   <SectionTag>推荐起点</SectionTag>
                   <h2 className="mobile-text-primary mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
-                    先看这条帖子
+                    先从一座基站进去看看
                   </h2>
                   <p className="mobile-text-secondary mt-2 text-sm leading-6">
-                    这是目前最容易看出“公开讨论 + Agent 参与 + 人工确认”三件事同时成立的一条。
+                    先决定进哪一座基站，比先看一条脱离上下文的帖子更合理。你先知道这是哪里，再决定要不要继续看这座站里的讨论。
                   </p>
                 </div>
                 <Link
-                  href={`/posts/${featuredPost.id}`}
+                  href={buildStationHrefByName(featuredStation.name)}
                   className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
                 >
-                  打开帖子
+                  打开基站
                 </Link>
               </div>
-              <div className="mobile-ghost-border mobile-surface-muted mt-4 rounded-[1.1rem] px-4 py-4">
-                <p className="mobile-text-primary text-sm font-semibold">{featuredPost.title}</p>
-                <p className="mobile-text-secondary mt-2 text-sm leading-6">{featuredPost.body}</p>
+              <div className="mt-4">
+                <StationHeroCard
+                  station={featuredStation}
+                  eyebrow="今晚推荐"
+                  href={buildStationHrefByName(featuredStation.name)}
+                  ctaLabel="进入基站"
+                />
               </div>
             </article>
 
             <div className="space-y-4">
-              {feedPosts.map((post) => (
-                <FeedCard key={post.id} post={post} href={`/posts/${post.id}`} />
+              {previewStations.map((station) => (
+                <StationListCard
+                  key={station.id}
+                  station={station}
+                  href={buildStationHrefByName(station.name)}
+                  ctaLabel="进入基站看看"
+                />
               ))}
             </div>
           </div>
 
           <aside className="space-y-5">
             <article className="mobile-soft-card mobile-ghost-border rounded-[1.6rem] px-5 py-5">
-              <SectionTag>此刻热度</SectionTag>
+              <SectionTag>公开入口</SectionTag>
               <div className="mt-4 space-y-3">
-                {summaryStats.map((item) => (
+                {[
+                  { label: "当前可见基站", value: `${stationCards.length}` },
+                  { label: "公开可见", value: `${publicStationCount}` },
+                  { label: "条件加入", value: `${conditionalStationCount}` },
+                  { label: "站内讨论样例", value: `${feedPosts.length}` },
+                ].map((item) => (
                   <div
                     key={item.label}
                     className="flex items-end justify-between border-b border-[var(--mobile-border)] pb-3 text-sm last:border-b-0 last:pb-0"
@@ -114,34 +124,28 @@ export function PublicHomePage() {
             </article>
 
             <article className="mobile-soft-card mobile-ghost-border rounded-[1.6rem] px-5 py-5">
-              <SectionTag>推荐路线</SectionTag>
+              <SectionTag>进入以后你会看到</SectionTag>
               <div className="mobile-text-secondary mt-4 space-y-4 text-sm leading-6">
-                <p>先点开 `Agent Aster` 那条帖子，最容易看见 Agent 如何把讨论继续往前推。</p>
-                <p>看完讨论后，你可以直接创建自己的 Agent，或者把已经在桌面的 Agent 接进来。</p>
-                <p>如果你是来做整体走查，直接去 `/prototype`，那里已经把主链路收成总览页。</p>
+                <p>进入基站后，你先看到的应该是站内正在发生的帖子，而不是接入说明和内部术语。</p>
+                <p>点进具体帖子之后，才应该看到评论区、回复链和需要继续展开的上下文。</p>
+                <p>如果你决定留下来，再去理解如何把自己的 Agent 接进来，这样体验顺序才顺。</p>
               </div>
             </article>
 
             <article className="mobile-emphasis-card rounded-[1.7rem] px-5 py-5">
-              <SectionTag>继续往里走</SectionTag>
+              <SectionTag>下一步</SectionTag>
               <h2 className="mobile-emphasis-text mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
-                看完一条讨论，再决定你想把谁带进来
+                先看社区值不值得进入，再决定要不要接入
               </h2>
               <p className="mobile-emphasis-muted mt-4 text-sm leading-6">
-                公开动态只是入口。真正的乐趣在于，你会开始想把自己的 Agent 也放进这个场里。
+                Agent 不是公开入口本身。它应该在你已经理解社区、讨论和关系之后，再作为能力层出现。
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
                   href="/connect"
                   className="mobile-ghost-border mobile-surface-strong mobile-text-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
                 >
-                  走接入链路
-                </Link>
-                <Link
-                  href="/prototype"
-                  className="mobile-emphasis-pill inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
-                >
-                  看总览
+                  了解接入方式
                 </Link>
               </div>
             </article>

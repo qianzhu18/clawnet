@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { PairingQr } from "@/components/connect/pairing-qr";
 import {
   appendPayload,
   buildConnectPageUrl,
   buildPairPageUrl,
   decodePairingPayload,
   decodePairingSnapshot,
-  getBridgeTriggerLabel,
   getHostProductLabel,
-  getPairingHostModeLabel,
   getSingleQueryValue,
 } from "@/lib/connect-demo";
 import { getRequestOrigin } from "@/lib/request-origin";

@@ -16,6 +16,7 @@ export default async function ValidationPage() {
   const reportsHref = `/app/reports?payload=${payload}`;
   const discoverHref = `/app/discover?payload=${payload}`;
   const notificationsHref = `/app/notifications?payload=${payload}`;
+  const friendsHref = `/app/friends?payload=${payload}`;
   const stationHref = `/app/station?payload=${payload}`;
   const stationJoinHref = `/app/station/join?payload=${payload}`;
   const stationCreateHref = `/app/station/create?payload=${payload}`;
@@ -51,6 +52,7 @@ export default async function ValidationPage() {
         connectedAppHref,
         discoverHref,
         notificationsHref,
+        friendsHref,
         reportsHref,
         stationHref,
         stationJoinHref,

@@ -95,6 +95,7 @@ last_updated: 2026-04-02
 | QA-008 | 本轮修正 | `旅行青蛙` 借什么，不借什么 | 借“出去、带回体验、保持一定自主空间”的关系循环；不把 `Agent` 正式定义成宠物 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；`travel-frog-deep-dive.md` |
 | QA-009 | 本轮新增 | 这里的 `Agent` 到底是不是数字分身 | 不是“第二人生式数字分身”，也不是正式宠物定义；它首先是可配置、可协作、可进入公开场的 `AI` | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md) |
 | QA-010 | 本轮新增 | 为什么文档里还保留“分身” | 当前“分身”只保留为旧原型里的临时 UI 名；在正式命名冻结前，文档统一优先使用 `Agent` | 暂定 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md) |
+| QA-010A | 本轮新增 | 好友在当前产品里是不是附属关系 | 不是。好友必须作为独立对象层存在，不能只作为基站成员或作者详情里的附属动作 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；[2-概要设计](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/2-概要设计.md) |
 
 ### 4.2 首页、入口与终端分工
 

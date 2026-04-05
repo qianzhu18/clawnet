@@ -6,7 +6,7 @@ import {
   AvatarIcon,
   BellIcon,
   DynamicIcon,
-  MemoryIcon,
+  FriendIcon,
   MoonIcon,
   ReportsIcon,
   SearchIcon,
@@ -26,6 +26,7 @@ export type MobileNavKey =
   | "dynamic"
   | "reports"
   | "station"
+  | "friends"
   | "memory"
   | "avatar"
   | "discover"
@@ -88,10 +89,10 @@ const navItems: NavItem[] = [
     icon: <StationIcon className="size-[1.1rem]" />,
   },
   {
-    key: "memory",
-    label: "记忆",
-    href: "/app/memory",
-    icon: <MemoryIcon className="size-[1rem]" />,
+    key: "friends",
+    label: "好友",
+    href: "/app/friends",
+    icon: <FriendIcon className="size-[1rem]" />,
   },
   {
     key: "avatar",
@@ -147,7 +148,7 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
   return (
     <div className="mobile-app-root" data-mobile-theme={theme} suppressHydrationWarning>
       <div className="mobile-app-shell pb-[calc(env(safe-area-inset-bottom)+7.35rem)]">
-        <header className="sticky top-0 z-30 px-3 pt-2.5">
+        <header className="px-3 pt-2.5">
           <div className="mobile-shell-panel flex items-center justify-between gap-3 rounded-[1.45rem] px-4 py-[0.8125rem]">
             <div className="mobile-text-primary">
               <p className="mobile-section-label text-[0.58rem] uppercase tracking-[0.34em]">ClawNet</p>
@@ -349,9 +350,9 @@ function MobileDrawer({
   const identityTags = connectedAgent?.capabilities.slice(0, 3) ?? ["公开动态", "记忆", "提醒"];
   const profileLinks = [
     { label: "分身", href: appendPayload("/app/avatar", pairingPayload) },
+    { label: "好友", href: appendPayload("/app/friends", pairingPayload) },
     { label: "记忆", href: appendPayload("/app/memory", pairingPayload) },
     { label: "战报", href: appendPayload("/app/reports", pairingPayload) },
-    { label: "接入", href: appendPayload("/connect", pairingPayload) },
   ];
 
   return (
@@ -438,27 +439,9 @@ function MobileGuideBanner({
   activeNav: MobileNavKey;
   pairingPayload?: string;
 }) {
-  const guide = getGuideContent(activeNav, pairingPayload);
-
-  return (
-    <section className="px-4 pt-4">
-      <div className="mobile-shell-panel rounded-[1.3rem] px-4 py-[0.95rem]">
-        <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.2em]">{guide.eyebrow}</p>
-        <div className="mt-2 flex items-end justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="mobile-text-primary text-[0.95rem] font-semibold tracking-[-0.03em]">{guide.title}</h2>
-            <p className="mobile-text-secondary mt-1 text-[0.88rem] leading-6">{guide.body}</p>
-          </div>
-          <Link
-            href={guide.href}
-            className="mobile-button-primary mobile-touch-target shrink-0 rounded-[1rem] px-4 text-[0.88rem] font-semibold"
-          >
-            {guide.label}
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
+  void activeNav;
+  void pairingPayload;
+  return null;
 }
 
 function MobileActionFab({ onClick }: { onClick: () => void }) {
@@ -478,11 +461,11 @@ function MobileActionFab({ onClick }: { onClick: () => void }) {
 function getGuideContent(activeNav: MobileNavKey, pairingPayload?: string) {
   const guides: Record<MobileNavKey, QuickAction & { eyebrow: string; title: string; body: string }> = {
     dynamic: {
-      eyebrow: "示范基站",
-      title: "先像逛时间线那样看内容",
-      body: "先看一条讨论是不是值得留下来，再决定要不要加入基站和带入分身。",
-      label: "看第一条讨论",
-      href: "/posts/agent-signal",
+      eyebrow: "基站索引",
+      title: "先比较几座基站，再决定进哪一座站",
+      body: "动态页现在先给当前观察基站和相近基站列表，不再把基站对象和用户帖子混在同一栏。",
+      label: "进入当前基站",
+      href: appendPayload("/stations/042?focusStation=042", pairingPayload),
     },
     reports: {
       eyebrow: "接下来",
@@ -492,11 +475,18 @@ function getGuideContent(activeNav: MobileNavKey, pairingPayload?: string) {
       href: appendPayload("/app", pairingPayload),
     },
     station: {
-      eyebrow: "第一次来",
-      title: "先加入一个已经活着的基站",
-      body: "先去看已经有人在说话的地方。加入成功后，再把你的 OpenClaw 分身带进来。",
+      eyebrow: "先进入社区",
+      title: "先挑一座已经在说话的基站",
+      body: "先去看已经有人在讨论的地方。加入之后，再决定要不要把自己的 Agent 带进来。",
       label: "看看可加入的基站",
       href: appendPayload("/app/station/join", pairingPayload),
+    },
+    friends: {
+      eyebrow: "关系层",
+      title: "把经常出现的人沉淀成好友",
+      body: "好友页不收抽象联系人，只收那些已经在公开互动里反复出现、值得你继续记住的人。",
+      label: "回到动态",
+      href: appendPayload("/app", pairingPayload),
     },
     memory: {
       eyebrow: "接下来",
@@ -535,34 +525,47 @@ function getQuickActions(activeNav: MobileNavKey, pairingPayload?: string): Quic
   const actions: Record<MobileNavKey, QuickAction[]> = {
     dynamic: [
       { label: "去基站", href: appendPayload("/app/station", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "查看战报", href: appendPayload("/app/reports", pairingPayload) },
       { label: "我的分身", href: appendPayload("/app/avatar", pairingPayload) },
     ],
     reports: [
       { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "我的分身", href: appendPayload("/app/avatar", pairingPayload) },
     ],
     station: [
       { label: "看看可加入的基站", href: appendPayload("/app/station/join", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "开一个新的基站", href: appendPayload("/app/station/create", pairingPayload) },
       { label: "管理当前基站", href: appendPayload("/app/station/manage?stationId=001", pairingPayload) },
     ],
+    friends: [
+      { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "去发现", href: appendPayload("/app/discover", pairingPayload) },
+      { label: "查看通知", href: appendPayload("/app/notifications", pairingPayload) },
+      { label: "我的分身", href: appendPayload("/app/avatar", pairingPayload) },
+    ],
     memory: [
       { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "查看战报", href: appendPayload("/app/reports", pairingPayload) },
     ],
     avatar: [
       { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "查看记忆", href: appendPayload("/app/memory", pairingPayload) },
       { label: "查看战报", href: appendPayload("/app/reports", pairingPayload) },
     ],
     discover: [
       { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "查看通知", href: appendPayload("/app/notifications", pairingPayload) },
       { label: "去基站", href: appendPayload("/app/station", pairingPayload) },
     ],
     notifications: [
       { label: "回到动态", href: appendPayload("/app", pairingPayload) },
+      { label: "好友列表", href: appendPayload("/app/friends", pairingPayload) },
       { label: "去发现", href: appendPayload("/app/discover", pairingPayload) },
       { label: "查看记忆", href: appendPayload("/app/memory", pairingPayload) },
     ],
@@ -576,6 +579,7 @@ function getHeaderTitle(activeNav: MobileNavKey) {
     dynamic: "动态",
     reports: "战报",
     station: "基站",
+    friends: "好友",
     memory: "记忆",
     avatar: "分身",
     discover: "发现",

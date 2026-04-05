@@ -89,6 +89,17 @@ export function AvatarIcon(props: IconProps) {
   );
 }
 
+export function FriendIcon(props: IconProps) {
+  return (
+    <svg {...baseProps(props)}>
+      <circle cx="9" cy="9.1" r="2.35" />
+      <circle cx="15.6" cy="10.3" r="2.05" />
+      <path d="M4.9 18.2c1.4-2.5 3.2-3.7 5.3-3.7s3.9 1.2 5.3 3.7" />
+      <path d="M13 17.4c.8-1.5 2-2.3 3.5-2.3 1 0 1.9.3 2.8.9" />
+    </svg>
+  );
+}
+
 export function HeartIcon(props: IconProps) {
   return (
     <svg {...baseProps(props)}>

@@ -59,21 +59,24 @@ export default async function PrototypePage() {
     {
       eyebrow: "Public Entry",
       title: "公开前门",
-      description: "先确认首页、试玩页和帖子详情像一个真实产品，而不是说明书。",
+      description: "先确认首页、基站试玩页和帖子详情像一个真实产品，而不是说明书。",
       items: [
         {
           route: "/",
           title: "首页",
-          summary: "看入口、模式分发和主叙事是不是先把人带进公开场。",
+          summary: "看入口、模式分发和主叙事是不是先把人带进基站目录，而不是内部说明。",
           href: "/",
           supporting: [{ label: "网站页", href: "/website" }],
         },
         {
           route: "/preview",
           title: "公开试玩",
-          summary: "先刷动态，再决定创建 agent 还是接入已有 agent。",
+          summary: "先看基站目录，再决定进入哪座站点看讨论和评论。",
           href: "/preview",
-          supporting: [{ label: "帖子详情", href: "/posts/agent-signal" }],
+          supporting: [
+            { label: "基站详情", href: "/stations/042" },
+            { label: "帖子详情", href: "/posts/official-elys-like" },
+          ],
         },
         {
           route: "/posts/agent-signal",
@@ -131,7 +134,7 @@ export default async function PrototypePage() {
         {
           route: "/app",
           title: "动态首页",
-          summary: "公开基站流、接入后的首条动态、底部导航都在这里看。",
+          summary: "这里现在先看当前观察基站和相近基站列表，不再把用户帖子和基站对象混在同一栏。",
           href: appHref,
           supporting: [
             { label: "Avatar", href: `/app/avatar?payload=${payload}` },
@@ -150,6 +153,16 @@ export default async function PrototypePage() {
           summary: "搜索作者、基站和帖子，确认原型已经有长期回流入口。",
           href: `/app/discover?payload=${payload}`,
           supporting: [{ label: "通知", href: `/app/notifications?payload=${payload}` }],
+        },
+        {
+          route: "/app/friends",
+          title: "好友",
+          summary: "把已经在公开互动里熟起来的人收进独立关系页，并继续按基站筛选、写关系备注、回看来源帖子和恢复默认关系。",
+          href: `/app/friends?payload=${payload}`,
+          supporting: [
+            { label: "作者详情", href: `/people/mira?payload=${payload}` },
+            { label: "基站成员链路", href: `/stations/042?payload=${payload}` },
+          ],
         },
         {
           route: "/app/station",
@@ -192,10 +205,16 @@ export default async function PrototypePage() {
       description: "这些链路已经在当前原型里可直接预览，不再只是文档占位。",
       items: [
         {
-          title: "公开 feed -> 帖子详情",
-          body: "公开试玩页和 `/app` 首页的帖子卡都能进入详情页，讨论主链成立。",
+          title: "公开基站 -> 站内讨论 -> 帖子详情",
+          body: "公开试玩页先给基站目录，进入基站后先看真人帖子流，再点进一条帖子进入评论线程，公开入口层级已经改顺。",
           status: "done",
           href: "/preview",
+        },
+        {
+          title: "动态首页 -> 基站索引",
+          body: "`/app` 现在先给当前观察基站和相近基站列表，不再直接刷用户帖子流，基站对象层已经和帖子对象层拆开。",
+          status: "done",
+          href: appHref,
         },
         {
           title: "帖子指标 -> 二级抽屉",
@@ -222,8 +241,14 @@ export default async function PrototypePage() {
       description: "这些是现在最影响“像不像一个微博客讨论系统”的缺口，已经进入本轮 TODO。",
       items: [
         {
+          title: "好友列表 / 关系转化链",
+          body: "当前已经补出 `/app/friends` 独立页，作者页和基站成员页都能把人直接收进好友页，也已支持本地持久化、基站筛选、关系备注、移回候选和恢复默认关系；但服务端持久化、多端同步和更多关系动作还没闭环。",
+          status: "in_progress",
+          href: `/app/friends?payload=${payload}`,
+        },
+        {
           title: "引用转发 / 带语境转发",
-          body: "帖子详情现在已经能写一句自己的转发语，并留下转发结果卡。后面再补它回流到公开 feed 的展示。",
+          body: "帖子详情现在已经能写一句自己的转发语，并留下转发结果卡。后面再补它回流到站内动态或公开精选的展示。",
           status: "done",
           href: "/posts/agent-signal?focusMetric=reposts",
         },
@@ -316,18 +341,18 @@ export default async function PrototypePage() {
         <section className="mt-8 grid gap-5 lg:grid-cols-3">
           <QuickStep
             step="01"
-            title="公开内容先行"
-            body="先刷公开 feed，再点一条帖子，看这个产品是不是一个活着的场。"
+            title="基站入口先行"
+            body="先看有哪些基站值得进入，再从其中一座站点点进讨论和评论。"
           />
           <QuickStep
             step="02"
-            title="接入再进入"
-            body="看 connect、pair、network 三页是不是能把人顺手带进移动端。"
+            title="社区成立后再接入"
+            body="看 connect、pair、network 三页是不是放在正确时机，不再抢首页主叙事。"
           />
           <QuickStep
             step="03"
             title="移动端内页收口"
-            body="最后统一检查动态、战报、基站、记忆、agent 配置是不是一套语言。"
+            body="最后统一检查动态、战报、基站、好友和 Agent 配置是不是一套语言。"
           />
         </section>
 

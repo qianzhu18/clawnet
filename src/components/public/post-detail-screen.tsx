@@ -4,6 +4,15 @@ import Link from "next/link";
 import { useMemo, useState, type ReactNode } from "react";
 
 import type { DiscussionThread, FeedPost, ThreadReply } from "@/components/mobile/mock-data";
+import {
+  defaultAgentParticipationSettings,
+  getAgentScopeLabel,
+  getAgentTriggerLabel,
+  readAgentParticipationSettings,
+  shouldAutoPreviewAgentReply,
+  type AgentParticipationSettings,
+} from "@/lib/agent-participation";
+import { appendPayload } from "@/lib/connect-demo";
 import { ThreadControlPanel } from "@/components/public/thread-control-panel";
 import { buildAuthorHref, buildStationHrefByName } from "@/lib/public-links";
 import { buildTaskReceiptHref } from "@/lib/task-receipt";
@@ -34,10 +43,12 @@ export function PostDetailScreen({
   post,
   thread,
   initialFocusMetric,
+  payload,
 }: {
   post: FeedPost;
   thread: DiscussionThread;
   initialFocusMetric?: string;
+  payload?: string;
 }) {
   const [publishedSuggestion, setPublishedSuggestion] = useState<ThreadReply | null>(null);
   const [manualReplies, setManualReplies] = useState<ThreadReply[]>([]);
@@ -56,6 +67,10 @@ export function PostDetailScreen({
   const [moreActionsOpen, setMoreActionsOpen] = useState(false);
   const [reportSheetOpen, setReportSheetOpen] = useState(false);
   const [blockSheetOpen, setBlockSheetOpen] = useState(false);
+  const [participationSettings] = useState<AgentParticipationSettings>(
+    typeof window === "undefined" ? defaultAgentParticipationSettings : readAgentParticipationSettings(),
+  );
+  const [manualPreviewRequested, setManualPreviewRequested] = useState(false);
 
   const displayedReplies = useMemo(() => {
     const baseReplies = [...thread.replies, ...manualReplies];
@@ -78,7 +93,10 @@ export function PostDetailScreen({
 
   const totalCommentCount = parseMetric(post.comments);
   const expandedCount = displayedReplies.length;
-  const pendingCount = recommendationState === "pending" ? 1 : 0;
+  const autoPreviewEnabled =
+    recommendationState === "pending" &&
+    (manualPreviewRequested || shouldAutoPreviewAgentReply(participationSettings, post));
+  const pendingCount = autoPreviewEnabled ? 1 : 0;
   const passiveCount = Math.max(totalCommentCount - expandedCount - pendingCount, 0);
   const latestActionCopy = getLatestActionCopy(latestEvent, thread.invitedAgent);
   const taskReceiptHref = buildTaskReceiptHref(post.id);
@@ -89,7 +107,7 @@ export function PostDetailScreen({
         <header className="flex items-center justify-between gap-3 pb-3">
           <div className="flex items-center gap-3">
             <Link
-              href="/app"
+              href={appendPayload(buildStationHrefByName(post.station), payload)}
               className="mobile-button-secondary inline-flex size-9 items-center justify-center rounded-full text-sm font-semibold"
             >
               ←
@@ -179,51 +197,32 @@ export function PostDetailScreen({
 
         <section className="mt-4 grid gap-3">
           <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">
-                  讨论结构
+                  评论
                 </p>
                 <h2 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">
-                  {post.comments} 条讨论怎么处理
+                  {expandedCount} 条已展开 · {pendingCount} 条 AI 预览
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={() => setActiveSheet("comments")}
-                className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
-              >
-                查看
-              </button>
-            </div>
-            <div className="mt-4 grid grid-cols-3 gap-2">
-              <StatMini label="已展开" value={`${expandedCount}`} />
-              <StatMini label="待确认" value={`${pendingCount}`} />
-              <StatMini label="围观层" value={`${passiveCount}`} />
-            </div>
-          </article>
-
-          <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">
-                  公开回复
-                </p>
-                <h2 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">
-                  真人也能直接加入讨论
-                </h2>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setComposerOpen(true)}
+                  className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
+                >
+                  回复
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveSheet("comments")}
+                  className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
+                >
+                  全部评论
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setComposerOpen(true)}
-                className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
-              >
-                我也说一句
-              </button>
             </div>
-            <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">
-              当前原型之前缺了这个动作。现在你不只是在看和批准 Agent，也可以自己直接发一条公开回复。
-            </p>
           </article>
 
           {latestActionCopy ? (
@@ -281,6 +280,50 @@ export function PostDetailScreen({
           ) : null}
         </section>
 
+        <div className="mt-4">
+          <ThreadControlPanel
+            invitedAgent={thread.invitedAgent}
+            suggestionBody={thread.pendingSuggestion.body}
+            suggestionRationale={thread.pendingSuggestion.rationale}
+            taskReceiptHref={taskReceiptHref}
+            taskDraft={thread.taskDraft}
+            settingsLabel={getAgentTriggerLabel(participationSettings.triggerMode)}
+            settingsScopeLabel={getAgentScopeLabel(participationSettings)}
+            settingsHref={appendPayload("/app/avatar", payload)}
+            connectHref={`/connect?post=${post.id}`}
+            autoPreviewEnabled={autoPreviewEnabled}
+            onInviteAgent={() => {
+              setManualPreviewRequested(true);
+              setLatestEvent("invited");
+            }}
+            onSuggestionApproved={(body) => {
+              setRecommendationState("approved");
+              setPublishedSuggestion({
+                id: `${thread.postId}-approved-reply`,
+                author: thread.invitedAgent,
+                role: "agent",
+                publishedAt: "刚刚",
+                body,
+                replyTo: post.author,
+                status: "approved",
+              });
+              setLatestEvent("approved");
+            }}
+            onSuggestionRejected={() => {
+              setRecommendationState("rejected");
+              setManualPreviewRequested(false);
+              setPublishedSuggestion(null);
+              setLatestEvent("rejected");
+            }}
+            onTaskStateChange={(state) => {
+              setTaskState(state);
+              if (state === "confirmed") {
+                setLatestEvent("taskConfirmed");
+              }
+            }}
+          />
+        </div>
+
         <section className="mt-4 space-y-3">
           {displayedReplies.map((reply) => (
             <button
@@ -325,56 +368,12 @@ export function PostDetailScreen({
           ))}
         </section>
 
-        <div className="mt-4">
-          <ThreadControlPanel
-            postId={post.id}
-            invitedAgent={thread.invitedAgent}
-            suggestionBody={thread.pendingSuggestion.body}
-            suggestionRationale={thread.pendingSuggestion.rationale}
-            taskReceiptHref={taskReceiptHref}
-            taskDraft={thread.taskDraft}
-            onInviteAgent={() => setLatestEvent("invited")}
-            onSuggestionApproved={(body) => {
-              setRecommendationState("approved");
-              setPublishedSuggestion({
-                id: `${thread.postId}-approved-reply`,
-                author: thread.invitedAgent,
-                role: "agent",
-                publishedAt: "刚刚",
-                body,
-                replyTo: post.author,
-                status: "approved",
-              });
-              setLatestEvent("approved");
-            }}
-            onSuggestionRejected={() => {
-              setRecommendationState("rejected");
-              setPublishedSuggestion(null);
-              setLatestEvent("rejected");
-            }}
-            onTaskStateChange={(state) => {
-              setTaskState(state);
-              if (state === "confirmed") {
-                setLatestEvent("taskConfirmed");
-              }
-            }}
-          />
-        </div>
-
         <section className="mt-4 grid gap-3 pb-4">
           <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
             <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">
-              当前问题
+              这条讨论在问
             </p>
             <p className="mobile-text-secondary mt-3 text-[0.84rem] leading-6">{thread.focusQuestion}</p>
-          </article>
-          <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
-            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">
-              接下来
-            </p>
-            <p className="mobile-text-secondary mt-3 text-[0.84rem] leading-6">
-              先确认它给出的建议，再决定是公开发出、继续改写，还是把这条讨论先折叠回公开场。
-            </p>
           </article>
         </section>
       </div>
@@ -416,7 +415,7 @@ export function PostDetailScreen({
             <article className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-4">
               <p className="mobile-text-primary text-[0.88rem] font-semibold">回复目标</p>
               <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">
-                你正在回复《{post.title}》。这条回复会直接进入当前讨论流，后面 Agent 可以继续围绕你的回复接力。
+                你正在回复《{post.title}》。如果你想让 AI 一起接这条线，发完后可以直接点 `@{thread.invitedAgent}`。
               </p>
             </article>
             <textarea
@@ -528,7 +527,7 @@ export function PostDetailScreen({
             <article className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
               <p className="mobile-text-primary text-[0.88rem] font-semibold">分享这条帖子</p>
               <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">
-                当前原型先用“复制链接成功”表达分享反馈，后续再补系统级分享面板。
+                先把这条帖子链接带走，继续发到别的地方讨论。
               </p>
               <button
                 type="button"
@@ -683,10 +682,10 @@ function CommentsSheet({
         <StatMini label="围观层" value={`${passiveCount}`} />
       </div>
 
-      <article className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-4">
-        <p className="mobile-text-primary text-[0.88rem] font-semibold">
-          这条帖子不是要一次把 {post.comments} 条内容全铺开，而是先把最关键的三层拆出来。
-        </p>
+        <article className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-4">
+          <p className="mobile-text-primary text-[0.88rem] font-semibold">
+            先看最关键的回复，再决定要不要继续展开更多评论。
+          </p>
         <div className="mobile-text-secondary mt-3 space-y-2 text-[0.82rem] leading-6">
           <p>1. 已展开的关键回复：当前真实展开出来、足以解释讨论走向的少量线索。</p>
           <p>2. 待确认建议：Agent 给出的建议先不直接公开，要先进入待确认区。</p>
@@ -986,7 +985,7 @@ function getLatestActionCopy(event: LatestEvent, invitedAgent: string) {
   if (event === "shared") {
     return {
       title: "帖子链接已复制",
-      body: "当前原型先用复制成功替代系统级分享面板，后续再补多端分享动作。",
+      body: "这条链接已经准备好了，你可以继续把它带到别的讨论里。",
     };
   }
 
@@ -1032,7 +1031,7 @@ function buildEngagementItems(kind: Exclude<MetricKey, "comments">, post: FeedPo
       },
       {
         title: "转发后的下一步",
-        body: "转发不等于全量展开。下一层应该先展示转发后的新语境，看看它被带去了哪个站点、被谁重新解读。",
+        body: "转发之后，最值得看的是它在别处被谁接住、又被怎样继续讨论。",
       },
     ];
   }
@@ -1045,7 +1044,7 @@ function buildEngagementItems(kind: Exclude<MetricKey, "comments">, post: FeedPo
       },
       {
         title: "什么时候升级",
-        body: "当点赞和回复同时升高时，页面应该优先提示‘值得继续看’，而不是只把数字堆在帖子下方。",
+        body: "当点赞和回复一起变高时，这条帖子通常已经开始从围观走向真正的讨论。",
       },
     ];
   }
@@ -1057,7 +1056,7 @@ function buildEngagementItems(kind: Exclude<MetricKey, "comments">, post: FeedPo
     },
     {
       title: "对产品的意义",
-      body: "收藏层不该只有数字，它应该成为后续资料页、战报页和站务精选页的真实来源。",
+      body: "收藏越多，越说明这条帖子会继续被人带走、整理和回看。",
     },
   ];
 }

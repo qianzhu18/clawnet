@@ -4,11 +4,16 @@ import Link from "next/link";
 import { startTransition, useDeferredValue, useMemo, useState, type ReactNode } from "react";
 import { CopyCommandButton } from "@/components/connect/copy-command-button";
 import { PairingQr } from "@/components/connect/pairing-qr";
-import { FeedCard } from "@/components/mobile/cards";
+import {
+  defaultAgentParticipationSettings,
+  getAgentScopeLabel,
+  readAgentParticipationSettings,
+  writeAgentParticipationSettings,
+} from "@/lib/agent-participation";
 import { appendPayload } from "@/lib/connect-demo";
 import type { PairingState } from "@/lib/connect-demo";
 import { buildNetworkActionHref } from "@/lib/network-demo";
-import type { FeedPost, StationCard } from "@/components/mobile/mock-data";
+import { feedPosts, type StationCard } from "@/components/mobile/mock-data";
 
 type AvatarConfigScreenProps = {
   name: string;
@@ -38,8 +43,8 @@ type ReportsScreenProps = {
 
 type AppFeedScreenProps = {
   payload?: string;
-  station: StationCard;
-  timelinePosts: FeedPost[];
+  currentStation: StationCard;
+  relatedStations: StationCard[];
   connectedAgentName?: string;
   syncLabel?: string;
   sourceLabel?: string;
@@ -74,6 +79,8 @@ type StationChoice = StationCard & {
 
 const toneOptions = ["礼貌克制", "快速策展", "讨论推动"] as const;
 const focusOptions = ["公开讨论筛选", "基站社区参与", "资料整理"] as const;
+const participationTriggerOptions = ["仅在 @ 时参与", "默认预览待确认"] as const;
+const participationScopeOptions = ["全部帖子", "仅当前基站", "仅熟悉的人"] as const;
 
 const sourceCards = [
   {
@@ -123,18 +130,30 @@ export function AvatarConfigScreen({
   capabilities,
   stations,
 }: AvatarConfigScreenProps) {
+  const storedParticipationSettings =
+    typeof window === "undefined" ? defaultAgentParticipationSettings : readAgentParticipationSettings();
   const [tone, setTone] = useState<(typeof toneOptions)[number]>(toneOptions[0]);
   const [focus, setFocus] = useState<(typeof focusOptions)[number]>(focusOptions[0]);
   const [persona, setPersona] = useState(bio);
   const [canDo, setCanDo] = useState("例如：总结讨论、整理资料、提出后续问题。");
   const [cannotDo, setCannotDo] = useState("例如：不要代替我表达立场、不要主动加入敏感争论。");
   const [stationSheetOpen, setStationSheetOpen] = useState(false);
-  const [currentStationId, setCurrentStationId] = useState(stations[0]?.id ?? "");
+  const [currentStationId, setCurrentStationId] = useState(
+    storedParticipationSettings.stationId && stations.some((station) => station.id === storedParticipationSettings.stationId)
+      ? storedParticipationSettings.stationId
+      : stations[0]?.id ?? "",
+  );
   const [alertPolicy, setAlertPolicy] = useState({
     criticalMemory: true,
     summaryThreshold: true,
     weeklySynthesis: false,
   });
+  const [participationTrigger, setParticipationTrigger] = useState<(typeof participationTriggerOptions)[number]>(
+    mapTriggerToOption(storedParticipationSettings.triggerMode),
+  );
+  const [participationScope, setParticipationScope] = useState<(typeof participationScopeOptions)[number]>(
+    mapScopeToOption(storedParticipationSettings.scope),
+  );
   const [feedback, setFeedback] = useState<string | null>(null);
   const currentStation = stations.find((station) => station.id === currentStationId) ?? stations[0];
 
@@ -216,9 +235,50 @@ export function AvatarConfigScreen({
             />
           </div>
 
+          <FieldGroup title="讨论参与">
+            <TagSelector
+              options={participationTriggerOptions}
+              value={participationTrigger}
+              onChange={(value) => setParticipationTrigger(value as (typeof participationTriggerOptions)[number])}
+            />
+            <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">
+              {participationTrigger === "仅在 @ 时参与"
+                ? "只有你主动 @ 它时，它才会给出一条可预览的回复。"
+                : "它会先给出带 AI 标记的回复预览，你同意后才公开出现在讨论里。"}
+            </p>
+          </FieldGroup>
+
+          <FieldGroup title="参与范围">
+            <TagSelector
+              options={participationScopeOptions}
+              value={participationScope}
+              onChange={(value) => setParticipationScope(value as (typeof participationScopeOptions)[number])}
+            />
+            <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">
+              当前：{getAgentScopePreviewText(participationScope, currentStation?.name ?? defaultAgentParticipationSettings.stationName ?? "当前基站")}
+            </p>
+          </FieldGroup>
+
           <button
             type="button"
-            onClick={() => pushFeedback("这次调整已生效")}
+            onClick={() => {
+              writeAgentParticipationSettings({
+                triggerMode: mapOptionToTrigger(participationTrigger),
+                scope: mapOptionToScope(participationScope),
+                stationId: currentStation?.id,
+                stationName: currentStation?.name,
+                people: defaultAgentParticipationSettings.people,
+              });
+              pushFeedback(
+                `讨论参与已更新：${participationTrigger} / ${getAgentScopeLabel({
+                  triggerMode: mapOptionToTrigger(participationTrigger),
+                  scope: mapOptionToScope(participationScope),
+                  stationId: currentStation?.id,
+                  stationName: currentStation?.name,
+                  people: defaultAgentParticipationSettings.people,
+                })}`,
+              );
+            }}
             className="mobile-button-primary mt-4 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.8rem] font-semibold uppercase tracking-[0.18em]"
           >
             保存这次调整
@@ -383,6 +443,50 @@ export function AvatarConfigScreen({
       ) : null}
     </>
   );
+}
+
+function mapTriggerToOption(trigger: "mention_only" | "auto_preview") {
+  return trigger === "mention_only" ? "仅在 @ 时参与" : "默认预览待确认";
+}
+
+function mapOptionToTrigger(option: (typeof participationTriggerOptions)[number]) {
+  return option === "仅在 @ 时参与" ? "mention_only" : "auto_preview";
+}
+
+function mapScopeToOption(scope: "all_posts" | "current_station" | "selected_people") {
+  if (scope === "current_station") {
+    return "仅当前基站";
+  }
+
+  if (scope === "selected_people") {
+    return "仅熟悉的人";
+  }
+
+  return "全部帖子";
+}
+
+function mapOptionToScope(option: (typeof participationScopeOptions)[number]) {
+  if (option === "仅当前基站") {
+    return "current_station";
+  }
+
+  if (option === "仅熟悉的人") {
+    return "selected_people";
+  }
+
+  return "all_posts";
+}
+
+function getAgentScopePreviewText(option: (typeof participationScopeOptions)[number], stationName: string) {
+  if (option === "仅当前基站") {
+    return `只在 ${stationName} 里的帖子先给出 AI 回复预览。`;
+  }
+
+  if (option === "仅熟悉的人") {
+    return "只对你已经熟悉的人先给出 AI 回复预览。";
+  }
+
+  return "公开帖子里都可以先看到 AI 回复预览。";
 }
 
 export function JoinStationScreen({ payload, stations }: JoinStationScreenProps) {
@@ -675,7 +779,7 @@ export function ReportsScreen({ payload, reportEntries, focusEntry, sourcePost }
           <h2 className="mobile-text-primary mt-2.5 text-[2rem] font-semibold tracking-[-0.07em]">战报</h2>
           {sourcePost ? (
             <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">
-              你是从帖子 `{sourcePost}` 跳进来的。这里应该告诉你，这条公开互动后来在系统里被如何记录和归档。
+              你是从帖子 `{sourcePost}` 跳进来的。这里能继续看到这条互动后来留下了哪些记录。
             </p>
           ) : null}
         </div>
@@ -773,49 +877,133 @@ export function ReportsScreen({ payload, reportEntries, focusEntry, sourcePost }
 
 export function AppFeedScreen({
   payload,
-  station,
-  timelinePosts,
+  currentStation,
+  relatedStations,
   connectedAgentName,
   syncLabel,
   sourceLabel,
 }: AppFeedScreenProps) {
+  const currentDiscussionCount = countStationDiscussions(currentStation.name);
+  const orderedStations = [...relatedStations].sort(
+    (left, right) => getStationRelationScoreValue(currentStation, right) - getStationRelationScoreValue(currentStation, left),
+  );
+
   return (
     <section className="space-y-4 pb-4">
       <div>
-        <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.22em]">动态</p>
-        <p className="mobile-text-secondary mt-1 text-[0.82rem]">基站实时更新</p>
+        <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.22em]">基站索引</p>
+        <p className="mobile-text-secondary mt-1 text-[0.82rem]">先看基站，再进入具体帖子与评论线程</p>
       </div>
 
       <section className="mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-[0.85rem] text-[0.72rem] font-semibold">
-              {station.name.slice(0, 1)}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="mobile-button-secondary inline-flex size-11 items-center justify-center rounded-[0.95rem] text-[0.78rem] font-semibold">
+              {currentStation.name.slice(0, 1)}
             </div>
             <div>
-              <p className="mobile-text-primary text-[0.92rem] font-semibold">{station.name}</p>
-              <p className="mobile-text-secondary mt-1 text-[0.76rem]">{station.summary}</p>
+              <p className="mobile-section-label text-[0.56rem] font-semibold uppercase tracking-[0.16em]">当前观察基站</p>
+              <p className="mobile-text-primary mt-1 text-[0.98rem] font-semibold">{currentStation.name}</p>
+              <p className="mobile-text-secondary mt-1 text-[0.78rem]">{currentStation.summary}</p>
             </div>
           </div>
+          <span className="mobile-chip-accent shrink-0 rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+            焦点
+          </span>
+        </div>
+        <p className="mobile-text-secondary mt-4 text-[0.84rem] leading-6">
+          这里先不直接刷用户帖子。你先判断这座站值不值得进，再决定点哪一条帖子继续看。
+        </p>
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <StationStat value={currentStation.hostName} label="站长" />
+          <StationStat value={`${currentDiscussionCount} 条`} label="讨论" />
+          <StationStat value="100%" label="相关系数" />
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {currentStation.tags.map((tag) => (
+            <span
+              key={`${currentStation.id}-${tag}`}
+              className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div className="mt-5 flex gap-2">
+          <Link
+            href={buildStationFocusHref(currentStation.id, currentStation.id, payload)}
+            className="mobile-button-primary inline-flex flex-1 items-center justify-center rounded-[0.95rem] px-3 py-3 text-[0.78rem] font-semibold"
+          >
+            进入这座基站
+          </Link>
           <Link
             href={appendPayload("/app/station/join", payload)}
-            className="mobile-button-primary inline-flex items-center justify-center rounded-[0.8rem] px-3 py-2 text-[0.72rem] font-semibold"
+            className="mobile-button-secondary inline-flex items-center justify-center rounded-[0.95rem] px-3 py-3 text-[0.78rem] font-semibold"
           >
-            加入
+            更多基站
           </Link>
         </div>
       </section>
 
-      <section className="mobile-soft-card mobile-ghost-border rounded-[1.1rem] px-4 py-3">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-[0.8rem]">🔥</span>
-            <p className="mobile-text-primary text-[0.82rem] font-medium">先看一条正在升温的讨论</p>
+      <section className="space-y-3">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">相近基站</p>
+            <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
+              先在同一语境里比较几座基站，再决定进哪座站看具体讨论。
+            </p>
           </div>
-          <Link href="/posts/agent-signal" className="mobile-text-primary text-[0.72rem] font-semibold">
-            查看评论 →
-          </Link>
+          <span className="mobile-text-muted shrink-0 text-[0.72rem]">{orderedStations.length} 座</span>
         </div>
+
+        {orderedStations.map((station) => {
+          const discussionCount = countStationDiscussions(station.name);
+          const relationScore = `${getStationRelationScoreValue(currentStation, station)}%`;
+
+          return (
+            <article key={station.id} className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-start gap-3">
+                  <div className="mobile-button-secondary inline-flex size-11 items-center justify-center rounded-[0.95rem] text-[0.78rem] font-semibold">
+                    {station.name.slice(0, 1)}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="mobile-text-primary text-[0.96rem] font-semibold">{station.name}</p>
+                    <p className="mobile-text-secondary mt-1 text-[0.8rem] leading-6">{station.summary}</p>
+                  </div>
+                </div>
+                <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+                  {relationScore}
+                </span>
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-3">
+                <StationStat value={station.hostName} label="站长" />
+                <StationStat value={`${discussionCount} 条`} label="讨论" />
+                <StationStat value={station.memberCount.replace(" 成员", "")} label="成员" />
+              </div>
+              <p className="mobile-text-secondary mt-4 text-[0.8rem] leading-6">
+                {station.hostRole} · {station.location}
+              </p>
+              <p className="mobile-text-secondary mt-2 text-[0.8rem] leading-6">{station.activity}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {station.tags.map((tag) => (
+                  <span
+                    key={`${station.id}-${tag}`}
+                    className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <Link
+                href={buildStationFocusHref(station.id, currentStation.id, payload)}
+                className="mobile-button-secondary mt-5 inline-flex w-full items-center justify-center rounded-[0.95rem] px-3 py-3 text-[0.78rem] font-semibold"
+              >
+                进入这座基站
+              </Link>
+            </article>
+          );
+        })}
       </section>
 
       <section className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
@@ -839,25 +1027,46 @@ export function AppFeedScreen({
               你的 Agent 已上线{connectedAgentName ? ` · ${connectedAgentName}` : ""}
             </p>
             <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
-              {sourceLabel ?? "正在从中心站公开场里替你盯住高价值讨论。"}
+              {sourceLabel ?? "它现在只负责替你盯住值得进入的基站和帖子，不在这里抢内容主位。"}
               {syncLabel ? ` 最近同步：${syncLabel}。` : ""}
             </p>
           </div>
         </div>
       </section>
-
-      <section className="space-y-4">
-        {timelinePosts.map((post) => (
-          <FeedCard
-            key={post.id}
-            post={post}
-            href={post.id.startsWith("connected-") ? appendPayload("/app/station", payload) : `/posts/${post.id}`}
-            ctaLabel={post.id.startsWith("connected-") ? "进入基站" : "查看讨论"}
-          />
-        ))}
-      </section>
     </section>
   );
+}
+
+function StationStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="mobile-surface-muted mobile-ghost-border rounded-[1rem] px-3 py-3 text-center">
+      <p className="mobile-text-primary text-[0.84rem] font-semibold">{value}</p>
+      <p className="mobile-text-muted mt-1 text-[0.62rem] uppercase tracking-[0.14em]">{label}</p>
+    </div>
+  );
+}
+
+function countStationDiscussions(stationName: string) {
+  return feedPosts.filter((post) => post.station === stationName && post.role !== "agent").length;
+}
+
+function getStationRelationScoreValue(currentStation: StationCard, candidate: StationCard) {
+  if (candidate.id === currentStation.id) {
+    return 100;
+  }
+
+  const sharedTags = candidate.tags.filter((tag) => currentStation.tags.includes(tag)).length;
+  return Math.min(
+    56 +
+      sharedTags * 16 +
+      (candidate.tone === currentStation.tone ? 8 : 0) +
+      (candidate.location.includes("线上") === currentStation.location.includes("线上") ? 6 : 0),
+    96,
+  );
+}
+
+function buildStationFocusHref(stationId: string, focusStationId: string, payload?: string) {
+  return appendPayload(`/stations/${stationId}?focusStation=${encodeURIComponent(focusStationId)}`, payload);
 }
 
 export function MemoryArchiveScreen({ payload, entries, topics, initialTopic, sourcePost }: MemoryArchiveScreenProps) {

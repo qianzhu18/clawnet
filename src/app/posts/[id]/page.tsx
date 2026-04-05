@@ -4,16 +4,19 @@ import {
   getFeedPostById,
 } from "@/components/mobile/mock-data";
 import { PostDetailScreen } from "@/components/public/post-detail-screen";
+import { getSingleQueryValue } from "@/lib/connect-demo";
 
 export default async function PostDetailPage({
   params,
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ focusMetric?: string | string[] }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
-  const { focusMetric } = await searchParams;
+  const query = await searchParams;
+  const focusMetric = query.focusMetric;
+  const payload = getSingleQueryValue(query.payload);
   const post = getFeedPostById(id);
   const thread = getDiscussionThreadByPostId(id);
 
@@ -23,5 +26,5 @@ export default async function PostDetailPage({
 
   const initialFocusMetric = Array.isArray(focusMetric) ? focusMetric[0] : focusMetric;
 
-  return <PostDetailScreen post={post} thread={thread} initialFocusMetric={initialFocusMetric} />;
+  return <PostDetailScreen post={post} thread={thread} initialFocusMetric={initialFocusMetric} payload={payload} />;
 }

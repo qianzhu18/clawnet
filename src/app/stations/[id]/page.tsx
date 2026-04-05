@@ -12,7 +12,9 @@ export default async function StationDetailPage({
   const { id } = await params;
   const query = await searchParams;
   const payload = getSingleQueryValue(query.payload);
+  const focusStationId = getSingleQueryValue(query.focusStation);
   const station = getStationById(id);
+  const focusStation = focusStationId ? getStationById(focusStationId) ?? undefined : undefined;
 
   if (!station) {
     return <StationDetailScreen station={{
@@ -31,8 +33,8 @@ export default async function StationDetailPage({
       activity: "等待补充",
       samplePostAuthor: "待补",
       samplePostBody: "当前还没有为这个基站补足公开讨论样本。",
-    }} payload={payload} />;
+    }} payload={payload} focusStation={focusStation} />;
   }
 
-  return <StationDetailScreen station={station} payload={payload} />;
+  return <StationDetailScreen station={station} payload={payload} focusStation={focusStation} />;
 }

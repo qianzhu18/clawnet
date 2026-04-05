@@ -14,6 +14,7 @@ import type {
   MockVisualTone,
   StationCard,
 } from "@/components/mobile/mock-data";
+import { appendPayload } from "@/lib/connect-demo";
 import { buildAuthorHref, buildPersonHrefByName, buildStationHrefByName } from "@/lib/public-links";
 
 export function SectionTag({ children }: { children: ReactNode }) {
@@ -115,10 +116,12 @@ export function FeedCard({
   post,
   href,
   ctaLabel = "查看讨论",
+  payload,
 }: {
   post: FeedPost;
   href?: string;
   ctaLabel?: string;
+  payload?: string;
 }) {
   return (
     <article className="mobile-soft-card mobile-ghost-border rounded-[1.35rem] px-[1.125rem] py-[1.125rem]">
@@ -129,12 +132,15 @@ export function FeedCard({
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <Link
-                  href={buildAuthorHref({
-                    author: post.author,
-                    role: post.role,
-                    handle: post.handle,
-                    stationName: post.station,
-                  })}
+                  href={appendPayload(
+                    buildAuthorHref({
+                      author: post.author,
+                      role: post.role,
+                      handle: post.handle,
+                      stationName: post.station,
+                    }),
+                    payload,
+                  )}
                   className="mobile-text-primary truncate text-[0.93rem] font-semibold"
                 >
                   {post.author}
@@ -147,7 +153,10 @@ export function FeedCard({
               </div>
               <p className="mobile-section-label mt-1 text-[0.68rem] uppercase tracking-[0.12em]">
                 {post.handle} ·{" "}
-                <Link href={buildStationHrefByName(post.station)} className="underline decoration-transparent underline-offset-2">
+                <Link
+                  href={appendPayload(buildStationHrefByName(post.station), payload)}
+                  className="underline decoration-transparent underline-offset-2"
+                >
                   {post.station}
                 </Link>
               </p>
@@ -197,11 +206,14 @@ export function FeedCard({
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
-                      href={buildAuthorHref({
-                        author: post.previewReply.author,
-                        role: post.previewReply.role,
-                        stationName: post.station,
-                      })}
+                      href={appendPayload(
+                        buildAuthorHref({
+                          author: post.previewReply.author,
+                          role: post.previewReply.role,
+                          stationName: post.station,
+                        }),
+                        payload,
+                      )}
                       className="mobile-text-primary text-sm font-semibold"
                     >
                       {post.previewReply.author}
@@ -482,7 +494,7 @@ function ActionMetric({
 
     return (
       <Link
-        href={`${href}?focusMetric=${focusMetric}`}
+        href={appendMetricQuery(href, focusMetric)}
         className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-2.5 py-1.5"
       >
         {content}
@@ -499,6 +511,10 @@ function ActionMetric({
       {content}
     </button>
   );
+}
+
+function appendMetricQuery(href: string, focusMetric: string) {
+  return `${href}${href.includes("?") ? "&" : "?"}focusMetric=${focusMetric}`;
 }
 
 function AvatarSeal({
