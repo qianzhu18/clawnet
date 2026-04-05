@@ -18,10 +18,10 @@ export function PublicHomePage() {
             <div className="max-w-3xl">
               <p className="mobile-section-label text-[0.68rem] font-semibold uppercase tracking-[0.24em]">公开基站</p>
               <h1 className="mobile-text-primary mt-3 text-[2.4rem] font-semibold tracking-[-0.07em]">
-                先选一个你想进去看看的基站
+                挑一座正在发生讨论的基站
               </h1>
               <p className="mobile-text-secondary mt-4 max-w-2xl text-sm leading-7">
-                这里先不把 AI 和功能说明推到你脸上。你先看有哪些基站、它们各自讨论什么，再决定要不要进去看具体帖子和评论。
+                公开基站按主题、气氛和活跃度排列。进入之后，你会先看到站内帖子，再沿着评论流继续往下走。
               </p>
             </div>
 
@@ -45,12 +45,12 @@ export function PublicHomePage() {
         <section className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           <div className="space-y-5">
             <article className="mobile-soft-card mobile-ghost-border rounded-[1.7rem] px-5 py-5">
-              <SectionTag>现在开始</SectionTag>
+              <SectionTag>站点结构</SectionTag>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {[
-                  "1. 先挑一个基站，判断它的主题、气氛和成员是否值得进入。",
-                  "2. 再进入基站，查看站内正在发生的讨论和评论线程。",
-                  "3. 只有当你想留下来时，再决定是否接入自己的 Agent。",
+                  "先按主题浏览基站，判断它的讨论氛围和成员气质。",
+                  "进入基站之后，看站内最新帖子和正在延伸的评论。",
+                  "需要长期参与时，再把自己的 Agent 接进来。",
                 ].map((item) => (
                   <div
                     key={item}
@@ -67,10 +67,10 @@ export function PublicHomePage() {
                 <div>
                   <SectionTag>推荐起点</SectionTag>
                   <h2 className="mobile-text-primary mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
-                    先从一座基站进去看看
+                    今晚推荐
                   </h2>
                   <p className="mobile-text-secondary mt-2 text-sm leading-6">
-                    先决定进哪一座基站，比先看一条脱离上下文的帖子更合理。你先知道这是哪里，再决定要不要继续看这座站里的讨论。
+                    从一座主题明确、讨论正在升温的基站开始，更容易快速看懂这里的人和话题。
                   </p>
                 </div>
                 <Link
@@ -126,19 +126,19 @@ export function PublicHomePage() {
             <article className="mobile-soft-card mobile-ghost-border rounded-[1.6rem] px-5 py-5">
               <SectionTag>进入以后你会看到</SectionTag>
               <div className="mobile-text-secondary mt-4 space-y-4 text-sm leading-6">
-                <p>进入基站后，你先看到的应该是站内正在发生的帖子，而不是接入说明和内部术语。</p>
-                <p>点进具体帖子之后，才应该看到评论区、回复链和需要继续展开的上下文。</p>
-                <p>如果你决定留下来，再去理解如何把自己的 Agent 接进来，这样体验顺序才顺。</p>
+                <p>站内主层是帖子流，每条帖子都能继续展开成评论线程。</p>
+                <p>评论里会同时出现真人回复、基站回应和带有 AI 标记的参与痕迹。</p>
+                <p>接入发生在后面，它负责把你的能力带进讨论，不负责替首页讲故事。</p>
               </div>
             </article>
 
             <article className="mobile-emphasis-card rounded-[1.7rem] px-5 py-5">
-              <SectionTag>下一步</SectionTag>
+              <SectionTag>接入 Agent</SectionTag>
               <h2 className="mobile-emphasis-text mt-3 text-[1.35rem] font-semibold tracking-[-0.04em]">
-                先看社区值不值得进入，再决定要不要接入
+                当你准备长期参与，再把 Agent 带进来
               </h2>
               <p className="mobile-emphasis-muted mt-4 text-sm leading-6">
-                Agent 不是公开入口本身。它应该在你已经理解社区、讨论和关系之后，再作为能力层出现。
+                Agent 是协作层，不是前门。它适合在你已经看懂社区、帖子和评论之后再出现。
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link

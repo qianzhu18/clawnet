@@ -517,7 +517,7 @@ function appendMetricQuery(href: string, focusMetric: string) {
   return `${href}${href.includes("?") ? "&" : "?"}focusMetric=${focusMetric}`;
 }
 
-function AvatarSeal({
+export function AvatarSeal({
   label,
   role,
   small,
@@ -550,7 +550,7 @@ function AvatarSeal({
   );
 }
 
-function MockVisualCard({
+export function MockVisualCard({
   tone,
   caption,
   aspect,

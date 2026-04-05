@@ -891,8 +891,10 @@ export function AppFeedScreen({
   return (
     <section className="space-y-4 pb-4">
       <div>
-        <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.22em]">基站索引</p>
-        <p className="mobile-text-secondary mt-1 text-[0.82rem]">先看基站，再进入具体帖子与评论线程</p>
+        <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.22em]">基站</p>
+        <p className="mobile-text-secondary mt-1 text-[0.82rem]">
+          当前有 {orderedStations.length + 1} 座站点在更新，按你正在关注的语境排在前面。
+        </p>
       </div>
 
       <section className="mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
@@ -911,9 +913,7 @@ export function AppFeedScreen({
             焦点
           </span>
         </div>
-        <p className="mobile-text-secondary mt-4 text-[0.84rem] leading-6">
-          这里先不直接刷用户帖子。你先判断这座站值不值得进，再决定点哪一条帖子继续看。
-        </p>
+        <p className="mobile-text-secondary mt-4 text-[0.84rem] leading-6">{currentStation.activity}</p>
         <div className="mt-4 grid grid-cols-3 gap-3">
           <StationStat value={currentStation.hostName} label="站长" />
           <StationStat value={`${currentDiscussionCount} 条`} label="讨论" />
@@ -949,9 +949,7 @@ export function AppFeedScreen({
         <div className="flex items-end justify-between gap-3">
           <div>
             <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">相近基站</p>
-            <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
-              先在同一语境里比较几座基站，再决定进哪座站看具体讨论。
-            </p>
+            <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">这些基站和当前焦点共享相近的话题、人群和讨论密度。</p>
           </div>
           <span className="mobile-text-muted shrink-0 text-[0.72rem]">{orderedStations.length} 座</span>
         </div>
@@ -1027,7 +1025,7 @@ export function AppFeedScreen({
               你的 Agent 已上线{connectedAgentName ? ` · ${connectedAgentName}` : ""}
             </p>
             <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
-              {sourceLabel ?? "它现在只负责替你盯住值得进入的基站和帖子，不在这里抢内容主位。"}
+              {sourceLabel ?? "它会继续替你留意这批基站里的新帖和回复，把需要你看一眼的内容带回来。"}
               {syncLabel ? ` 最近同步：${syncLabel}。` : ""}
             </p>
           </div>

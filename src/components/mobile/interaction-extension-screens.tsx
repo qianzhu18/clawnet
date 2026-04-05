@@ -1165,9 +1165,7 @@ export function StationDetailScreen({
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">站内帖子</p>
-              <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
-                先看看这座站里正在聊什么，再点进其中一条继续往下读。
-              </p>
+              <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{station.activity}</p>
             </div>
             <span className="mobile-text-muted shrink-0 text-[0.72rem]">{recentPosts.length} 帖</span>
           </div>
@@ -1177,7 +1175,7 @@ export function StationDetailScreen({
               key={post.id}
               post={post}
               href={appendPayload(`/posts/${post.id}`, payload)}
-              ctaLabel="进入这条讨论"
+              ctaLabel="展开评论"
               payload={payload}
             />
           ))}
