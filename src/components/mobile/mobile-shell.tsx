@@ -110,6 +110,8 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
     getUnreadNotificationCount(readNotifications(pairingPayload)),
   );
   const themeHydratedRef = useRef(false);
+  const headerStatusLabel = connectedAgent ? "已接入" : statusLabel ? formatStatusLabel(statusLabel) : "公开试玩";
+  const headerContextLabel = connectedAgent ? formatSourceLabel(connectedAgent.source) : "公开 feed";
 
   useEffect(() => {
     startTransition(() => {
@@ -148,15 +150,23 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
   return (
     <div className="mobile-app-root" data-mobile-theme={theme} suppressHydrationWarning>
       <div className="mobile-app-shell pb-[calc(env(safe-area-inset-bottom)+7.35rem)]">
-        <header className="px-3 pt-2.5">
-          <div className="mobile-shell-panel flex items-center justify-between gap-3 rounded-[1.45rem] px-4 py-[0.8125rem]">
-            <div className="mobile-text-primary">
+        <header className="sticky top-0 z-30 px-3 pt-3">
+          <div className="mobile-shell-panel flex items-start justify-between gap-3 rounded-[1.7rem] px-4 py-4">
+            <div className="mobile-text-primary min-w-0">
               <p className="mobile-section-label text-[0.58rem] uppercase tracking-[0.34em]">ClawNet</p>
               <h1 className="mobile-text-primary text-[0.98rem] font-semibold tracking-[-0.03em]">
                 {getHeaderTitle(activeNav)}
               </h1>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="mobile-chip-accent rounded-full px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em]">
+                  {headerStatusLabel}
+                </span>
+                <span className="mobile-chip rounded-full px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em]">
+                  {headerContextLabel}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex shrink-0 items-center gap-1.5">
               <div className="mobile-dock inline-flex items-center gap-0.5 rounded-full p-[0.22rem]">
                 <button
                   type="button"
@@ -181,14 +191,14 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
               </div>
               <Link
                 href={appendPayload("/app/discover", pairingPayload)}
-                className="mobile-shell-panel mobile-text-primary inline-flex size-9 items-center justify-center rounded-full"
+                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full"
                 aria-label="discover"
               >
                 <SearchIcon className="size-[0.88rem]" />
               </Link>
               <Link
                 href={appendPayload("/app/notifications", pairingPayload)}
-                className="mobile-shell-panel mobile-text-primary relative inline-flex size-9 items-center justify-center rounded-full"
+                className="mobile-button-secondary mobile-text-primary relative inline-flex size-10 items-center justify-center rounded-full"
                 aria-label="notifications"
               >
                 <BellIcon className="size-[0.88rem]" />
@@ -201,7 +211,7 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
               <button
                 type="button"
                 onClick={() => setOpenPanel("profile")}
-                className="mobile-shell-panel mobile-text-primary inline-flex size-9 items-center justify-center rounded-full"
+                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full"
                 aria-label="profile"
               >
                 <UserIcon className="size-[0.88rem]" />
@@ -210,7 +220,7 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
           </div>
         </header>
         <MobileGuideBanner activeNav={activeNav} pairingPayload={pairingPayload} />
-        <main className="px-4 pt-5">{children}</main>
+        <main className="px-4 pt-6">{children}</main>
       </div>
 
       <MobileDrawer
@@ -450,7 +460,7 @@ function MobileActionFab({ onClick }: { onClick: () => void }) {
       type="button"
       onClick={onClick}
       aria-label="actions"
-      className="mobile-button-primary mobile-touch-target mobile-fab-shadow fixed bottom-[calc(env(safe-area-inset-bottom)+5.65rem)] right-4 z-40 inline-flex items-center gap-1.5 rounded-[1.05rem] px-4 text-[0.88rem] font-semibold"
+      className="mobile-button-primary mobile-touch-target mobile-fab-shadow fixed bottom-[calc(env(safe-area-inset-bottom)+5.75rem)] right-4 z-40 inline-flex items-center gap-1.5 rounded-[1.2rem] px-4 text-[0.88rem] font-semibold"
     >
       <SparkIcon className="size-[0.95rem]" />
       <span>下一步</span>
@@ -621,7 +631,7 @@ function MobileBottomNav({
   return (
     <nav className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+0.55rem)] z-40">
       <div className="mobile-app-shell px-3">
-        <div className="mobile-dock pointer-events-auto rounded-[1.45rem] px-2.5 pb-1.5 pt-[0.3125rem]">
+        <div className="mobile-dock pointer-events-auto rounded-[1.65rem] px-3 pb-2 pt-[0.45rem]">
           <div className="grid grid-cols-5 items-end gap-0.5">
             {navItems.map((item) => {
               if (item.key === "station") {
@@ -633,7 +643,7 @@ function MobileBottomNav({
                     className="mobile-touch-target relative z-10 flex min-h-[3.35rem] flex-col items-center justify-end gap-1 text-center"
                   >
                     <span
-                      className={`inline-flex size-[2.72rem] items-center justify-center rounded-full border transition-transform ${
+                      className={`inline-flex size-[2.9rem] items-center justify-center rounded-full border transition-transform ${
                         active
                           ? "-translate-y-[0.55rem] border-transparent mobile-button-primary"
                           : "-translate-y-[0.7rem] border-[var(--mobile-border)] mobile-surface-strong mobile-text-primary hover:scale-[1.03]"

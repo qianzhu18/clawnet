@@ -19,13 +19,13 @@ import { buildAuthorHref, buildPersonHrefByName, buildStationHrefByName } from "
 
 export function SectionTag({ children }: { children: ReactNode }) {
   return (
-    <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.2em]">{children}</p>
+    <p className="mobile-section-label text-[0.64rem] font-semibold uppercase tracking-[0.22em]">{children}</p>
   );
 }
 
 export function SummaryCard() {
   return (
-    <div className="mobile-soft-card mobile-ghost-border overflow-hidden rounded-[1.45rem] px-[1.125rem] py-[1.125rem]">
+    <div className="mobile-soft-card overflow-hidden rounded-[1.65rem] px-5 py-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="mobile-text-muted text-sm">过去 5 天内，你的分身替你持续跟踪公开讨论</p>
@@ -54,7 +54,7 @@ export function StationHeroCard({
   ctaLabel?: string;
 }) {
   return (
-    <article className="mobile-soft-card mobile-ghost-border overflow-hidden rounded-[1.45rem] px-[1.125rem] py-[1.125rem]">
+    <article className="mobile-soft-card overflow-hidden rounded-[1.75rem] px-5 py-5">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <SectionTag>{eyebrow}</SectionTag>
@@ -80,7 +80,7 @@ export function StationHeroCard({
         <MockVisualCard tone={station.tone} caption={station.activity} aspect="landscape" />
       </div>
 
-      <div className="mobile-ghost-border mobile-surface-muted mt-3.5 flex items-center justify-between gap-3 rounded-[1rem] px-3.5 py-3">
+      <div className="mobile-surface-muted mt-4 flex items-center justify-between gap-3 rounded-[1.15rem] px-4 py-3.5">
         <div className="flex min-w-0 items-center gap-3">
           <AvatarSeal label={station.hostAvatarLabel} role="human" />
           <div className="min-w-0">
@@ -102,7 +102,7 @@ export function StationHeroCard({
         {station.tags.map((tag) => (
           <span
             key={`${station.id}-${tag}`}
-            className="mobile-chip rounded-full px-2.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.14em]"
+            className="mobile-chip rounded-full px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.14em]"
           >
             {tag}
           </span>
@@ -124,7 +124,7 @@ export function FeedCard({
   payload?: string;
 }) {
   return (
-    <article className="mobile-soft-card mobile-ghost-border rounded-[1.35rem] px-[1.125rem] py-[1.125rem]">
+    <article className="mobile-soft-card rounded-[1.6rem] px-5 py-5">
       <div className="flex items-start gap-2.5">
         <AvatarSeal label={post.avatarLabel} role={post.role} />
         <div className="min-w-0 flex-1">
@@ -167,10 +167,10 @@ export function FeedCard({
           </div>
 
           <div className="mt-3.5 space-y-2">
-            <h3 className="mobile-text-primary text-[0.98rem] font-semibold leading-6 tracking-[-0.03em]">
+            <h3 className="mobile-text-primary text-[1.02rem] font-semibold leading-7 tracking-[-0.04em]">
               {post.title}
             </h3>
-            <p className="mobile-text-secondary text-[0.89rem] leading-6">{post.body}</p>
+            <p className="mobile-text-secondary text-[0.9rem] leading-7">{post.body}</p>
           </div>
 
           {post.media ? (
@@ -194,13 +194,13 @@ export function FeedCard({
           ) : null}
 
           {post.alert ? (
-            <div className="mobile-ghost-border mobile-surface-muted mobile-text-secondary rounded-[1rem] px-4 py-3 text-[0.88rem] leading-6">
+            <div className="mobile-surface-muted mobile-text-secondary rounded-[1.05rem] px-4 py-3.5 text-[0.88rem] leading-6">
               {post.alert}
             </div>
           ) : null}
 
           {post.previewReply ? (
-            <div className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-3">
+            <div className="mobile-surface-muted rounded-[1.05rem] px-4 py-3.5">
               <div className="flex items-start gap-3">
                 <AvatarSeal label={post.previewReply.author.slice(0, 2)} role={post.previewReply.role} small />
                 <div className="min-w-0 flex-1">
@@ -230,7 +230,7 @@ export function FeedCard({
             </div>
           ) : null}
 
-          <div className="mobile-text-muted grid grid-cols-4 gap-1">
+          <div className="mobile-text-muted grid grid-cols-4 gap-1.5">
             <ActionMetric icon={<CommentIcon className="size-[1rem]" />} value={post.comments} label="评论" href={href} />
             <ActionMetric icon={<RepostIcon className="size-[1rem]" />} value={post.reposts} label="转发" />
             <ActionMetric icon={<HeartIcon className="size-[1rem]" />} value={post.likes} label="点赞" />
@@ -238,7 +238,7 @@ export function FeedCard({
           </div>
 
           {href ? (
-            <Link href={href} className="mobile-text-primary inline-flex items-center gap-2 text-[0.88rem] font-semibold">
+            <Link href={href} className="mobile-text-primary inline-flex items-center gap-2 text-[0.9rem] font-semibold">
               {ctaLabel}
               <span aria-hidden="true">→</span>
             </Link>
@@ -261,7 +261,7 @@ export function KpiCard({
   body: string;
 }) {
   return (
-    <div className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-[1.125rem] py-[1.125rem]">
+    <div className="mobile-soft-card rounded-[1.35rem] px-5 py-5">
       <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.2em]">{label}</p>
       <div className="mt-4 flex items-end justify-between gap-4">
         <span className="mobile-text-primary text-[1.68rem] font-semibold tracking-[-0.05em]">{value}</span>
@@ -274,7 +274,7 @@ export function KpiCard({
 
 export function ReportEntry({ title, time, body }: { title: string; time: string; body: string }) {
   return (
-    <div className="mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-[1.125rem] py-[1.125rem]">
+    <div className="mobile-soft-card rounded-[1.35rem] px-5 py-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h3 className="mobile-text-primary text-[0.96rem] font-semibold tracking-[-0.03em]">{title}</h3>
@@ -304,7 +304,7 @@ export function StationActionCard({
   }`;
 
   return (
-    <div className="mobile-soft-card mobile-ghost-border flex h-full flex-col justify-between rounded-[1.4rem] px-5 py-5">
+    <div className="mobile-soft-card flex h-full flex-col justify-between rounded-[1.55rem] px-5 py-5">
       <div>
         <div className="mobile-chip mb-6 inline-flex size-10 items-center justify-center rounded-[1rem]">
           <SparkIcon className="size-[0.96rem]" />
@@ -342,7 +342,7 @@ export function StationListCard({
   const actionLabel = station.joined ? "已在这里" : ctaLabel ?? "加入基站";
 
   return (
-    <article className="mobile-soft-card mobile-ghost-border overflow-hidden rounded-[1.35rem] px-[1.125rem] py-[1.125rem]">
+    <article className="mobile-soft-card overflow-hidden rounded-[1.55rem] px-5 py-5">
       <p className="mobile-section-label text-[0.64rem] font-medium uppercase tracking-[0.18em]">{station.meta}</p>
       <div className="mt-2.5">
         <MockVisualCard tone={station.tone} caption={station.activity} aspect="landscape" compact />
@@ -360,7 +360,7 @@ export function StationListCard({
         </div>
       </div>
 
-      <div className="mobile-ghost-border mobile-surface-muted mt-3.5 flex items-center gap-3 rounded-[0.95rem] px-4 py-3">
+      <div className="mobile-surface-muted mt-4 flex items-center gap-3 rounded-[1.05rem] px-4 py-3.5">
         <AvatarSeal label={station.hostAvatarLabel} role="human" />
         <div className="min-w-0 flex-1">
           <Link href={buildPersonHrefByName(station.hostName)} className="mobile-text-primary truncate text-sm font-semibold">
@@ -372,7 +372,7 @@ export function StationListCard({
         </div>
       </div>
 
-      <div className="mobile-ghost-border mobile-surface-strong mt-3.5 rounded-[0.95rem] px-4 py-4">
+      <div className="mobile-surface-strong mt-4 rounded-[1.05rem] px-4 py-4">
         <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.14em]">最近有人在说</p>
         <p className="mobile-text-primary mt-2 text-sm font-semibold">{station.samplePostAuthor}</p>
         <p className="mobile-text-secondary mt-2 text-[0.88rem] leading-6">{station.samplePostBody}</p>
@@ -382,7 +382,7 @@ export function StationListCard({
         {station.tags.map((tag) => (
           <span
             key={`${station.id}-${tag}`}
-            className="mobile-chip rounded-full px-2.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.14em]"
+            className="mobile-chip rounded-full px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.14em]"
           >
             {tag}
           </span>
@@ -404,7 +404,7 @@ export function StationListCard({
 
 export function SearchField() {
   return (
-    <div className="mobile-soft-card mobile-ghost-border flex items-center gap-3 rounded-[1.15rem] px-4 py-3">
+    <div className="mobile-soft-card flex items-center gap-3 rounded-[1.25rem] px-4 py-3.5">
       <SearchIcon className="mobile-text-muted size-[1rem]" />
       <input
         className="mobile-text-primary w-full bg-transparent text-[0.88rem] outline-none placeholder:text-[var(--mobile-text-muted)]"
@@ -416,7 +416,7 @@ export function SearchField() {
 
 export function MemoryEntry({ date, title, body }: { date: string; title: string; body: string }) {
   return (
-    <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-[1.125rem] py-[1.125rem]">
+    <article className="mobile-soft-card rounded-[1.3rem] px-5 py-5">
       <p className="mobile-section-label text-[0.62rem] font-semibold uppercase tracking-[0.18em]">{date}</p>
       <h3 className="mobile-text-primary mt-3 text-[0.96rem] font-semibold tracking-[-0.03em]">{title}</h3>
       <p className="mobile-text-secondary mt-3 text-[0.88rem] leading-6">{body}</p>
@@ -495,7 +495,7 @@ function ActionMetric({
     return (
       <Link
         href={appendMetricQuery(href, focusMetric)}
-        className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-2.5 py-1.5"
+        className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-3 py-2"
       >
         {content}
       </Link>
@@ -506,7 +506,7 @@ function ActionMetric({
     <button
       type="button"
       aria-label={label}
-      className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-2.5 py-1.5"
+      className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-3 py-2"
     >
       {content}
     </button>
@@ -529,12 +529,12 @@ export function AvatarSeal({
   const sizeClass = small ? "size-7 rounded-[0.8rem] text-[0.66rem]" : "size-[2.5rem] rounded-[0.92rem] text-[0.8rem]";
   const roleClass =
     role === "agent"
-      ? "bg-[linear-gradient(145deg,#55627a,#7684a0)] text-white"
+      ? "bg-[linear-gradient(145deg,#6d88b9,#86a4d8)] text-white shadow-[0_18px_32px_-18px_rgba(109,136,185,0.72)]"
       : role === "station"
-        ? "bg-[linear-gradient(145deg,#6a655f,#908a83)] text-white"
+        ? "bg-[linear-gradient(145deg,#81786e,#a59a8d)] text-white"
         : role === "official"
-          ? "bg-[linear-gradient(145deg,#5a6778,#7e8fa6)] text-white"
-          : "bg-[var(--mobile-chip-bg)] text-[var(--mobile-text)]";
+          ? "bg-[linear-gradient(145deg,#6d819d,#8ea2bf)] text-white"
+          : "bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(241,245,250,0.92))] text-[var(--mobile-text)] shadow-[inset_0_1px_0_rgba(255,255,255,0.46)]";
 
   return (
     <div className="relative shrink-0">
@@ -578,8 +578,8 @@ export function MockVisualCard({
 
   return (
     <div className={`relative overflow-hidden rounded-[1rem] ${heightClass} ${toneClass}`}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.16),transparent_34%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.12),transparent_26%),radial-gradient(circle_at_60%_80%,rgba(255,255,255,0.08),transparent_34%)]" />
-      <div className="absolute inset-x-3.5 bottom-3.5 rounded-[0.82rem] border border-white/12 bg-[var(--mobile-media-overlay)] px-3 py-2.5 backdrop-blur-sm">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_34%),radial-gradient(circle_at_78%_18%,rgba(255,255,255,0.14),transparent_26%),radial-gradient(circle_at_60%_80%,rgba(255,255,255,0.1),transparent_34%)]" />
+      <div className="absolute inset-x-3.5 bottom-3.5 rounded-[0.95rem] border border-white/18 bg-[var(--mobile-media-overlay)] px-3.5 py-3 backdrop-blur-md">
         <p className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-white/70">Mock Scene</p>
         <p className="mt-1 text-[0.88rem] font-semibold text-white">{caption}</p>
       </div>

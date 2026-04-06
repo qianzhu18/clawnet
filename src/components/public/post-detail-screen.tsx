@@ -18,8 +18,6 @@ import { buildAuthorHref, buildStationHrefByName } from "@/lib/public-links";
 
 type MetricKey = "comments" | "reposts" | "likes" | "bookmarks";
 type EngagementMetricKey = Exclude<MetricKey, "comments">;
-type ReplyFilter = "all" | "human" | "agent";
-type ReplySort = "relevant" | "latest";
 type LatestEvent = "reply" | "agentPublished" | "quoteRepost" | "shared" | "reported" | "blocked" | null;
 
 const roleLabel: Record<"agent" | "human" | "station" | "official", string> = {
@@ -46,8 +44,6 @@ export function PostDetailScreen({
   const [activeSheet, setActiveSheet] = useState<EngagementMetricKey | null>(
     initialMetricKey && initialMetricKey !== "comments" ? initialMetricKey : null,
   );
-  const [replyFilter, setReplyFilter] = useState<ReplyFilter>("all");
-  const [replySort, setReplySort] = useState<ReplySort>("relevant");
   const [composerOpen, setComposerOpen] = useState(false);
   const [replyDraft, setReplyDraft] = useState("");
   const [latestEvent, setLatestEvent] = useState<LatestEvent>(null);
@@ -84,20 +80,10 @@ export function PostDetailScreen({
     };
   }, [directAgentReplyEnabled, post.author, thread.agentReply.body, thread.invitedAgent, thread.postId]);
 
-  const visibleReplies = useMemo(() => {
-    const filteredReplies =
-      replyFilter === "all"
-        ? displayedReplies
-        : displayedReplies.filter((reply) => reply.role === replyFilter);
-
-    const orderedReplies = replySort === "latest" ? [...filteredReplies].reverse() : filteredReplies;
-
-    if (!directAgentReply || (replyFilter !== "all" && replyFilter !== "agent")) {
-      return orderedReplies;
-    }
-
-    return [directAgentReply, ...orderedReplies];
-  }, [directAgentReply, displayedReplies, replyFilter, replySort]);
+  const visibleReplies = useMemo(
+    () => (directAgentReply ? [directAgentReply, ...displayedReplies] : displayedReplies),
+    [directAgentReply, displayedReplies],
+  );
 
   const totalCommentCount = parseMetric(post.comments);
   const expandedCommentCount = displayedReplies.length + (directAgentReply ? 1 : 0);
@@ -128,7 +114,7 @@ export function PostDetailScreen({
   return (
     <div className="mobile-app-root min-h-screen">
       <div className="mx-auto max-w-[27rem] px-4 pb-[calc(env(safe-area-inset-bottom)+7.5rem)] pt-4 mobile-text-primary">
-        <header className="grid grid-cols-[2.75rem_1fr_2.75rem] items-center gap-3 pb-4">
+        <header className="mobile-shell-panel sticky top-3 z-20 grid grid-cols-[2.85rem_1fr_2.85rem] items-center gap-3 rounded-[1.7rem] px-3 py-3">
           <Link
             href={appendPayload(buildStationHrefByName(post.station), payload)}
             className="mobile-button-secondary inline-flex size-11 items-center justify-center rounded-full text-sm font-semibold"
@@ -136,8 +122,8 @@ export function PostDetailScreen({
             ←
           </Link>
           <div className="text-center">
-            <p className="mobile-text-primary text-[1.16rem] font-semibold tracking-[-0.05em]">详情</p>
-            <p className="mobile-text-muted mt-1 text-[0.68rem]">{post.station}</p>
+            <p className="mobile-text-primary text-[1.05rem] font-semibold tracking-[-0.05em]">讨论详情</p>
+            <p className="mobile-text-muted mt-1 text-[0.68rem] uppercase tracking-[0.14em]">{post.station}</p>
           </div>
           <button
             type="button"
@@ -149,7 +135,7 @@ export function PostDetailScreen({
         </header>
 
         {latestActionCopy || quotedRepost ? (
-          <article className="mobile-soft-card mobile-ghost-border mb-4 rounded-[1.2rem] px-4 py-4">
+          <article className="mobile-soft-card mb-4 rounded-[1.35rem] px-4 py-4">
             <p className="mobile-text-primary text-[0.88rem] font-semibold">
               {quotedRepost ? "已带语境转发" : latestActionCopy?.title}
             </p>
@@ -159,7 +145,7 @@ export function PostDetailScreen({
           </article>
         ) : null}
 
-        <article className="mobile-soft-card mobile-ghost-border rounded-[1.45rem] px-4 py-4">
+        <article className="mobile-soft-card rounded-[1.7rem] px-5 py-5">
           <div className="flex items-start gap-3">
             <AvatarSeal label={post.avatarLabel} role={post.role} />
             <div className="min-w-0 flex-1">
@@ -177,9 +163,7 @@ export function PostDetailScreen({
                     {post.author}
                   </Link>
                   <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-                      {roleLabel[post.role]}
-                    </span>
+                    <RoleBadge role={post.role} />
                     {post.badge ? (
                       <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
                         {post.badge}
@@ -202,7 +186,7 @@ export function PostDetailScreen({
             <h1 className="mobile-text-primary text-[1.36rem] font-semibold leading-[1.15] tracking-[-0.06em]">
               {post.title}
             </h1>
-            <p className="mobile-text-secondary text-[0.92rem] leading-7">{post.body}</p>
+            <p className="mobile-text-secondary text-[0.94rem] leading-7">{post.body}</p>
           </div>
 
           {post.media ? (
@@ -212,15 +196,13 @@ export function PostDetailScreen({
           ) : null}
 
           {post.previewReply ? (
-            <div className="mobile-ghost-border mobile-surface-muted mt-4 rounded-[1rem] px-4 py-4">
+            <div className="mobile-surface-muted mt-4 rounded-[1.15rem] px-4 py-4">
               <div className="flex items-start gap-3">
                 <AvatarSeal label={post.previewReply.author.slice(0, 2)} role={post.previewReply.role} small />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="mobile-text-primary text-[0.84rem] font-semibold">{post.previewReply.author}</p>
-                    <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-                      {roleLabel[post.previewReply.role]}
-                    </span>
+                    <RoleBadge role={post.previewReply.role} />
                   </div>
                   <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{post.previewReply.body}</p>
                 </div>
@@ -246,72 +228,46 @@ export function PostDetailScreen({
         </article>
 
         <section ref={replySectionRef} className="mt-6">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">评论流</p>
-              <h2 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">
-                {post.comments} 条评论
-              </h2>
+          <div className="mobile-shell-panel rounded-[1.5rem] px-4 py-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">评论流</p>
+                <h2 className="mobile-text-primary mt-2 text-[1.02rem] font-semibold tracking-[-0.04em]">
+                  直接展开 {expandedCommentCount} 条关键评论
+                </h2>
+                <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
+                  评论默认直接可读，AI 只以内联标识出现，不再把现场切成角色或排序面板。
+                </p>
+              </div>
+              <span className="mobile-chip shrink-0 rounded-full px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em]">
+                {post.comments}
+              </span>
             </div>
-            <p className="mobile-text-muted shrink-0 text-[0.72rem]">{expandedCommentCount} 条已直接展开</p>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {[
-              { key: "all", label: "全部" },
-              { key: "human", label: "真人" },
-              { key: "agent", label: "AI" },
-            ].map((item) => (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
-                key={item.key}
                 type="button"
-                onClick={() => setReplyFilter(item.key as ReplyFilter)}
-                className={`rounded-full px-3 py-2 text-[0.72rem] font-semibold ${
-                  replyFilter === item.key ? "mobile-button-primary" : "mobile-button-secondary"
-                }`}
+                onClick={publishAgentReply}
+                className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
               >
-                {item.label}
+                @{thread.invitedAgent}
               </button>
-            ))}
-            {[
-              { key: "relevant", label: "推荐" },
-              { key: "latest", label: "最新" },
-            ].map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => setReplySort(item.key as ReplySort)}
-                className={`rounded-full px-3 py-2 text-[0.72rem] font-semibold ${
-                  replySort === item.key ? "mobile-button-primary" : "mobile-button-secondary"
-                }`}
+              <Link
+                href={appendPayload("/app/avatar", payload)}
+                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
               >
-                {item.label}
-              </button>
-            ))}
+                AI 设置
+              </Link>
+              <Link
+                href={appendPayload(`/connect?post=${post.id}`, payload)}
+                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
+              >
+                接入 AI
+              </Link>
+            </div>
+            <p className="mobile-text-secondary mt-4 text-[0.82rem] leading-6">
+              AI 发言：{getAgentTriggerLabel(participationSettings.triggerMode)} · {getAgentScopeLabel(participationSettings)} · 发出后只用 AI 标识区分。
+            </p>
           </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={publishAgentReply}
-              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              @{thread.invitedAgent}
-            </button>
-            <Link
-              href={appendPayload("/app/avatar", payload)}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              AI 设置
-            </Link>
-            <Link
-              href={appendPayload(`/connect?post=${post.id}`, payload)}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              接入 AI
-            </Link>
-          </div>
-          <p className="mobile-text-secondary mt-4 text-[0.82rem] leading-6">
-            AI 发言：{getAgentTriggerLabel(participationSettings.triggerMode)} · {getAgentScopeLabel(participationSettings)} · 发出后只用 AI 标识区分。
-          </p>
 
           <div className="mt-4 space-y-3">
             {visibleReplies.map((reply) => (
@@ -335,11 +291,11 @@ export function PostDetailScreen({
 
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom)+0.9rem)]">
         <div className="pointer-events-auto mx-auto max-w-[27rem]">
-          <div className="mobile-app-shell mobile-shell-panel rounded-[1.35rem] px-3 py-3 shadow-[0_18px_42px_rgba(20,24,33,0.14)]">
+          <div className="mobile-app-shell mobile-shell-panel rounded-[1.55rem] px-4 py-4 shadow-[0_18px_42px_rgba(20,24,33,0.14)]">
             <button
               type="button"
               onClick={() => setComposerOpen(true)}
-              className="mobile-ghost-border mobile-surface-muted mobile-text-muted flex w-full items-center rounded-[1rem] px-4 py-3 text-left text-[0.88rem]"
+              className="mobile-surface-muted mobile-text-muted flex w-full items-center rounded-[1.1rem] px-4 py-3.5 text-left text-[0.88rem]"
             >
               留下一句你的观察吧
             </button>
@@ -601,8 +557,10 @@ function ReplyCard({
   payload?: string;
   onSelect: () => void;
 }) {
+  const badge = getInlineRoleBadge(reply.role);
+
   return (
-    <article className="mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
+    <article className="mobile-soft-card rounded-[1.35rem] px-4 py-4">
       <div className="flex items-start gap-3">
         <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} />
         <div className="min-w-0 flex-1">
@@ -621,11 +579,7 @@ function ReplyCard({
               >
                 {reply.author}
               </Link>
-              <div className="mt-1 flex flex-wrap items-center gap-2">
-                <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-                  {roleLabel[reply.role]}
-                </span>
-              </div>
+              {badge ? <div className="mt-1 flex flex-wrap items-center gap-2">{badge}</div> : null}
             </div>
             <button
               type="button"
@@ -742,6 +696,26 @@ function MetricButton({
       <p className="mobile-text-primary text-[0.86rem] font-semibold">{value}</p>
       <p className="mobile-text-muted mt-1 text-[0.62rem] uppercase tracking-[0.16em]">{label}</p>
     </button>
+  );
+}
+
+function RoleBadge({ role }: { role: ThreadReply["role"] | FeedPost["role"] }) {
+  const badge = getInlineRoleBadge(role);
+
+  return badge;
+}
+
+function getInlineRoleBadge(role: ThreadReply["role"] | FeedPost["role"]) {
+  if (role === "human") {
+    return null;
+  }
+
+  const toneClass = role === "agent" ? "mobile-chip-accent" : "mobile-chip";
+
+  return (
+    <span className={`${toneClass} rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]`}>
+      {roleLabel[role]}
+    </span>
   );
 }
 
