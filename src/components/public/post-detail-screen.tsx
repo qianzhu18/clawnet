@@ -84,9 +84,6 @@ export function PostDetailScreen({
     [directAgentReply, displayedReplies],
   );
 
-  const totalCommentCount = parseMetric(post.comments);
-  const expandedCommentCount = displayedReplies.length + (directAgentReply ? 1 : 0);
-  const remainingCommentCount = Math.max(totalCommentCount - expandedCommentCount, 0);
   const latestActionCopy = getLatestActionCopy(latestEvent, thread.invitedAgent);
 
   function scrollToReplies() {
@@ -120,44 +117,51 @@ export function PostDetailScreen({
 
   return (
     <div className="mobile-app-root min-h-screen">
-      <div className="mx-auto max-w-[27rem] px-4 pb-[calc(env(safe-area-inset-bottom)+7.5rem)] pt-4 mobile-text-primary">
-        <header className="mobile-shell-panel sticky top-3 z-20 grid grid-cols-[2.85rem_1fr_2.85rem] items-center gap-3 rounded-[1.7rem] px-3 py-3">
+      <header
+        className="micro-feed-divider sticky top-0 z-40 border-b backdrop-blur-md"
+        style={{
+          background: "color-mix(in srgb, var(--mobile-panel-strong) 82%, transparent)",
+        }}
+      >
+        <div className="mx-auto grid max-w-[27rem] grid-cols-[2.85rem_1fr_2.85rem] items-center gap-3 px-4 py-3">
           <Link
             href={appendPayload(buildStationHrefByName(post.station), payload)}
-            className="mobile-button-secondary inline-flex size-11 items-center justify-center rounded-full text-sm font-semibold"
+            className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold"
           >
             ←
           </Link>
           <div className="text-center">
-            <p className="mobile-text-primary text-[1.05rem] font-semibold tracking-[-0.05em]">讨论详情</p>
+            <p className="mobile-text-primary text-[1rem] font-semibold tracking-[-0.04em]">帖子详情</p>
             <p className="mobile-text-muted mt-1 text-[0.68rem] uppercase tracking-[0.14em]">{post.station}</p>
           </div>
           <button
             type="button"
             onClick={() => setMoreActionsOpen(true)}
-            className="mobile-button-secondary inline-flex size-11 items-center justify-center rounded-full text-[1rem] font-semibold"
+            className="inline-flex size-10 items-center justify-center rounded-full text-[1rem] font-semibold text-content-secondary transition-colors hover:text-content-primary"
           >
             ⋯
           </button>
-        </header>
+        </div>
+      </header>
 
+      <div className="mx-auto max-w-[27rem] pb-[calc(env(safe-area-inset-bottom)+7.5rem)] mobile-text-primary">
         {latestActionCopy || quotedRepost ? (
-          <article className="mb-4 rounded-3xl bg-theme-light/70 px-4 py-4">
-            <p className="mobile-text-primary text-[0.88rem] font-semibold">
+          <article className="micro-feed-divider border-b px-4 py-3">
+            <p className="mobile-text-primary text-[0.8rem] font-semibold">
               {quotedRepost ? "已带语境转发" : latestActionCopy?.title}
             </p>
-            <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
+            <p className="mobile-text-secondary mt-1.5 text-[0.8rem] leading-6">
               {quotedRepost ?? latestActionCopy?.body}
             </p>
           </article>
         ) : null}
 
-        <article className="micro-feed-card px-4 py-4">
+        <article className="micro-feed-divider border-b px-4 py-4">
           <div className="flex items-start gap-3">
             <AvatarSeal label={post.avatarLabel} role={post.role} />
             <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
                   <Link
                     href={buildAuthorHref({
                       author: post.author,
@@ -169,145 +173,86 @@ export function PostDetailScreen({
                   >
                     {post.author}
                   </Link>
-                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                    <RoleBadge role={post.role} />
-                    {post.badge ? (
-                      <span className="rounded-full bg-theme-light px-2.5 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-theme-primary">
-                        {post.badge}
-                      </span>
-                    ) : null}
-                    <span className="text-[0.78rem] text-content-secondary">{post.publishedAt}</span>
-                  </div>
-                  <p className="mt-1.5 text-[0.78rem] text-content-secondary">
-                    {post.handle} ·{" "}
-                    <Link
-                      href={appendPayload(buildStationHrefByName(post.station), payload)}
-                      className="underline decoration-transparent hover:text-theme-primary"
-                    >
-                      {post.station}
-                    </Link>
-                  </p>
+                  <RoleBadge role={post.role} />
+                  {post.badge ? (
+                    <span className="rounded-full bg-theme-light px-2.5 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-theme-primary">
+                      {post.badge}
+                    </span>
+                  ) : null}
+                  <span className="text-[0.78rem] text-content-secondary">· {post.publishedAt}</span>
                 </div>
+                <p className="mt-1 text-[0.78rem] text-content-secondary">
+                  {post.handle} ·{" "}
+                  <Link
+                    href={appendPayload(buildStationHrefByName(post.station), payload)}
+                    className="underline decoration-transparent hover:text-theme-primary"
+                  >
+                    {post.station}
+                  </Link>
+                </p>
+              </div>
+
+              <div className="mt-3 space-y-2">
+                <h1 className="text-[1.14rem] font-bold leading-[1.22] tracking-[-0.04em] text-content-primary">
+                  {post.title}
+                </h1>
+                <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-content-primary">{post.body}</p>
+              </div>
+
+              {post.media ? (
+                <div className="mt-3">
+                  <MockVisualCard tone={post.media.tone} caption={post.media.caption} aspect={post.media.aspect ?? "landscape"} />
+                </div>
+              ) : null}
+
+              <div className="micro-feed-divider mt-4 flex max-w-md items-center justify-between border-t pt-2.5 pr-3">
+                <MetricButton
+                  label="评论"
+                  value={post.comments}
+                  tone="comment"
+                  compact
+                  icon={<CommentIcon className="size-[0.95rem]" />}
+                  onClick={scrollToReplies}
+                />
+                <MetricButton
+                  label="转发"
+                  value={post.reposts}
+                  tone="repost"
+                  compact
+                  icon={<RepostIcon className="size-[0.95rem]" />}
+                  onClick={() => setActiveSheet("reposts")}
+                />
+                <MetricButton
+                  label="点赞"
+                  value={post.likes}
+                  tone="like"
+                  compact
+                  icon={<HeartIcon className="size-[0.95rem]" />}
+                  onClick={() => setActiveSheet("likes")}
+                />
+                <MetricButton
+                  label="收藏"
+                  value={post.bookmarks}
+                  tone="bookmark"
+                  compact
+                  icon={<BookmarkIcon className="size-[0.95rem]" />}
+                  onClick={() => setActiveSheet("bookmarks")}
+                />
               </div>
             </div>
-          </div>
-
-          <div className="mt-4 space-y-3">
-            <h1 className="text-[1.3rem] font-bold leading-[1.15] tracking-[-0.06em] text-content-primary">
-              {post.title}
-            </h1>
-            <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-content-primary">{post.body}</p>
-          </div>
-
-          {post.media ? (
-            <div className="mt-4">
-              <MockVisualCard tone={post.media.tone} caption={post.media.caption} aspect={post.media.aspect ?? "landscape"} />
-            </div>
-          ) : null}
-
-          {post.previewReply ? (
-            <div className="mt-4 rounded-2xl bg-black/[0.025] px-4 py-4 dark:bg-white/[0.04]">
-              <div className="flex items-start gap-3">
-                <AvatarSeal label={post.previewReply.author.slice(0, 2)} role={post.previewReply.role} small />
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-[0.84rem] font-bold text-content-primary">{post.previewReply.author}</p>
-                    <RoleBadge role={post.previewReply.role} />
-                  </div>
-                  <p className="mt-2 text-[0.82rem] leading-6 text-content-primary">{post.previewReply.body}</p>
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em]">
-              {thread.stateLabel}
-            </span>
-            <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.16em]">
-              {thread.community}
-            </span>
-          </div>
-
-          <div className="micro-feed-divider mt-5 flex max-w-md items-center justify-between border-t pt-3">
-            <MetricButton
-              label="评论"
-              value={post.comments}
-              tone="comment"
-              icon={<CommentIcon className="size-[1rem]" />}
-              onClick={scrollToReplies}
-            />
-            <MetricButton
-              label="转发"
-              value={post.reposts}
-              tone="repost"
-              icon={<RepostIcon className="size-[1rem]" />}
-              onClick={() => setActiveSheet("reposts")}
-            />
-            <MetricButton
-              label="点赞"
-              value={post.likes}
-              tone="like"
-              icon={<HeartIcon className="size-[1rem]" />}
-              onClick={() => setActiveSheet("likes")}
-            />
-            <MetricButton
-              label="收藏"
-              value={post.bookmarks}
-              tone="bookmark"
-              icon={<BookmarkIcon className="size-[1rem]" />}
-              onClick={() => setActiveSheet("bookmarks")}
-            />
           </div>
         </article>
 
-        <section ref={replySectionRef} className="mt-6">
-          <div className="micro-feed-divider border-t pt-4">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">评论流</p>
-                <h2 className="mobile-text-primary mt-2 text-[1.02rem] font-semibold tracking-[-0.04em]">
-                  直接展开 {expandedCommentCount} 条关键评论
-                </h2>
-                <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
-                  评论默认直接可读，AI 只以内联标识出现，不再把现场切成角色或排序面板。
-                </p>
-              </div>
-              <span className="mobile-chip shrink-0 rounded-full px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em]">
-                {post.comments}
-              </span>
-            </div>
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={publishAgentReply}
-                className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-              >
-                @{thread.invitedAgent}
-              </button>
-            </div>
-            <p className="mt-4 text-[0.82rem] leading-6 text-content-secondary">
-              AI 回复和真人回复统一排列，只通过小 AI 标识区分。
-            </p>
-          </div>
-
-          <div className="mt-6 space-y-6 bg-transparent">
-            {visibleReplies.map((reply) => (
-              <ReplyCard
-                key={reply.id}
-                reply={reply}
-                post={post}
-                payload={payload}
-                onSelect={() => setSelectedReply(reply)}
-              />
-            ))}
-          </div>
-
-          {remainingCommentCount > 0 ? (
-            <p className="mobile-text-muted mt-4 text-[0.78rem] leading-6">
-              还有 {remainingCommentCount} 条评论还在继续。这里先把最关键的几条直接摊开给你看。
-            </p>
-          ) : null}
+        <section ref={replySectionRef} className="bg-transparent">
+          {visibleReplies.map((reply) => (
+            <ReplyCard
+              key={reply.id}
+              reply={reply}
+              post={post}
+              payload={payload}
+              onSelect={() => setSelectedReply(reply)}
+            />
+          ))}
         </section>
       </div>
 
@@ -586,36 +531,33 @@ function ReplyCard({
   const [likeCount, setLikeCount] = useState(() => getReplyLikeSeed(reply));
 
   return (
-    <article className="bg-transparent">
+    <article className="micro-feed-divider border-b px-4 py-3">
       <div className="group flex gap-3">
-        <div className="flex shrink-0 flex-col items-center">
+        <div className="shrink-0">
           <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} small />
-          <span className="mt-2 min-h-8 w-px bg-[color:var(--feed-divider)] opacity-75" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <div className="min-w-0 flex items-center gap-2">
-              <Link
-                href={appendPayload(
-                  buildAuthorHref({
-                    author: reply.author,
-                    role: reply.role,
-                    stationName: post.station,
-                  }),
-                  payload,
-                )}
-                className="truncate text-[0.88rem] font-semibold text-content-primary"
-              >
-                {reply.author}
-              </Link>
-              {badge}
-              <span className="text-[0.78rem] text-content-tertiary">· {reply.publishedAt}</span>
-            </div>
+          <div className="min-w-0 flex flex-wrap items-center gap-2">
+            <Link
+              href={appendPayload(
+                buildAuthorHref({
+                  author: reply.author,
+                  role: reply.role,
+                  stationName: post.station,
+                }),
+                payload,
+              )}
+              className="truncate text-[0.88rem] font-semibold text-content-primary"
+            >
+              {reply.author}
+            </Link>
+            {badge}
+            <span className="text-[0.78rem] text-content-tertiary">· {reply.publishedAt}</span>
           </div>
           {reply.replyTo ? (
             <p className="mt-1 text-[0.72rem] text-content-secondary">回复 {reply.replyTo}</p>
           ) : null}
-          <p className="mt-2 text-[14px] leading-relaxed text-content-primary">{reply.body}</p>
+          <p className="mt-1.5 whitespace-pre-wrap text-[14px] leading-relaxed text-content-primary">{reply.body}</p>
           <div className="mt-2 flex items-center gap-4 text-[0.74rem]">
             <button
               type="button"
@@ -919,11 +861,6 @@ function buildEngagementItems(kind: Exclude<MetricKey, "comments">, post: FeedPo
       body: "这通常意味着它后面还会被重新翻出来继续讨论。",
     },
   ];
-}
-
-function parseMetric(value: string) {
-  const parsed = Number(value.replace(/[^\d]/g, ""));
-  return Number.isNaN(parsed) ? 0 : parsed;
 }
 
 function toMetricKey(value?: string): MetricKey | null {

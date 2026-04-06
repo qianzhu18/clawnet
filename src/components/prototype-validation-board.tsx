@@ -287,6 +287,11 @@ function buildReviewPages(links: PrototypeValidationLinks): ReviewPage[] {
           expected: "不再出现 `全部 / 真人 / AI` 或 `推荐 / 最新` 这类切换，评论直接按自然顺序阅读。",
         },
         {
+          id: "post-no-thread-heading",
+          label: "评论流：没有标题说明块",
+          expected: "主贴下方不再出现 `评论流` 标题、已展开统计或预览回复卡，回复列表应直接衔接。",
+        },
+        {
           id: "post-thread-flat-surface",
           label: "评论流：没有灰底区块",
           expected: "评论区外层不再套白卡或灰底容器，只保留极浅分隔线和更大的留白。",
