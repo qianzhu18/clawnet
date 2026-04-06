@@ -49,7 +49,8 @@
 
 当前这一轮冻结的最小替换边界：
 
-- 只允许在 `src/components/public/post-detail-screen.tsx` 里收口这页的旧论坛 UI 结构
+- `src/components/public/post-detail-screen.tsx` 只保留状态与抽屉
+- `src/components/public/post-detail-thread-view.tsx` 作为帖子详情主视图的单独替换入口
 - 保留当前 `hook / state / BottomSheet / mock data contract`
 - 不再恢复评论区标题块、预览回复卡、排序筛选和评论总览抽屉
 
