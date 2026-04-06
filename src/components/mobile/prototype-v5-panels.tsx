@@ -1,14 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useDeferredValue, useMemo, useState, type ReactNode } from "react";
+import { startTransition, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { CopyCommandButton } from "@/components/connect/copy-command-button";
 import { PairingQr } from "@/components/connect/pairing-qr";
 import {
   defaultAgentParticipationSettings,
   getAgentScopeLabel,
+  getAgentTriggerLabel,
+  getStationParticipationTrigger,
   readAgentParticipationSettings,
   writeAgentParticipationSettings,
+  type AgentParticipationSettings,
+  type AgentTriggerMode,
 } from "@/lib/agent-participation";
 import { appendPayload } from "@/lib/connect-demo";
 import type { PairingState } from "@/lib/connect-demo";
@@ -80,7 +84,8 @@ type StationChoice = StationCard & {
 const toneOptions = ["礼貌克制", "快速策展", "讨论推动"] as const;
 const focusOptions = ["公开讨论筛选", "基站社区参与", "资料整理"] as const;
 const participationTriggerOptions = ["仅在 @ 时发出", "默认直接发出"] as const;
-const participationScopeOptions = ["全部帖子", "仅当前基站", "仅熟悉的人"] as const;
+const participationScopeOptions = ["全部公开帖子", "仅熟悉的人"] as const;
+const stationReplyOptions = ["默认回答", "仅在 @ 时回答"] as const;
 
 const sourceCards = [
   {
@@ -130,34 +135,47 @@ export function AvatarConfigScreen({
   capabilities,
   stations,
 }: AvatarConfigScreenProps) {
-  const storedParticipationSettings =
-    typeof window === "undefined" ? defaultAgentParticipationSettings : readAgentParticipationSettings();
+  const joinedStations = useMemo(() => stations.filter((station) => station.joined), [stations]);
+  const storedSettingsLoadedRef = useRef(false);
+  const [storedParticipationSettings, setStoredParticipationSettings] = useState(defaultAgentParticipationSettings);
   const [tone, setTone] = useState<(typeof toneOptions)[number]>(toneOptions[0]);
   const [focus, setFocus] = useState<(typeof focusOptions)[number]>(focusOptions[0]);
   const [persona, setPersona] = useState(bio);
   const [canDo, setCanDo] = useState("例如：总结讨论、整理资料、提出后续问题。");
   const [cannotDo, setCannotDo] = useState("例如：不要代替我表达立场、不要主动加入敏感争论。");
-  const [stationSheetOpen, setStationSheetOpen] = useState(false);
-  const [currentStationId, setCurrentStationId] = useState(
-    storedParticipationSettings.stationId && stations.some((station) => station.id === storedParticipationSettings.stationId)
-      ? storedParticipationSettings.stationId
-      : stations[0]?.id ?? "",
-  );
   const [alertPolicy, setAlertPolicy] = useState({
     criticalMemory: true,
     summaryThreshold: true,
     weeklySynthesis: false,
   });
   const [participationTrigger, setParticipationTrigger] = useState<(typeof participationTriggerOptions)[number]>(
-    mapTriggerToOption(storedParticipationSettings.triggerMode),
+    mapTriggerToOption(defaultAgentParticipationSettings.triggerMode),
   );
   const [participationScope, setParticipationScope] = useState<(typeof participationScopeOptions)[number]>(
-    mapScopeToOption(storedParticipationSettings.scope),
+    mapScopeToOption(defaultAgentParticipationSettings.scope),
+  );
+  const [stationReplyRules, setStationReplyRules] = useState<Record<string, AgentTriggerMode>>(() =>
+    buildStationReplyRuleMap(joinedStations, defaultAgentParticipationSettings),
   );
   const [feedback, setFeedback] = useState<string | null>(null);
-  const currentStation = stations.find((station) => station.id === currentStationId) ?? stations[0];
-
   const capabilityLabel = capabilities.length > 0 ? capabilities.slice(0, 2).join(" · ") : "公开动态 · 资料";
+
+  useEffect(() => {
+    if (storedSettingsLoadedRef.current) {
+      return;
+    }
+
+    storedSettingsLoadedRef.current = true;
+    const timeoutId = window.setTimeout(() => {
+      const nextSettings = readAgentParticipationSettings();
+      setStoredParticipationSettings(nextSettings);
+      setParticipationTrigger(mapTriggerToOption(nextSettings.triggerMode));
+      setParticipationScope(mapScopeToOption(nextSettings.scope));
+      setStationReplyRules(buildStationReplyRuleMap(joinedStations, nextSettings));
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [joinedStations]);
 
   function pushFeedback(message: string) {
     startTransition(() => {
@@ -235,7 +253,7 @@ export function AvatarConfigScreen({
             />
           </div>
 
-          <FieldGroup title="讨论参与">
+          <FieldGroup title="公开 feed 默认回复">
             <TagSelector
               options={participationTriggerOptions}
               value={participationTrigger}
@@ -243,40 +261,81 @@ export function AvatarConfigScreen({
             />
             <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">
               {participationTrigger === "仅在 @ 时发出"
-                ? "只有你主动 @ 它时，它才会以同名 + AI 标识直接发出一条回复。"
-                : "只要命中当前范围，它就会以同名 + AI 标识直接进入评论流，不再逐条停下来审批。"}
+                ? "默认不主动回帖。只有你主动 @ 它时，它才会以同名 + AI 标识直接发出一条回复。"
+                : "在没有站点单独覆盖时，它会按这个默认值直接进入评论流，不再逐条停下来审批。"}
             </p>
           </FieldGroup>
 
-          <FieldGroup title="参与范围">
+          <FieldGroup title="公开参与范围">
             <TagSelector
               options={participationScopeOptions}
               value={participationScope}
               onChange={(value) => setParticipationScope(value as (typeof participationScopeOptions)[number])}
             />
             <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">
-              当前：{getAgentScopePreviewText(participationScope, currentStation?.name ?? defaultAgentParticipationSettings.stationName ?? "当前基站")}
+              当前：{getAgentScopePreviewText(participationScope)}
             </p>
+          </FieldGroup>
+
+          <FieldGroup title="跨站默认回复">
+            <p className="mobile-text-secondary text-[0.8rem] leading-6">
+              这里不展示“它属于哪座基站”。你只管理已经加入的讨论节点里，它默认是直接回答，还是只在 `@` 时回答。
+            </p>
+            <div className="mt-3 space-y-3">
+              {joinedStations.map((station) => {
+                const triggerMode = stationReplyRules[station.id] ?? storedParticipationSettings.triggerMode;
+                const optionValue = mapStationTriggerToOption(triggerMode);
+
+                return (
+                  <article
+                    key={station.id}
+                    className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="mobile-text-primary text-[0.9rem] font-semibold">{station.name}</p>
+                        <p className="mobile-text-secondary mt-2 text-[0.8rem] leading-6">{station.summary}</p>
+                      </div>
+                      <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
+                        {getAgentTriggerLabel(triggerMode)}
+                      </span>
+                    </div>
+                    <div className="mt-4">
+                      <TagSelector
+                        options={stationReplyOptions}
+                        value={optionValue}
+                        onChange={(value) =>
+                          setStationReplyRules((current) => ({
+                            ...current,
+                            [station.id]: mapStationOptionToTrigger(value as (typeof stationReplyOptions)[number]),
+                          }))
+                        }
+                      />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </FieldGroup>
 
           <button
             type="button"
             onClick={() => {
-              writeAgentParticipationSettings({
+              const nextSettings: AgentParticipationSettings = {
                 triggerMode: mapOptionToTrigger(participationTrigger),
                 scope: mapOptionToScope(participationScope),
-                stationId: currentStation?.id,
-                stationName: currentStation?.name,
                 people: defaultAgentParticipationSettings.people,
-              });
+                stationRules: joinedStations.map((station) => ({
+                  stationId: station.id,
+                  stationName: station.name,
+                  triggerMode: stationReplyRules[station.id] ?? storedParticipationSettings.triggerMode,
+                })),
+              };
+
+              writeAgentParticipationSettings(nextSettings);
+
               pushFeedback(
-                `讨论参与已更新：${participationTrigger} / ${getAgentScopeLabel({
-                  triggerMode: mapOptionToTrigger(participationTrigger),
-                  scope: mapOptionToScope(participationScope),
-                  stationId: currentStation?.id,
-                  stationName: currentStation?.name,
-                  people: defaultAgentParticipationSettings.people,
-                })}`,
+                `公开参与已更新：默认 ${participationTrigger} / ${getAgentScopeLabel(nextSettings)} / 已同步 ${joinedStations.length} 座基站的默认回复`,
               );
             }}
             className="mobile-button-primary mt-4 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.8rem] font-semibold uppercase tracking-[0.18em]"
@@ -326,39 +385,6 @@ export function AvatarConfigScreen({
         </section>
 
         <section className="mobile-soft-card mobile-ghost-border rounded-[1.35rem] px-4 py-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">
-                Station Bindings
-              </p>
-              <h3 className="mobile-text-primary mt-2 text-[1rem] font-semibold tracking-[-0.04em]">
-                当前展示基站
-              </h3>
-            </div>
-            <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em]">
-              Active
-            </span>
-          </div>
-          {currentStation ? (
-            <article className="mobile-ghost-border mobile-surface-muted mt-4 rounded-[1rem] px-4 py-4">
-              <p className="mobile-text-primary text-[0.92rem] font-semibold">{currentStation.name}</p>
-              <p className="mobile-text-muted mt-1 text-[0.68rem] uppercase tracking-[0.16em]">
-                {currentStation.location}
-              </p>
-              <p className="mobile-text-secondary mt-3 text-[0.84rem] leading-6">{currentStation.summary}</p>
-              <p className="mobile-text-muted mt-3 text-[0.72rem] uppercase tracking-[0.14em]">{capabilityLabel}</p>
-            </article>
-          ) : null}
-          <button
-            type="button"
-            onClick={() => setStationSheetOpen(true)}
-            className="mobile-button-primary mt-4 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.78rem] font-semibold uppercase tracking-[0.18em]"
-          >
-            Switch Station
-          </button>
-        </section>
-
-        <section className="mobile-soft-card mobile-ghost-border rounded-[1.35rem] px-4 py-4">
           <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">Alert Policy</p>
           <div className="mt-4 space-y-3">
             <ToggleRow
@@ -388,6 +414,7 @@ export function AvatarConfigScreen({
               <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">
                 这个身份会优先出现在公开场的资料卡、来源说明和最近协作预览里。
               </p>
+              <p className="mobile-text-muted mt-3 text-[0.72rem] uppercase tracking-[0.14em]">{capabilityLabel}</p>
             </div>
           </div>
         </section>
@@ -401,46 +428,6 @@ export function AvatarConfigScreen({
           </Link>
         </div>
       </section>
-
-      {stationSheetOpen ? (
-        <BottomSheet title="切换展示基站" onClose={() => setStationSheetOpen(false)}>
-          <div className="space-y-3">
-            {stations.map((station) => {
-              const active = currentStationId === station.id;
-              return (
-                <button
-                  key={station.id}
-                  type="button"
-                  onClick={() => setCurrentStationId(station.id)}
-                  className={`flex w-full items-start justify-between rounded-[1rem] border px-4 py-3 text-left ${
-                    active ? "mobile-button-primary border-transparent" : "mobile-button-secondary"
-                  }`}
-                >
-                  <div>
-                    <p className="text-[0.88rem] font-semibold">{station.name}</p>
-                    <p className={`mt-1 text-[0.74rem] ${active ? "opacity-72" : "mobile-text-secondary"}`}>
-                      {station.location}
-                    </p>
-                  </div>
-                  <span className={`text-[0.66rem] uppercase tracking-[0.16em] ${active ? "opacity-72" : "mobile-text-muted"}`}>
-                    {active ? "当前" : "展示"}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setStationSheetOpen(false);
-              pushFeedback("当前展示归属已更新");
-            }}
-            className="mobile-button-primary mt-4 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.8rem] font-semibold uppercase tracking-[0.18em]"
-          >
-            设为当前展示归属
-          </button>
-        </BottomSheet>
-      ) : null}
     </>
   );
 }
@@ -453,23 +440,15 @@ function mapOptionToTrigger(option: (typeof participationTriggerOptions)[number]
   return option === "仅在 @ 时发出" ? "mention_only" : "auto_publish";
 }
 
-function mapScopeToOption(scope: "all_posts" | "current_station" | "selected_people") {
-  if (scope === "current_station") {
-    return "仅当前基站";
-  }
-
+function mapScopeToOption(scope: "all_posts" | "selected_people") {
   if (scope === "selected_people") {
     return "仅熟悉的人";
   }
 
-  return "全部帖子";
+  return "全部公开帖子";
 }
 
 function mapOptionToScope(option: (typeof participationScopeOptions)[number]) {
-  if (option === "仅当前基站") {
-    return "current_station";
-  }
-
   if (option === "仅熟悉的人") {
     return "selected_people";
   }
@@ -477,16 +456,30 @@ function mapOptionToScope(option: (typeof participationScopeOptions)[number]) {
   return "all_posts";
 }
 
-function getAgentScopePreviewText(option: (typeof participationScopeOptions)[number], stationName: string) {
-  if (option === "仅当前基站") {
-    return `只在 ${stationName} 里的帖子直接发出带 AI 标记的回复。`;
-  }
-
+function getAgentScopePreviewText(option: (typeof participationScopeOptions)[number]) {
   if (option === "仅熟悉的人") {
     return "只对你已经熟悉的人直接发出带 AI 标记的回复。";
   }
 
-  return "公开帖子里都可以直接看到带 AI 标记的回复。";
+  return "公开帖子里都可以看到带 AI 标记的回复；已加入站点再按下面的逐站规则决定是否默认回答。";
+}
+
+function mapStationTriggerToOption(triggerMode: AgentTriggerMode) {
+  return triggerMode === "auto_publish" ? "默认回答" : "仅在 @ 时回答";
+}
+
+function mapStationOptionToTrigger(option: (typeof stationReplyOptions)[number]): AgentTriggerMode {
+  return option === "默认回答" ? "auto_publish" : "mention_only";
+}
+
+function buildStationReplyRuleMap(
+  stations: StationCard[],
+  settings: AgentParticipationSettings,
+) {
+  return stations.reduce<Record<string, AgentTriggerMode>>((map, station) => {
+    map[station.id] = getStationParticipationTrigger(settings, station.name);
+    return map;
+  }, {});
 }
 
 export function JoinStationScreen({ payload, stations }: JoinStationScreenProps) {

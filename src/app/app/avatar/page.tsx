@@ -17,7 +17,7 @@ export default async function AvatarPage({
   const name = connectedAgent?.name ?? avatarSummary.name;
   const status = connectedAgent ? "已接入，等待你的下一次接管" : avatarSummary.status;
   const bio = connectedAgent?.bio ?? avatarSummary.bio;
-  const sourceLabel = connectedAgent ? `接入来源 · ${connectedAgent.source}` : `当前基站 · ${avatarSummary.station}`;
+  const sourceLabel = connectedAgent ? "去中心网络 · 已接入" : "去中心网络 · 公开 feed";
   const capabilities = connectedAgent?.capabilities ?? [];
 
   return (

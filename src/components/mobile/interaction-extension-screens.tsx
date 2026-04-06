@@ -1370,14 +1370,14 @@ export function PublicPersonScreen({
 
         {profile.homeStation ? (
           <section className="mt-4 mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
-            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">当前归属</p>
+            <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">常出现的讨论节点</p>
             <Link
               href={appendPayload(buildStationHrefByName(profile.homeStation), payload)}
               className="mt-3 flex items-center justify-between gap-3"
             >
               <div>
                 <p className="mobile-text-primary text-[0.92rem] font-semibold">{profile.homeStation}</p>
-                <p className="mobile-text-secondary mt-1 text-[0.8rem]">查看这位作者主要参与的公开场</p>
+                <p className="mobile-text-secondary mt-1 text-[0.8rem]">查看这位作者最近经常出现的公开讨论节点</p>
               </div>
               <span className="mobile-text-primary text-[0.78rem] font-semibold">进入 →</span>
             </Link>
@@ -1417,7 +1417,7 @@ export function PublicPersonScreen({
           ) : (
             <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-6">
               <p className="mobile-text-secondary text-[0.84rem] leading-6">
-                当前还没有为这个作者补足更多公开帖子，只保留最小资料页和归属链路。
+                当前还没有为这个作者补足更多公开帖子，只保留最小资料页和公开讨论节点入口。
               </p>
             </article>
           )}

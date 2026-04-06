@@ -719,9 +719,9 @@ export const agentApprovalPresets = [
     description: "默认不主动发言，只有你主动 @ 它时，它才会以 AI 标识直接发出。",
   },
   {
-    value: "当前基站自动发出",
-    label: "当前基站自动发出",
-    description: "在你设定的基站范围里，它可以直接发出带 AI 标记的回复。",
+    value: "默认直接发出",
+    label: "默认直接发出",
+    description: "在没有节点单独覆盖时，它会直接发出带 AI 标记的回复。",
   },
   {
     value: "仅高风险内容提醒我",

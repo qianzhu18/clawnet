@@ -53,8 +53,8 @@ export function PostDetailScreen({
   const [moreActionsOpen, setMoreActionsOpen] = useState(false);
   const [reportSheetOpen, setReportSheetOpen] = useState(false);
   const [blockSheetOpen, setBlockSheetOpen] = useState(false);
-  const [participationSettings] = useState<AgentParticipationSettings>(
-    typeof window === "undefined" ? defaultAgentParticipationSettings : readAgentParticipationSettings(),
+  const [participationSettings, setParticipationSettings] = useState<AgentParticipationSettings>(
+    defaultAgentParticipationSettings,
   );
   const [manualAgentReplyRequested, setManualAgentReplyRequested] = useState(false);
 
@@ -98,6 +98,14 @@ export function PostDetailScreen({
       window.setTimeout(() => scrollToReplies(), 60);
     }
   }, [initialMetricKey]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setParticipationSettings(readAgentParticipationSettings());
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   function publishAgentReply() {
     if (directAgentReplyEnabled) {
@@ -254,7 +262,7 @@ export function PostDetailScreen({
         </article>
 
         <section ref={replySectionRef} className="mt-6">
-          <div className="mobile-shell-panel rounded-[1.5rem] px-4 py-4">
+          <div className="micro-feed-divider border-t pt-4">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">评论流</p>
@@ -283,7 +291,7 @@ export function PostDetailScreen({
             </p>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-6 space-y-6 bg-transparent">
             {visibleReplies.map((reply) => (
               <ReplyCard
                 key={reply.id}
@@ -574,14 +582,19 @@ function ReplyCard({
   onSelect: () => void;
 }) {
   const badge = getInlineRoleBadge(reply.role);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(() => getReplyLikeSeed(reply));
 
   return (
-    <article className="micro-feed-card px-4 py-4">
-      <div className="flex items-start gap-3">
-        <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} />
+    <article className="bg-transparent">
+      <div className="group flex gap-3">
+        <div className="flex shrink-0 flex-col items-center">
+          <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} small />
+          <span className="mt-2 min-h-8 w-px bg-[color:var(--feed-divider)] opacity-75" />
+        </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <div className="min-w-0 flex items-center gap-2">
               <Link
                 href={appendPayload(
                   buildAuthorHref({
@@ -591,30 +604,52 @@ function ReplyCard({
                   }),
                   payload,
                 )}
-                className="block truncate text-[0.92rem] font-bold text-content-primary"
+                className="truncate text-[0.88rem] font-semibold text-content-primary"
               >
                 {reply.author}
               </Link>
-              {badge ? <div className="mt-1 flex flex-wrap items-center gap-2">{badge}</div> : null}
+              {badge}
+              <span className="text-[0.78rem] text-content-tertiary">· {reply.publishedAt}</span>
             </div>
+          </div>
+          {reply.replyTo ? (
+            <p className="mt-1 text-[0.72rem] text-content-secondary">回复 {reply.replyTo}</p>
+          ) : null}
+          <p className="mt-2 text-[14px] leading-relaxed text-content-primary">{reply.body}</p>
+          <div className="mt-2 flex items-center gap-4 text-[0.74rem]">
+            <button
+              type="button"
+              onClick={() => {
+                setLiked((current) => {
+                  const next = !current;
+                  setLikeCount((count) => (next ? count + 1 : Math.max(0, count - 1)));
+                  return next;
+                });
+              }}
+              className={`micro-action-button active:scale-95 ${liked ? "text-action-like" : ""}`}
+              data-tone="like"
+            >
+              <span className={`micro-action-bubble size-7 ${liked ? "bg-action-like/10" : ""}`}>
+                <HeartIcon className="size-[0.88rem]" />
+              </span>
+              <span className="micro-action-value text-[0.72rem] font-medium">{likeCount > 0 ? likeCount : ""}</span>
+            </button>
             <button
               type="button"
               onClick={onSelect}
-              className="mobile-text-muted inline-flex items-center justify-center rounded-full px-2 py-1 text-[0.78rem] font-semibold"
+              className="micro-action-button active:scale-95"
+              data-tone="comment"
             >
-              ♡
+              <span className="micro-action-bubble size-7">
+                <CommentIcon className="size-[0.88rem]" />
+              </span>
+              <span className="micro-action-value text-[0.72rem] font-medium">回复</span>
             </button>
-          </div>
-          {reply.replyTo ? (
-            <p className="mt-2 text-[0.72rem] text-content-secondary">回复 {reply.replyTo}</p>
-          ) : null}
-          <p className="mt-3 text-[15px] leading-relaxed text-content-primary">{reply.body}</p>
-          <div className="mt-4 flex items-center gap-4 text-[0.74rem]">
-            <span className="text-content-secondary">{reply.publishedAt}</span>
-            <button type="button" onClick={onSelect} className="font-semibold text-content-secondary hover:text-action-brand">
-              回复
-            </button>
-            <button type="button" onClick={onSelect} className="font-semibold text-content-secondary hover:text-action-brand">
+            <button
+              type="button"
+              onClick={onSelect}
+              className="text-[0.72rem] font-medium text-content-secondary transition-colors hover:text-action-brand"
+            >
               展开子线程
             </button>
           </div>
@@ -741,6 +776,12 @@ function getInlineRoleBadge(role: ThreadReply["role"] | FeedPost["role"]) {
       {roleLabel[role]}
     </span>
   );
+}
+
+function getReplyLikeSeed(reply: ThreadReply) {
+  const base = reply.role === "agent" ? 8 : reply.role === "official" ? 6 : 2;
+  const hash = reply.id.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return base + (hash % 5);
 }
 
 function BottomSheet({

@@ -101,7 +101,7 @@ export function resolvePublicPersonProfile(id: string): PublicPersonProfile {
     name: fallbackName,
     handle: `@${normalizePublicId(fallbackName)}`,
     role: "human",
-    summary: "这是一个还没有补齐资料的公开参与者占位页。后续需要继续补他的长期参与、最近回复和归属基站。",
+    summary: "这是一个还没有补齐资料的公开参与者占位页。后续需要继续补他的长期参与、最近回复和常出现的讨论节点。",
     traits: ["公开参与", "资料待补", "占位页"],
   };
 }

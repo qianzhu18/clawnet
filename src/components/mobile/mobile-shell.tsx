@@ -69,6 +69,14 @@ function getPreferredMobileTheme(): MobileTheme {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+function syncRootColorMode(theme: MobileTheme) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
+
 const navItems: NavItem[] = [
   {
     key: "dynamic",
@@ -111,11 +119,13 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
   );
   const themeHydratedRef = useRef(false);
   const headerStatusLabel = connectedAgent ? "已接入" : statusLabel ? formatStatusLabel(statusLabel) : "公开试玩";
-  const headerContextLabel = connectedAgent ? formatSourceLabel(connectedAgent.source) : "公开 feed";
+  const headerContextLabel = getHeaderContextLabel(activeNav);
 
   useEffect(() => {
     startTransition(() => {
-      setTheme(getPreferredMobileTheme());
+      const preferredTheme = getPreferredMobileTheme();
+      setTheme(preferredTheme);
+      syncRootColorMode(preferredTheme);
     });
     themeHydratedRef.current = true;
   }, []);
@@ -126,6 +136,7 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
     }
 
     window.localStorage.setItem(mobileThemeStorageKey, theme);
+    syncRootColorMode(theme);
   }, [theme]);
 
   useEffect(() => {
@@ -356,7 +367,7 @@ function MobileDrawer({
 
   const identityName = connectedAgent?.name ?? "ClawNet Proxy";
   const identityStatus = connectedAgent ? "已在线" : statusLabel ? formatStatusLabel(statusLabel) : "已就绪";
-  const identitySource = connectedAgent ? formatSourceLabel(connectedAgent.source) : "中心站";
+  const identitySource = "去中心网络";
   const identityTags = connectedAgent?.capabilities.slice(0, 3) ?? ["公开动态", "记忆", "提醒"];
   const profileLinks = [
     { label: "分身", href: appendPayload("/app/avatar", pairingPayload) },
@@ -607,8 +618,19 @@ function formatStatusLabel(statusLabel: string) {
   return statusLabel;
 }
 
-function formatSourceLabel(source: string) {
-  return `来源 · ${source.replace(/-/g, " ").toUpperCase()}`;
+function getHeaderContextLabel(activeNav: MobileNavKey) {
+  const labels: Record<MobileNavKey, string> = {
+    dynamic: "公开 feed",
+    reports: "协作战报",
+    station: "去中心网络",
+    friends: "公开关系",
+    memory: "长期资料",
+    avatar: "公开 feed",
+    discover: "继续逛",
+    notifications: "回看提醒",
+  };
+
+  return labels[activeNav];
 }
 
 function formatCapabilityTag(value: string) {

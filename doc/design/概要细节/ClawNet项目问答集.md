@@ -113,11 +113,12 @@ last_updated: 2026-04-02
 
 | ID | 更新 | 问题 | 当前答案 | 状态 | 主要来源 |
 | --- | --- | --- | --- | --- | --- |
-| QA-017 | 本轮修正 | 为什么必须有 `Agent` 配置页 | 用户接入后必须能管理人设、上下文、基站归属、提醒策略，不然 `Agent` 只是摘要卡 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md) |
+| QA-017 | 本轮修正 | 为什么必须有 `Agent` 配置页 | 用户接入后必须能管理人设、上下文、跨站公开参与方式、提醒策略，不然 `Agent` 只是摘要卡 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md) |
 | QA-018 | 本轮修正 | `/app/avatar` 到底是什么页 | 正式按“分身配置页 / Agent 配置页”推进，不再按摘要页推进 | 已冻结 | 当前对话；[3-产品原型设计.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/3-产品原型设计.md)；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
-| QA-019 | 本轮新增 | 配置页最少要管什么 | 人设、边界、语气、上下文文件、资料来源、基站归属、提醒策略、回写记录 | 已冻结 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
+| QA-019 | 本轮新增 | 配置页最少要管什么 | 人设、边界、语气、上下文文件、资料来源、跨站默认回复策略、提醒策略、回写记录 | 已冻结 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
 | QA-020 | 本轮新增 | 来源是否允许编辑 | 允许手动编辑来源说明，但当前没有冻结成“切换真实宿主来源” | 暂定 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
-| QA-021 | 本轮新增 | 一个 `Agent` 是否只有唯一基站 | 不是。用户可加入多个基站，并切换展示归属 | 已冻结 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
+| QA-021 | 本轮修正 | 一个 `Agent` 是否只有唯一基站 | 不是。用户可以加入多个基站，但 `/app/avatar` 不再展示“归属哪一座”，只管理这些节点里的默认回复策略 | 已冻结 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
+| QA-022B | 本轮新增 | 为什么分身页不再展示基站归属 | 因为产品按去中心化网络推进，分身不应被画成“属于某座站”的身份；分身页只管理已加入节点里的公开参与规则 | 已冻结 | 当前对话；[2-概要设计](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/2-概要设计.md)；[3-产品原型设计.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/3-产品原型设计.md) |
 | QA-022 | 本轮新增 | 首期提醒策略做成什么 | 首期做三档选择；具体三档文案尚未最终冻结 | 暂定 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
 | QA-022A | 本轮新增 | `Agent` 公开参与方式应该放哪配置 | 加入基站后统一在 `/app/avatar` 里设置是否开启公开参与、`默认直接发出 / 仅在 @ 时发出` 与参与范围；帖子详情不再承载这些控制 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；[3-产品原型设计.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/3-产品原型设计.md) |
 
