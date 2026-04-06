@@ -79,7 +79,7 @@ last_updated: 2026-04-02
 
 ## 4. 当前有效问答集
 
-下面这 `37` 条，是当前阶段最应该被设计、产品、原型统一认的有效答案。
+下面这 `38` 条，是当前阶段最应该被设计、产品、原型统一认的有效答案。
 
 ### 4.1 产品定义与参考
 
@@ -90,6 +90,7 @@ last_updated: 2026-04-02
 | QA-003 | 本轮修正 | 第一优先是先认识人还是先做成事 | 先认识人、先建立信任，协作和结算后置 | 已冻结 | 当前对话；`product-direction.md` |
 | QA-004 | 本轮修正 | 首页第一眼该卖什么 | 先卖“活着的公开场”和人机共存，不卖 `Web3`、结算或复杂接入 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md) |
 | QA-005 | 本轮修正 | `Web3` 在首期的位置是什么 | `Web3` 只作为后续任务、记录、奖励、治理时的无感能力层，不进入首屏与主链路 | 已冻结 | 当前对话；`product-direction.md`；[2-概要设计](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/2-概要设计.md) |
+| QA-005A | 本轮新增 | `x402` 在当前项目里该放哪 | 当前只把 `x402` 理解为后续机器支付候选标准，优先挂在 `skill / API` 按次调用、任务确认后结算和宿主回执后的支付闭环；不进入首屏、基站和公开 feed 主链路 | 暂定 | 当前对话；[2-概要设计](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/2-概要设计.md) |
 | QA-006 | 本轮修正 | `Mastodon` 借什么 | 借 `公开场 / 城市级社区 / 基站骨架 / 讨论结构`，不照搬完整联邦工程 | 已冻结 | [1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；`reference-baselines.md` |
 | QA-007 | 本轮修正 | `Elys` 借什么，不借什么 | 借“人机共存、风格携带、反馈辅助、预互动 -> 接管”；不借“数字分身”作为 `ClawNet` 本体定义 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；`elys-deep-dive.md` |
 | QA-008 | 本轮修正 | `旅行青蛙` 借什么，不借什么 | 借“出去、带回体验、保持一定自主空间”的关系循环；不把 `Agent` 正式定义成宠物 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；`travel-frog-deep-dive.md` |
@@ -118,14 +119,15 @@ last_updated: 2026-04-02
 | QA-020 | 本轮新增 | 来源是否允许编辑 | 允许手动编辑来源说明，但当前没有冻结成“切换真实宿主来源” | 暂定 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
 | QA-021 | 本轮新增 | 一个 `Agent` 是否只有唯一基站 | 不是。用户可加入多个基站，并切换展示归属 | 已冻结 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
 | QA-022 | 本轮新增 | 首期提醒策略做成什么 | 首期做三档选择；具体三档文案尚未最终冻结 | 暂定 | 当前对话；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
+| QA-022A | 本轮新增 | `Agent` 公开参与方式应该放哪配置 | 加入基站后统一在 `/app/avatar` 里设置是否开启公开参与、`默认直接发出 / 仅在 @ 时发出` 与参与范围；帖子详情不再承载这些控制 | 已冻结 | 当前对话；[1-需求分析](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/1-需求分析.md)；[3-产品原型设计.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/3-产品原型设计.md) |
 
 ### 4.4 评论区、主权与 `Agent` 行为
 
 | ID | 更新 | 问题 | 当前答案 | 状态 | 主要来源 |
 | --- | --- | --- | --- | --- | --- |
 | QA-023 | 历史收录 | `Agent` 最小进场机制是什么 | 当前最稳定的是 `@agent` 或邀请入口拉入，再生成建议，用户可 `批准 / 编辑 / 拒绝` | 已冻结 | `core-user-flows.md`；`F002-帖子详情与讨论.md`；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
-| QA-024 | 本轮新增 | `Agent` 是否可以主动在信息流回复 | 当前倾向允许预互动 / 主动建议，但公开发言更接近“先建议、再由用户认可或不认可”；更高自主边界未冻结 | 暂定 | 当前对话；`elys-deep-dive.md`；`core-user-flows.md` |
-| QA-025 | 本轮修正 | 评论区第一优先到底做什么 | 历史问答里曾倾向让讨论外扩，但当前 active 文档更接近：先用 `@agent + 待确认建议 + 接管` 成立，不把“自动升级成任务”定成首轮硬规则 | 暂定 | 当前对话；`问答chat.md`；`product-direction.md`；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
+| QA-024 | 本轮修正 | `Agent` 是否可以主动在信息流回复 | 可以，但这不是在评论流现场临时打开的能力；是否默认直接回复、是否只在 `@` 时回复，统一由 `/app/avatar` 里的公开参与设置预先决定 | 已冻结 | 当前对话；`elys-deep-dive.md`；[3-产品原型设计.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/标准文档/3-产品原型设计.md) |
+| QA-025 | 本轮修正 | 评论区第一优先到底做什么 | 先做成统一讨论现场和轻动作：`@agent` 可以存在，但 `AI 设置 / 接入 AI / 参与范围` 不再放进评论流前台；更深配置统一回 `/app/avatar` | 已冻结 | 当前对话；`问答chat.md`；[逐页详细设计稿.md](/Users/mac/qianzhu Vault/project/clawnet/doc/design/原型细节/逐页详细设计稿.md) |
 | QA-026 | 历史收录 | 原帖作者还有没有主导权 | 当前仍倾向保留原帖主权：可删帖，不鼓励强删评；扩展边界和叫停权仍未完全冻结 | 暂定 | `问答chat.md`；`product-direction.md`；`open-questions.md` |
 
 ### 4.5 基站、角色与加入规则

@@ -15,10 +15,6 @@ type ThreadControlPanelProps = {
     candidates: string[];
     rewardState: string;
   };
-  settingsLabel: string;
-  settingsScopeLabel: string;
-  settingsHref: string;
-  connectHref: string;
   autoPreviewEnabled: boolean;
   onInviteAgent?: () => void;
   onSuggestionApproved?: (body: string) => void;
@@ -32,10 +28,6 @@ export function ThreadControlPanel({
   suggestionRationale,
   taskReceiptHref,
   taskDraft,
-  settingsLabel,
-  settingsScopeLabel,
-  settingsHref,
-  connectHref,
   autoPreviewEnabled,
   onInviteAgent,
   onSuggestionApproved,
@@ -85,12 +77,6 @@ export function ThreadControlPanel({
           <span className="mobile-chip-accent rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
             AI
           </span>
-          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
-            {settingsLabel}
-          </span>
-          <span className="mobile-chip rounded-full px-2.5 py-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
-            {settingsScopeLabel}
-          </span>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <button
@@ -100,18 +86,6 @@ export function ThreadControlPanel({
           >
             @{invitedAgent}
           </button>
-          <Link
-            href={settingsHref}
-            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-          >
-            参与设置
-          </Link>
-          <Link
-            href={connectHref}
-            className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-          >
-            接入 Agent
-          </Link>
           <button
             type="button"
             onClick={() => updateTaskState("draft")}

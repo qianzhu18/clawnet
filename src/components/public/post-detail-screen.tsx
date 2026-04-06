@@ -3,12 +3,11 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
+import { BookmarkIcon, CommentIcon, HeartIcon, RepostIcon } from "@/components/mobile/icons";
 import type { DiscussionThread, FeedPost, ThreadReply } from "@/components/mobile/mock-data";
 import { AvatarSeal, MockVisualCard } from "@/components/mobile/cards";
 import {
   defaultAgentParticipationSettings,
-  getAgentScopeLabel,
-  getAgentTriggerLabel,
   readAgentParticipationSettings,
   shouldAutoPublishAgentReply,
   type AgentParticipationSettings,
@@ -135,7 +134,7 @@ export function PostDetailScreen({
         </header>
 
         {latestActionCopy || quotedRepost ? (
-          <article className="mobile-soft-card mb-4 rounded-[1.35rem] px-4 py-4">
+          <article className="mb-4 rounded-3xl bg-theme-light/70 px-4 py-4">
             <p className="mobile-text-primary text-[0.88rem] font-semibold">
               {quotedRepost ? "已带语境转发" : latestActionCopy?.title}
             </p>
@@ -145,7 +144,7 @@ export function PostDetailScreen({
           </article>
         ) : null}
 
-        <article className="mobile-soft-card rounded-[1.7rem] px-5 py-5">
+        <article className="micro-feed-card px-4 py-4">
           <div className="flex items-start gap-3">
             <AvatarSeal label={post.avatarLabel} role={post.role} />
             <div className="min-w-0 flex-1">
@@ -158,22 +157,25 @@ export function PostDetailScreen({
                       handle: post.handle,
                       stationName: post.station,
                     })}
-                    className="mobile-text-primary block truncate text-[1rem] font-semibold"
+                    className="block truncate text-[0.98rem] font-bold text-content-primary"
                   >
                     {post.author}
                   </Link>
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                  <div className="mt-1 flex flex-wrap items-center gap-1.5">
                     <RoleBadge role={post.role} />
                     {post.badge ? (
-                      <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
+                      <span className="rounded-full bg-theme-light px-2.5 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em] text-theme-primary">
                         {post.badge}
                       </span>
                     ) : null}
-                    <span className="mobile-text-muted text-[0.68rem]">{post.publishedAt}</span>
+                    <span className="text-[0.78rem] text-content-secondary">{post.publishedAt}</span>
                   </div>
-                  <p className="mobile-text-muted mt-2 text-[0.72rem]">
+                  <p className="mt-1.5 text-[0.78rem] text-content-secondary">
                     {post.handle} ·{" "}
-                    <Link href={appendPayload(buildStationHrefByName(post.station), payload)} className="underline decoration-transparent">
+                    <Link
+                      href={appendPayload(buildStationHrefByName(post.station), payload)}
+                      className="underline decoration-transparent hover:text-theme-primary"
+                    >
                       {post.station}
                     </Link>
                   </p>
@@ -183,10 +185,10 @@ export function PostDetailScreen({
           </div>
 
           <div className="mt-4 space-y-3">
-            <h1 className="mobile-text-primary text-[1.36rem] font-semibold leading-[1.15] tracking-[-0.06em]">
+            <h1 className="text-[1.3rem] font-bold leading-[1.15] tracking-[-0.06em] text-content-primary">
               {post.title}
             </h1>
-            <p className="mobile-text-secondary text-[0.94rem] leading-7">{post.body}</p>
+            <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-content-primary">{post.body}</p>
           </div>
 
           {post.media ? (
@@ -196,15 +198,15 @@ export function PostDetailScreen({
           ) : null}
 
           {post.previewReply ? (
-            <div className="mobile-surface-muted mt-4 rounded-[1.15rem] px-4 py-4">
+            <div className="mt-4 rounded-2xl bg-black/[0.025] px-4 py-4 dark:bg-white/[0.04]">
               <div className="flex items-start gap-3">
                 <AvatarSeal label={post.previewReply.author.slice(0, 2)} role={post.previewReply.role} small />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="mobile-text-primary text-[0.84rem] font-semibold">{post.previewReply.author}</p>
+                    <p className="text-[0.84rem] font-bold text-content-primary">{post.previewReply.author}</p>
                     <RoleBadge role={post.previewReply.role} />
                   </div>
-                  <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">{post.previewReply.body}</p>
+                  <p className="mt-2 text-[0.82rem] leading-6 text-content-primary">{post.previewReply.body}</p>
                 </div>
               </div>
             </div>
@@ -219,11 +221,35 @@ export function PostDetailScreen({
             </span>
           </div>
 
-          <div className="mt-5 grid grid-cols-4 gap-2 border-t border-[var(--mobile-border)] pt-4">
-            <MetricButton label="评论" value={post.comments} onClick={scrollToReplies} />
-            <MetricButton label="转发" value={post.reposts} onClick={() => setActiveSheet("reposts")} />
-            <MetricButton label="点赞" value={post.likes} onClick={() => setActiveSheet("likes")} />
-            <MetricButton label="收藏" value={post.bookmarks} onClick={() => setActiveSheet("bookmarks")} />
+          <div className="micro-feed-divider mt-5 flex max-w-md items-center justify-between border-t pt-3">
+            <MetricButton
+              label="评论"
+              value={post.comments}
+              tone="comment"
+              icon={<CommentIcon className="size-[1rem]" />}
+              onClick={scrollToReplies}
+            />
+            <MetricButton
+              label="转发"
+              value={post.reposts}
+              tone="repost"
+              icon={<RepostIcon className="size-[1rem]" />}
+              onClick={() => setActiveSheet("reposts")}
+            />
+            <MetricButton
+              label="点赞"
+              value={post.likes}
+              tone="like"
+              icon={<HeartIcon className="size-[1rem]" />}
+              onClick={() => setActiveSheet("likes")}
+            />
+            <MetricButton
+              label="收藏"
+              value={post.bookmarks}
+              tone="bookmark"
+              icon={<BookmarkIcon className="size-[1rem]" />}
+              onClick={() => setActiveSheet("bookmarks")}
+            />
           </div>
         </article>
 
@@ -251,21 +277,9 @@ export function PostDetailScreen({
               >
                 @{thread.invitedAgent}
               </button>
-              <Link
-                href={appendPayload("/app/avatar", payload)}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-              >
-                AI 设置
-              </Link>
-              <Link
-                href={appendPayload(`/connect?post=${post.id}`, payload)}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-              >
-                接入 AI
-              </Link>
             </div>
-            <p className="mobile-text-secondary mt-4 text-[0.82rem] leading-6">
-              AI 发言：{getAgentTriggerLabel(participationSettings.triggerMode)} · {getAgentScopeLabel(participationSettings)} · 发出后只用 AI 标识区分。
+            <p className="mt-4 text-[0.82rem] leading-6 text-content-secondary">
+              AI 回复和真人回复统一排列，只通过小 AI 标识区分。
             </p>
           </div>
 
@@ -295,7 +309,7 @@ export function PostDetailScreen({
             <button
               type="button"
               onClick={() => setComposerOpen(true)}
-              className="mobile-surface-muted mobile-text-muted flex w-full items-center rounded-[1.1rem] px-4 py-3.5 text-left text-[0.88rem]"
+              className="micro-feed-divider flex w-full items-center rounded-[1.1rem] border bg-app-bg px-4 py-3.5 text-left text-[0.88rem] text-content-tertiary"
             >
               留下一句你的观察吧
             </button>
@@ -307,21 +321,23 @@ export function PostDetailScreen({
               >
                 @{thread.invitedAgent}
               </button>
-              <div className="flex items-center gap-4 text-[0.8rem]">
-                <button
-                  type="button"
+              <div className="flex items-center gap-2 text-[0.8rem]">
+                <MetricButton
+                  label="点赞"
+                  value={post.likes}
+                  tone="like"
+                  compact
+                  icon={<HeartIcon className="size-[0.95rem]" />}
                   onClick={() => setActiveSheet("likes")}
-                  className="mobile-text-secondary inline-flex items-center gap-1 font-semibold"
-                >
-                  ♡ {post.likes}
-                </button>
-                <button
-                  type="button"
+                />
+                <MetricButton
+                  label="评论"
+                  value={post.comments}
+                  tone="comment"
+                  compact
+                  icon={<CommentIcon className="size-[0.95rem]" />}
                   onClick={scrollToReplies}
-                  className="mobile-text-secondary inline-flex items-center gap-1 font-semibold"
-                >
-                  💬 {post.comments}
-                </button>
+                />
               </div>
             </div>
           </div>
@@ -560,7 +576,7 @@ function ReplyCard({
   const badge = getInlineRoleBadge(reply.role);
 
   return (
-    <article className="mobile-soft-card rounded-[1.35rem] px-4 py-4">
+    <article className="micro-feed-card px-4 py-4">
       <div className="flex items-start gap-3">
         <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} />
         <div className="min-w-0 flex-1">
@@ -575,7 +591,7 @@ function ReplyCard({
                   }),
                   payload,
                 )}
-                className="mobile-text-primary block truncate text-[0.92rem] font-semibold"
+                className="block truncate text-[0.92rem] font-bold text-content-primary"
               >
                 {reply.author}
               </Link>
@@ -590,15 +606,15 @@ function ReplyCard({
             </button>
           </div>
           {reply.replyTo ? (
-            <p className="mobile-text-muted mt-2 text-[0.68rem] uppercase tracking-[0.16em]">回复 {reply.replyTo}</p>
+            <p className="mt-2 text-[0.72rem] text-content-secondary">回复 {reply.replyTo}</p>
           ) : null}
-          <p className="mobile-text-secondary mt-3 text-[0.88rem] leading-7">{reply.body}</p>
+          <p className="mt-3 text-[15px] leading-relaxed text-content-primary">{reply.body}</p>
           <div className="mt-4 flex items-center gap-4 text-[0.74rem]">
-            <span className="mobile-text-muted">{reply.publishedAt}</span>
-            <button type="button" onClick={onSelect} className="mobile-text-secondary font-semibold">
+            <span className="text-content-secondary">{reply.publishedAt}</span>
+            <button type="button" onClick={onSelect} className="font-semibold text-content-secondary hover:text-action-brand">
               回复
             </button>
-            <button type="button" onClick={onSelect} className="mobile-text-secondary font-semibold">
+            <button type="button" onClick={onSelect} className="font-semibold text-content-secondary hover:text-action-brand">
               展开子线程
             </button>
           </div>
@@ -681,20 +697,28 @@ function ReplyThreadSheet({
 function MetricButton({
   label,
   value,
+  tone,
+  icon,
+  compact,
   onClick,
 }: {
   label: string;
   value: string;
+  tone: "comment" | "repost" | "like" | "bookmark";
+  icon: ReactNode;
+  compact?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="rounded-[0.95rem] px-2 py-2 text-center transition hover:bg-[var(--mobile-accent-soft)]"
+      aria-label={label}
+      className="micro-action-button"
+      data-tone={tone}
     >
-      <p className="mobile-text-primary text-[0.86rem] font-semibold">{value}</p>
-      <p className="mobile-text-muted mt-1 text-[0.62rem] uppercase tracking-[0.16em]">{label}</p>
+      <span className={`micro-action-bubble ${compact ? "size-8" : "size-9"}`}>{icon}</span>
+      <span className={`micro-action-value ${compact ? "text-[0.74rem]" : "text-[0.78rem]"} font-medium`}>{value}</span>
     </button>
   );
 }
@@ -713,7 +737,7 @@ function getInlineRoleBadge(role: ThreadReply["role"] | FeedPost["role"]) {
   const toneClass = role === "agent" ? "mobile-chip-accent" : "mobile-chip";
 
   return (
-    <span className={`${toneClass} rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]`}>
+    <span className={`${toneClass} rounded-full px-2.5 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]`}>
       {roleLabel[role]}
     </span>
   );
