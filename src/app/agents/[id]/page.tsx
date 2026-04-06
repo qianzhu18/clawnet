@@ -56,7 +56,7 @@ export default async function AgentProfilePage({
             <article className="mobile-emphasis-card rounded-[2rem] px-6 py-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="flex items-start gap-4">
-                  <div className="inline-flex size-[4.5rem] items-center justify-center rounded-[1.6rem] border border-white/18 bg-white/12 text-[1.3rem] font-semibold text-white shadow-[0_20px_38px_-20px_rgba(7,12,19,0.6)]">
+                  <div className="inline-flex size-[4.5rem] items-center justify-center rounded-[1.6rem] border border-theme-light/40 bg-theme-light/16 text-[1.3rem] font-semibold text-white shadow-theme-glow">
                     {profile.name.slice(0, 2).toUpperCase()}
                   </div>
                   <div>

@@ -86,7 +86,11 @@ function resolveLinkTarget(filePath, target) {
     return null;
   }
 
-  if (normalizedTarget.startsWith("/")) {
+  if (path.isAbsolute(normalizedTarget)) {
+    if (normalizedTarget.startsWith(rootDir) || fs.existsSync(normalizedTarget)) {
+      return normalizedTarget;
+    }
+
     return path.join(rootDir, normalizedTarget.slice(1));
   }
 

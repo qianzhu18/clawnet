@@ -124,13 +124,13 @@ export function FeedCard({
   payload?: string;
 }) {
   return (
-    <article className="mobile-soft-card rounded-[1.6rem] px-5 py-5">
-      <div className="flex items-start gap-2.5">
+    <article className="micro-feed-card flex gap-3 px-4 py-3">
+      <div className="flex items-start gap-3">
         <AvatarSeal label={post.avatarLabel} role={post.role} />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-baseline gap-1.5">
                 <Link
                   href={appendPayload(
                     buildAuthorHref({
@@ -141,36 +141,34 @@ export function FeedCard({
                     }),
                     payload,
                   )}
-                  className="mobile-text-primary truncate text-[0.93rem] font-semibold"
+                  className="truncate text-[0.95rem] font-bold text-content-primary"
                 >
                   {post.author}
                 </Link>
+                <span className="truncate text-sm text-content-secondary">{post.handle}</span>
+                <span className="text-sm text-content-secondary">· {post.publishedAt}</span>
                 {post.badge ? (
-                  <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.56rem] font-semibold uppercase tracking-[0.14em]">
+                  <span className="rounded-full bg-theme-light px-2.5 py-0.5 text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-theme-primary">
                     {post.badge}
                   </span>
                 ) : null}
               </div>
-              <p className="mobile-section-label mt-1 text-[0.68rem] uppercase tracking-[0.12em]">
-                {post.handle} ·{" "}
+              <p className="mt-1 text-[0.72rem] text-content-secondary">
                 <Link
                   href={appendPayload(buildStationHrefByName(post.station), payload)}
-                  className="underline decoration-transparent underline-offset-2"
+                  className="underline decoration-transparent underline-offset-2 hover:text-theme-primary"
                 >
                   {post.station}
                 </Link>
               </p>
             </div>
-            <span className="mobile-text-muted shrink-0 text-[0.64rem] font-medium uppercase tracking-[0.14em]">
-              {post.publishedAt}
-            </span>
           </div>
 
           <div className="mt-3.5 space-y-2">
-            <h3 className="mobile-text-primary text-[1.02rem] font-semibold leading-7 tracking-[-0.04em]">
+            <h3 className="text-[1rem] leading-6 font-bold tracking-[-0.03em] text-content-primary">
               {post.title}
             </h3>
-            <p className="mobile-text-secondary text-[0.9rem] leading-7">{post.body}</p>
+            <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-content-primary">{post.body}</p>
           </div>
 
           {post.media ? (
@@ -194,17 +192,17 @@ export function FeedCard({
           ) : null}
 
           {post.alert ? (
-            <div className="mobile-surface-muted mobile-text-secondary rounded-[1.05rem] px-4 py-3.5 text-[0.88rem] leading-6">
+            <div className="mt-3 rounded-2xl bg-theme-light/60 px-4 py-3 text-[0.88rem] leading-6 text-content-secondary">
               {post.alert}
             </div>
           ) : null}
 
           {post.previewReply ? (
-            <div className="mobile-surface-muted rounded-[1.05rem] px-4 py-3.5">
+            <div className="mt-3 rounded-2xl bg-black/[0.025] px-4 py-3 dark:bg-white/[0.04]">
               <div className="flex items-start gap-3">
                 <AvatarSeal label={post.previewReply.author.slice(0, 2)} role={post.previewReply.role} small />
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-baseline gap-2">
                     <Link
                       href={appendPayload(
                         buildAuthorHref({
@@ -214,23 +212,23 @@ export function FeedCard({
                         }),
                         payload,
                       )}
-                      className="mobile-text-primary text-sm font-semibold"
+                      className="text-sm font-bold text-content-primary"
                     >
                       {post.previewReply.author}
                     </Link>
                     {post.previewReply.role === "agent" ? (
-                      <span className="mobile-chip-accent rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.12em]">
+                      <span className="rounded-full bg-theme-light px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.12em] text-theme-primary">
                         AI
                       </span>
                     ) : null}
                   </div>
-                  <p className="mobile-text-secondary mt-1 text-[0.88rem] leading-6">{post.previewReply.body}</p>
+                  <p className="mt-1 text-[0.88rem] leading-6 text-content-primary">{post.previewReply.body}</p>
                 </div>
               </div>
             </div>
           ) : null}
 
-          <div className="mobile-text-muted grid grid-cols-4 gap-1.5">
+          <div className="mt-3 flex max-w-md items-center justify-between">
             <ActionMetric icon={<CommentIcon className="size-[1rem]" />} value={post.comments} label="评论" href={href} />
             <ActionMetric icon={<RepostIcon className="size-[1rem]" />} value={post.reposts} label="转发" />
             <ActionMetric icon={<HeartIcon className="size-[1rem]" />} value={post.likes} label="点赞" />
@@ -238,7 +236,7 @@ export function FeedCard({
           </div>
 
           {href ? (
-            <Link href={href} className="mobile-text-primary inline-flex items-center gap-2 text-[0.9rem] font-semibold">
+            <Link href={href} className="mt-3 inline-flex items-center gap-2 text-[0.86rem] font-semibold text-content-secondary hover:text-theme-primary">
               {ctaLabel}
               <span aria-hidden="true">→</span>
             </Link>
@@ -475,10 +473,11 @@ function ActionMetric({
   label: string;
   href?: string;
 }) {
+  const tone = label === "评论" ? "comment" : label === "转发" ? "repost" : label === "点赞" ? "like" : "bookmark";
   const content = (
     <>
-      <span className="mobile-text-muted">{icon}</span>
-      <span className="mobile-text-secondary text-[0.78rem] font-semibold">{value}</span>
+      <span className="micro-action-bubble size-9">{icon}</span>
+      <span className="micro-action-value text-[0.78rem] font-medium">{value}</span>
     </>
   );
 
@@ -495,7 +494,8 @@ function ActionMetric({
     return (
       <Link
         href={appendMetricQuery(href, focusMetric)}
-        className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-3 py-2"
+        className="micro-action-button group"
+        data-tone={tone}
       >
         {content}
       </Link>
@@ -506,7 +506,8 @@ function ActionMetric({
     <button
       type="button"
       aria-label={label}
-      className="mobile-button-secondary inline-flex items-center justify-center gap-2 rounded-full px-3 py-2"
+      className="micro-action-button group"
+      data-tone={tone}
     >
       {content}
     </button>
@@ -526,15 +527,15 @@ export function AvatarSeal({
   role: FeedRole;
   small?: boolean;
 }) {
-  const sizeClass = small ? "size-7 rounded-[0.8rem] text-[0.66rem]" : "size-[2.5rem] rounded-[0.92rem] text-[0.8rem]";
+  const sizeClass = small ? "size-7 rounded-full text-[0.66rem]" : "size-10 rounded-full text-[0.8rem]";
   const roleClass =
     role === "agent"
-      ? "bg-[linear-gradient(145deg,#6d88b9,#86a4d8)] text-white shadow-[0_18px_32px_-18px_rgba(109,136,185,0.72)]"
+      ? "bg-[linear-gradient(145deg,#7d92b5,#a5b4cf)] text-white"
       : role === "station"
-        ? "bg-[linear-gradient(145deg,#81786e,#a59a8d)] text-white"
+        ? "bg-[linear-gradient(145deg,#87817b,#b1a79d)] text-white"
         : role === "official"
-          ? "bg-[linear-gradient(145deg,#6d819d,#8ea2bf)] text-white"
-          : "bg-[linear-gradient(180deg,rgba(255,255,255,0.88),rgba(241,245,250,0.92))] text-[var(--mobile-text)] shadow-[inset_0_1px_0_rgba(255,255,255,0.46)]";
+          ? "bg-[linear-gradient(145deg,#7086a3,#93a7c1)] text-white"
+          : "bg-[linear-gradient(180deg,#d9e1ea,#c7d1dd)] text-content-primary";
 
   return (
     <div className="relative shrink-0">

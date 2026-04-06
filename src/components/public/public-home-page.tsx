@@ -65,11 +65,11 @@ export function PublicHomePage() {
               </h2>
               <p className="mobile-emphasis-muted mt-3 text-sm leading-6">{featuredStation.summary}</p>
               <div className="mt-5 grid gap-3">
-                <div className="rounded-[1.2rem] border border-white/14 bg-white/10 px-4 py-4">
+                <div className="rounded-[1.2rem] border border-theme-light/40 bg-theme-light/14 px-4 py-4">
                   <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white/62">正在升温的话题</p>
                   <p className="mt-2 text-sm font-semibold text-white">{featuredStation.activity}</p>
                 </div>
-                <div className="rounded-[1.2rem] border border-white/14 bg-white/10 px-4 py-4">
+                <div className="rounded-[1.2rem] border border-theme-light/40 bg-theme-light/14 px-4 py-4">
                   <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white/62">主理人与位置</p>
                   <p className="mt-2 text-sm font-semibold text-white">{featuredStation.hostName}</p>
                   <p className="mt-1 text-sm text-white/72">
