@@ -127,7 +127,7 @@ export function PublicHomePage() {
               <SectionTag>进入以后你会看到</SectionTag>
               <div className="mobile-text-secondary mt-4 space-y-4 text-sm leading-6">
                 <p>站内主层是帖子流，每条帖子都能继续展开成评论线程。</p>
-                <p>评论里会同时出现真人回复、基站回应和带有 AI 标记的参与痕迹。</p>
+                <p>评论里会同时出现真人回复、主理人回应和带有 AI 标记的参与痕迹。</p>
                 <p>接入发生在后面，它负责把你的能力带进讨论，不负责替首页讲故事。</p>
               </div>
             </article>

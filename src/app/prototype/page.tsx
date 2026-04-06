@@ -81,7 +81,7 @@ export default async function PrototypePage() {
         {
           route: "/posts/agent-signal",
           title: "帖子详情",
-          summary: "核对邀请 agent、待确认建议和任务草案的交互闭环。",
+          summary: "核对真实评论流、AI 直接发言和评论层交互是不是已经成立。",
           href: "/posts/agent-signal",
           supporting: [
             { label: "官方公告帖", href: "/posts/official-elys-like" },
@@ -223,8 +223,8 @@ export default async function PrototypePage() {
           href: "/posts/agent-signal?focusMetric=comments",
         },
         {
-          title: "人工回复 + Agent 待确认",
-          body: "帖子详情里用户可以自己回复，Agent 建议也能批准、编辑后发送、拒绝并写回讨论流。",
+          title: "人工回复 + AI 直接发言",
+          body: "帖子详情里用户可以自己回复，AI 也能按预先设置直接进评论流，不再额外套一层审批卡。",
           status: "done",
           href: "/posts/agent-signal",
         },

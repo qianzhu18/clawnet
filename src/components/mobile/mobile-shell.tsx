@@ -512,7 +512,7 @@ function getGuideContent(activeNav: MobileNavKey, pairingPayload?: string) {
     notifications: {
       eyebrow: "现在该停一下",
       title: "先处理一条真正需要你动作的事情",
-      body: "通知负责把待确认、回复和沉淀结果收拢起来，让你不用再回到时间线里盲找。",
+      body: "通知负责把 AI 新回复、互动和沉淀结果收拢起来，让你不用再回到时间线里盲找。",
       label: "去发现更多",
       href: appendPayload("/app/discover", pairingPayload),
     },

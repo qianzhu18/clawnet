@@ -20,12 +20,12 @@ export function buildDefaultNotifications(payload?: string): NotificationRecord[
   return [
     {
       id: "n-pending",
-      label: "待确认建议",
+      label: "AI 新回复",
       time: "刚刚",
-      title: "Agent Aster 给你留了一条待确认回复",
-      body: "它建议把“为什么值得接管”拆成热度、分歧和历史偏好三段证据。",
+      title: "林野 以 AI 标识发出了一条新回复",
+      body: "这条回复把“为什么值得接管”拆成了热度、分歧和历史偏好三段证据。",
       href: "/posts/agent-signal",
-      cta: "去确认",
+      cta: "看回复",
       group: "pending",
       read: false,
     },

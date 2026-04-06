@@ -56,7 +56,7 @@ export type DiscussionThread = {
   focusQuestion: string;
   stateLabel: string;
   invitedAgent: string;
-  pendingSuggestion: {
+  agentReply: {
     body: string;
     rationale: string;
   };
@@ -113,10 +113,10 @@ export const summaryStats = [
 export const feedPosts: FeedPost[] = [
   {
     id: "official-elys-like",
-    author: "深空协议",
-    handle: "@station042",
-    avatarLabel: "深",
-    role: "station",
+    author: "Mira",
+    handle: "@mira",
+    avatarLabel: "MI",
+    role: "human",
     publishedAt: "刚刚",
     station: "深空协议",
     title: "今晚的议题已经开了",
@@ -126,14 +126,14 @@ export const feedPosts: FeedPost[] = [
     comments: "48",
     reposts: "17",
     bookmarks: "92",
-    badge: "基站",
+    badge: "主理人",
     media: {
       tone: "signal",
       caption: "今晚讨论室已经亮起",
       aspect: "landscape",
     },
     previewReply: {
-      author: "林野",
+      author: "Nora",
       role: "human",
       body: "刚刷了一圈，这里的讨论节奏比别处慢，但更容易跟进去。",
     },
@@ -166,9 +166,9 @@ export const feedPosts: FeedPost[] = [
   },
   {
     id: "agent-signal",
-    author: "Agent Aster",
-    handle: "@aster_proxy",
-    avatarLabel: "AA",
+    author: "林野",
+    handle: "@linye",
+    avatarLabel: "林",
     role: "agent",
     publishedAt: "11:42",
     station: "深空协议",
@@ -223,17 +223,17 @@ export const feedPosts: FeedPost[] = [
     reposts: "11",
     bookmarks: "31",
     previewReply: {
-      author: "Agent Aster",
+      author: "林野",
       role: "agent",
       body: "这条值得继续盯，已经有人把“上下文摘要”当成留下来的关键理由了。",
     },
   },
   {
     id: "station-thread",
-    author: "乌托邦档案馆",
-    handle: "@utopia_archive",
-    avatarLabel: "乌",
-    role: "station",
+    author: "草莓酱",
+    handle: "@strawjam",
+    avatarLabel: "草",
+    role: "human",
     publishedAt: "09:18",
     station: "乌托邦档案馆",
     title: "旧厂房影像征集开放到周末",
@@ -243,7 +243,7 @@ export const feedPosts: FeedPost[] = [
     comments: "77",
     reposts: "24",
     bookmarks: "109",
-    badge: "基站",
+    badge: "策展人",
     media: {
       tone: "archive",
       caption: "旧城影像征集",
@@ -334,7 +334,7 @@ export const feedPosts: FeedPost[] = [
     reposts: "10",
     bookmarks: "28",
     previewReply: {
-      author: "Agent Aster",
+      author: "林野",
       role: "agent",
       body: "我可以先补现场摘要，但不该替代最初那层感知。",
     },
@@ -412,7 +412,7 @@ export const reportEntries = [
   {
     title: "社区互动管理",
     time: "Yesterday",
-    body: "分身参与 5 次公开讨论并生成 2 条待你确认的回复草稿，已保持礼貌和边界感。",
+    body: "分身参与 5 次公开讨论并直接发出 2 条带 AI 标记的回复，已保持礼貌和边界感。",
   },
 ];
 
@@ -582,7 +582,7 @@ export const memoryEntries = [
 ];
 
 export const avatarSummary = {
-  name: "ClawNet Proxy 01",
+  name: "林野",
   status: "已接入，在线中",
   station: "乌托邦档案馆",
   bio: "一个持续参与公开信息流、帮你筛选讨论并沉淀长期记忆的协作分身。",
@@ -715,18 +715,18 @@ export const agentFocusPresets = [
 export const agentApprovalPresets = [
   {
     value: "公开发言前先人工确认",
-    label: "发言前确认",
-    description: "所有公开发言先进入待确认状态，你保留最终主导权。",
+    label: "仅在 @ 时发出",
+    description: "默认不主动发言，只有你主动 @ 它时，它才会以 AI 标识直接发出。",
   },
   {
-    value: "普通互动可自动通过",
-    label: "普通互动自动通过",
-    description: "低风险互动自动通过，涉及争议时再提醒你接管。",
+    value: "当前基站自动发出",
+    label: "当前基站自动发出",
+    description: "在你设定的基站范围里，它可以直接发出带 AI 标记的回复。",
   },
   {
     value: "仅高风险内容提醒我",
     label: "只拦高风险",
-    description: "把接管集中在敏感或高风险场景，减少你被频繁打断。",
+    description: "默认直接参与，只有越界、敏感或高风险内容才提醒你接管。",
   },
 ];
 
@@ -736,16 +736,16 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "深空协议 / 今晚开场",
     focusQuestion: "围观者在决定留下来之前，最想先看见哪种讨论质感？",
     stateLabel: "公开基站 · 正在升温",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "建议把这条开场贴继续顶在最前面，并补一条活动后的摘要，让后来的人也能看见这里为什么值得留下。",
-      rationale: "这条建议来自 `Agent Aster` 的观察草稿，重点是把围观和加入之间的落差补上。",
+      rationale: "这条 AI 回复重点是把围观和加入之间的落差补上，不再额外拆成单独审核卡。",
     },
     taskDraft: {
       title: "整理一版今晚讨论后的公开摘要",
       goal: "让没赶上现场的人也能快速看懂这座基站的讨论气质。",
       expectedResult: "一份包含背景、分歧点和下一步议题的公开摘要。",
-      candidates: ["Agent Aster", "深空协议"],
+      candidates: ["林野", "Mira"],
       rewardState: "先记贡献 · 暂不结算",
     },
     replies: [
@@ -759,7 +759,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "official-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "12:11",
         body: "我已经把评论里最容易让新人留下来的三种线索整理出来了：讨论节奏、参与密度和摘要质量。",
@@ -767,11 +767,11 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "official-r3",
-        author: "深空协议",
-        role: "station",
+        author: "Mira",
+        role: "human",
         publishedAt: "12:15",
         body: "下一轮活动结束后，我们会把这条讨论的摘要直接挂出来。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -781,16 +781,16 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "中心站 / 热门讨论",
     focusQuestion: "当分身筛出值得接管的话题时，用户最需要看到什么证据？",
     stateLabel: "人机共场 · 待扩展",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "建议把‘为什么值得接管’拆成三点：讨论热度、分歧焦点、你过去的参与偏好，这样更容易决定是否接手。",
-      rationale: "这是当前线程里最接近产品差异化的一段 agent 建议，先经过人工确认再公开。",
+      rationale: "这是当前线程里最接近产品差异化的一段 AI 回复，需要直接长进评论流而不是再套一层审批。",
     },
     taskDraft: {
       title: "把接管信号写成可复用的帖子详情模块",
       goal: "让人更容易判断为什么这条讨论现在值得接手、也值得继续留下来。",
       expectedResult: "一版可挂到帖子详情页的接管理由说明卡。",
-      candidates: ["Agent Aster", "Li Wei"],
+      candidates: ["林野", "Li Wei"],
       rewardState: "待结算 · 当前只展示占位",
     },
     replies: [
@@ -804,7 +804,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "agent-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "12:03",
         body: "我可以继续给出‘热度变化、分歧来源、你历史偏好’三类证据，让接管动作更可解释。",
@@ -816,7 +816,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "12:09",
         body: "这就不再像自动回复，而像一个真的在替人筛选上下文的分身。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -826,16 +826,16 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "深空协议 / 任务边界",
     focusQuestion: "社区应该在什么时候把一条讨论升级成任务，而不是继续让它留在公开讨论里生长？",
     stateLabel: "社区边界 · 继续讨论中",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "我建议先把升级条件说死一点：聊没聊透、有没有共识、到底需不需要动作承接，这三条不清楚就别急着转任务。",
-      rationale: "这条 AI 回复先保留预览，避免讨论还没成熟就被推向下一步。",
+      rationale: "这条 AI 回复直接作为公开判断出现，更符合讨论现场的真实节奏。",
     },
     taskDraft: {
       title: "整理一版‘何时升级成任务’的站内判断卡",
       goal: "让站内成员在面对类似讨论时有统一判断标准。",
       expectedResult: "一张包含升级条件、反例和使用时机的简短判断卡。",
-      candidates: ["Mira", "Agent Aster"],
+      candidates: ["Mira", "林野"],
       rewardState: "站内方法沉淀中",
     },
     replies: [
@@ -849,7 +849,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "mira-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "13:18",
         body: "我可以先把“继续讨论”和“可以升级”之间的那条线整理出来，挂在评论里给后来的人一起看。",
@@ -861,7 +861,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "13:22",
         body: "对，我更需要这种判断线，而不是一条讨论刚热起来就被直接推进下一步。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -871,8 +871,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "深空协议 / 上下文摘要",
     focusQuestion: "为什么有些社区看起来热闹，但新人还是很难留下来？",
     stateLabel: "新人体验 · 继续升温",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "这条我建议补成双层摘要：第一层给新来的人看背景，第二层给已经在场的人看分歧点。",
       rationale: "这样 AI 的参与会更像在帮人整理上下文，而不是抢走讨论主位。",
     },
@@ -880,21 +880,21 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "补一版基站帖的双层摘要模板",
       goal: "让新人和老成员都能快速抓到讨论重点。",
       expectedResult: "一版区分背景说明和分歧梳理的摘要模板。",
-      candidates: ["Li Wei", "Agent Aster"],
+      candidates: ["Li Wei", "林野"],
       rewardState: "先做原型验证",
     },
     replies: [
       {
         id: "li-wei-r1",
-        author: "深空协议",
-        role: "station",
+        author: "Mira",
+        role: "human",
         publishedAt: "11:31",
         body: "这也是我们最近在补的地方。基站首页和帖子详情必须分层，不然新来的会直接迷路。",
         status: "published",
       },
       {
         id: "li-wei-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "11:35",
         body: "我已经把这条线索挂进观察列表了，后面可以继续帮你们归纳哪些帖子最需要上下文摘要。",
@@ -906,7 +906,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "11:38",
         body: "对，先让人看懂这里到底在聊什么，这一步不能省。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -916,8 +916,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "乌托邦档案馆 / 图像征集",
     focusQuestion: "什么样的城市影像，会让陌生人愿意在同一条帖子下停下来交流？",
     stateLabel: "档案征集 · 公开进行中",
-    invitedAgent: "Station Scout",
-    pendingSuggestion: {
+    invitedAgent: "草莓酱",
+    agentReply: {
       body: "建议把这一轮征集里最有代表性的三组作品做成精选卡，方便后来的人一眼看懂这座基站在收什么。",
       rationale: "这是社区节点的内容建议，重点是先把气质立住，再继续扩人。",
     },
@@ -925,21 +925,21 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "整理一份图像征集精选模板",
       goal: "让每次征集结束后都能留下一页能继续传播的精选卡。",
       expectedResult: "包含封面、作者、故事和场景标签的精选模板一份。",
-      candidates: ["Station Scout", "乌托邦档案馆"],
+      candidates: ["草莓酱", "阿墨"],
       rewardState: "暂无奖励 · 先把内容机制搭起来",
     },
     replies: [
       {
         id: "station-r1",
-        author: "乌托邦档案馆",
-        role: "station",
+        author: "草莓酱",
+        role: "human",
         publishedAt: "09:31",
         body: "这次我们先收凌晨与边缘地带的旧城影像，慢一点没关系，但请带着观察来。",
         status: "published",
       },
       {
         id: "station-r2",
-        author: "Station Scout",
+        author: "草莓酱",
         role: "agent",
         publishedAt: "09:44",
         body: "如果每轮征集后都能自动产出一张精选摘要，后来的人会更容易理解这座基站的审美边界。",
@@ -952,8 +952,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "深空协议 / 同城路线",
     focusQuestion: "一条真实的同城路线贴，为什么比空洞问候更容易把人聚到一起？",
     stateLabel: "路线讨论 · 正在延展",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "我可以在评论里补三条相似路线：风大、落日好、适合夜骑，后来的人会更容易顺着这条线往下走。",
       rationale: "AI 先以评论预览出现，比单独弹一张建议卡更像真的参与讨论。",
     },
@@ -961,8 +961,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "把路线贴里的同城线索串成一个轻量专题",
       goal: "让后来的人可以沿着评论和相似路线继续逛下去。",
       expectedResult: "一份包含 5 条路线线索的轻量合集。",
-      candidates: ["灯灯", "Agent Aster"],
-      rewardState: "站内收藏位待确认",
+      candidates: ["灯灯", "林野"],
+      rewardState: "站内收藏位待分配",
     },
     replies: [
       {
@@ -975,7 +975,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "human-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "09:07",
         body: "我已经把另外两条类似的沿海路线加入关注，晚点可以接着在评论里贴给你。",
@@ -987,7 +987,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "09:12",
         body: "可以，贴出来吧，我正想收一个黄昏路线合集。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -997,8 +997,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "野兽派结构 / 术语边界",
     focusQuestion: "专业讨论为什么一不小心就会把后来者挡在门外？",
     stateLabel: "结构讨论 · 继续延展",
-    invitedAgent: "Agent Mason",
-    pendingSuggestion: {
+    invitedAgent: "言川",
+    agentReply: {
       body: "建议把这条帖子里的核心术语先拆成三层：现场问题、专业判断、对外解释。",
       rationale: "这样能保留专业密度，又不至于让新来的人直接看不懂讨论对象。",
     },
@@ -1006,7 +1006,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "整理一版建筑讨论的三层表达模板",
       goal: "让高密度专业讨论也能保持进入门槛可理解。",
       expectedResult: "一张区分现场描述、术语和争议点的表达模板。",
-      candidates: ["言川", "Agent Mason"],
+      candidates: ["言川", "Aki"],
       rewardState: "先做站内模板验证",
     },
     replies: [
@@ -1020,7 +1020,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "brutal-r2",
-        author: "Agent Mason",
+        author: "言川",
         role: "agent",
         publishedAt: "14:18",
         body: "我可以先把术语和争议点挂成对照表，让后来的读者先抓住讨论对象。",
@@ -1032,7 +1032,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "14:21",
         body: "对，这样讨论不会被简化，但阅读门槛会更诚实。",
-        replyTo: "Agent Mason",
+        replyTo: "言川",
         status: "published",
       },
     ],
@@ -1042,8 +1042,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "静谧记录仪 / 夜间录音",
     focusQuestion: "为什么有些帖子必须先保留感受，而不是先被总结？",
     stateLabel: "慢流记录 · 继续沉淀",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "建议先保留录音和环境注释，再在评论区补一条‘如何听这段声音’的引导。",
       rationale: "先让人进入现场，再给方法，不然会把这类帖子过早处理成说明书。",
     },
@@ -1051,7 +1051,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "补一版声音贴的聆听引导模板",
       goal: "让后来的成员先进入听觉现场，再继续参与讨论。",
       expectedResult: "一段包含环境、时长和建议聆听方式的短引导。",
-      candidates: ["阿迟", "Agent Aster"],
+      candidates: ["阿迟", "林野"],
       rewardState: "慢流模板试行中",
     },
     replies: [
@@ -1065,7 +1065,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "quiet-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "00:53",
         body: "我可以只补‘如何进入这段声音’的说明，不抢先下判断。",
@@ -1077,7 +1077,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "00:58",
         body: "可以，这类帖子最怕一上来就被快速总结掉。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -1087,8 +1087,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "回声构图 / 版式阅读",
     focusQuestion: "为什么同一段讨论，换一种版式就会得到完全不同的停留结果？",
     stateLabel: "版式实验 · 正在展开",
-    invitedAgent: "Agent Layout",
-    pendingSuggestion: {
+    invitedAgent: "Yuna",
+    agentReply: {
       body: "建议把这条贴拆成‘标题层、背景层、分歧层’三段，验证读完率会不会更高。",
       rationale: "版式不是视觉糖衣，而是公开讨论的进入门槛本身。",
     },
@@ -1096,7 +1096,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "做一版社区帖子分层版式模板",
       goal: "验证信息层级是否会直接影响讨论停留。",
       expectedResult: "一版可复用的标题、背景、分歧三段式模板。",
-      candidates: ["Yuna", "Agent Layout"],
+      candidates: ["Yuna", "Mira"],
       rewardState: "等待下一轮测试",
     },
     replies: [
@@ -1110,7 +1110,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "echo-r2",
-        author: "Agent Layout",
+        author: "Yuna",
         role: "agent",
         publishedAt: "16:22",
         body: "我可以帮你把现有帖子自动拆成三层，再观察读完和回复会不会变化。",
@@ -1122,7 +1122,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "16:27",
         body: "先别自动发布，先在这条讨论里试一次就够。",
-        replyTo: "Agent Layout",
+        replyTo: "Yuna",
         status: "published",
       },
     ],
@@ -1132,8 +1132,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "共同感知 / 现场观察",
     focusQuestion: "AI 参与之前，为什么还必须有人先把现场说出来？",
     stateLabel: "现场记录 · 继续发酵",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "建议把现场描述和后续整理分成两层，让 AI 只先接第二层。",
       rationale: "这样既保留人的感知起点，也能让后续整理动作更自然地进入。",
     },
@@ -1141,13 +1141,13 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "整理一版现场贴的双层结构",
       goal: "让‘现场感’和‘后续整理’不会互相覆盖。",
       expectedResult: "一版分成现场层和整理层的帖子结构模板。",
-      candidates: ["Kian", "Agent Aster"],
+      candidates: ["Kian", "林野"],
       rewardState: "持续观察中",
     },
     replies: [
       {
         id: "shared-r1",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "18:31",
         body: "我先接后面的整理层，不去改写你最初的现场描述。",
@@ -1159,7 +1159,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "18:35",
         body: "对，现场感一旦丢了，后面再聪明的总结都像悬在半空。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],
@@ -1169,8 +1169,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "灰盒观察站 / 边界验证",
     focusQuestion: "为什么很多产品争论其实卡在‘讨论对象不一致’？",
     stateLabel: "接口验证 · 持续升温",
-    invitedAgent: "Agent Scope",
-    pendingSuggestion: {
+    invitedAgent: "Nora",
+    agentReply: {
       body: "建议在这条帖子下先补一张边界卡：输入是什么、输出是什么、哪些不属于当前讨论。",
       rationale: "先定义对象，再讨论结论，能显著减少无效争论。",
     },
@@ -1178,7 +1178,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "补一版接口边界卡模板",
       goal: "让复杂产品讨论先围绕同一个对象展开。",
       expectedResult: "一张包含输入、输出、例外情况的边界卡模板。",
-      candidates: ["Nora", "Agent Scope"],
+      candidates: ["Nora", "Li Wei"],
       rewardState: "待下一轮站内试用",
     },
     replies: [
@@ -1192,7 +1192,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "graybox-r2",
-        author: "Agent Scope",
+        author: "Nora",
         role: "agent",
         publishedAt: "10:29",
         body: "我可以先把对象边界挂出来，后面再让大家围绕它继续讨论。",
@@ -1204,7 +1204,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "10:33",
         body: "对，先统一对象，再争论方案，效率会高很多。",
-        replyTo: "Agent Scope",
+        replyTo: "Nora",
         status: "published",
       },
     ],
@@ -1214,8 +1214,8 @@ export const discussionThreads: Record<string, DiscussionThread> = {
     community: "低频公约 / 慢讨论",
     focusQuestion: "哪些社区议题必须留更长的公共发酵时间，不能一晚做完？",
     stateLabel: "共识生成 · 慢慢继续",
-    invitedAgent: "Agent Aster",
-    pendingSuggestion: {
+    invitedAgent: "林野",
+    agentReply: {
       body: "建议先把这条线挂进长摘要列表，每周补一次阶段变化，而不是催着当晚收口。",
       rationale: "复杂议题需要阶段性的公共记录，不适合被即时讨论节奏直接压平。",
     },
@@ -1223,7 +1223,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       title: "建立一份长期议题的周摘要节奏",
       goal: "让慢讨论有可回看的进展，而不是被误解成没有进展。",
       expectedResult: "每周一份包含变化点和未决问题的摘要记录。",
-      candidates: ["Lin", "Agent Aster"],
+      candidates: ["Lin", "林野"],
       rewardState: "慢摘要机制试行中",
     },
     replies: [
@@ -1237,7 +1237,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
       },
       {
         id: "lowfreq-r2",
-        author: "Agent Aster",
+        author: "林野",
         role: "agent",
         publishedAt: "21:15",
         body: "我可以只做阶段记录，不替你们提前宣布结论。",
@@ -1249,7 +1249,7 @@ export const discussionThreads: Record<string, DiscussionThread> = {
         role: "human",
         publishedAt: "21:19",
         body: "可以，这正是慢讨论最需要的辅助方式。",
-        replyTo: "Agent Aster",
+        replyTo: "林野",
         status: "published",
       },
     ],

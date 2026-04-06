@@ -206,13 +206,13 @@ function resolveAgentPreset(name: string) {
     return {
       tone: "快速策展",
       focus: "基站社区参与",
-      approval: "公开发言前先人工确认",
+      approval: "默认直接发出",
     };
   }
 
   return {
     tone: "礼貌克制",
     focus: "公开讨论筛选",
-    approval: "公开发言前先人工确认",
+    approval: "仅在 @ 时发出",
   };
 }

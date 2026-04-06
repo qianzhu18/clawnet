@@ -1,6 +1,6 @@
 import type { FeedPost } from "@/components/mobile/mock-data";
 
-export type AgentTriggerMode = "mention_only" | "auto_preview";
+export type AgentTriggerMode = "mention_only" | "auto_publish";
 export type AgentParticipationScope = "all_posts" | "current_station" | "selected_people";
 
 export type AgentParticipationSettings = {
@@ -14,7 +14,7 @@ export type AgentParticipationSettings = {
 export const agentParticipationStorageKey = "clawnet-agent-participation-v1";
 
 export const defaultAgentParticipationSettings: AgentParticipationSettings = {
-  triggerMode: "auto_preview",
+  triggerMode: "auto_publish",
   scope: "all_posts",
   stationId: "042",
   stationName: "深空协议",
@@ -51,8 +51,8 @@ export function writeAgentParticipationSettings(settings: AgentParticipationSett
   );
 }
 
-export function shouldAutoPreviewAgentReply(settings: AgentParticipationSettings, post: FeedPost) {
-  if (settings.triggerMode !== "auto_preview") {
+export function shouldAutoPublishAgentReply(settings: AgentParticipationSettings, post: FeedPost) {
+  if (settings.triggerMode !== "auto_publish") {
     return false;
   }
 
@@ -68,7 +68,7 @@ export function shouldAutoPreviewAgentReply(settings: AgentParticipationSettings
 }
 
 export function getAgentTriggerLabel(triggerMode: AgentTriggerMode) {
-  return triggerMode === "mention_only" ? "仅在 @ 时参与" : "默认预览待确认";
+  return triggerMode === "mention_only" ? "仅在 @ 时发出" : "默认直接发出";
 }
 
 export function getAgentScopeLabel(settings: AgentParticipationSettings) {
@@ -86,7 +86,7 @@ export function getAgentScopeLabel(settings: AgentParticipationSettings) {
 function normalizeAgentParticipationSettings(
   settings: Partial<AgentParticipationSettings>,
 ): AgentParticipationSettings {
-  const triggerMode = settings.triggerMode === "mention_only" ? "mention_only" : "auto_preview";
+  const triggerMode = settings.triggerMode === "mention_only" ? "mention_only" : "auto_publish";
   const scope = normalizeScope(settings.scope);
   const people = Array.isArray(settings.people)
     ? settings.people.filter((item): item is string => typeof item === "string" && item.trim().length > 0)

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import type { DiscussionThread, FeedPost, ThreadReply } from "@/components/mobile/mock-data";
 import { AvatarSeal, MockVisualCard } from "@/components/mobile/cards";
@@ -10,17 +10,17 @@ import {
   getAgentScopeLabel,
   getAgentTriggerLabel,
   readAgentParticipationSettings,
-  shouldAutoPreviewAgentReply,
+  shouldAutoPublishAgentReply,
   type AgentParticipationSettings,
 } from "@/lib/agent-participation";
 import { appendPayload } from "@/lib/connect-demo";
 import { buildAuthorHref, buildStationHrefByName } from "@/lib/public-links";
 
 type MetricKey = "comments" | "reposts" | "likes" | "bookmarks";
-type ReplyFilter = "all" | "human" | "agent" | "station";
+type EngagementMetricKey = Exclude<MetricKey, "comments">;
+type ReplyFilter = "all" | "human" | "agent";
 type ReplySort = "relevant" | "latest";
-type LatestEvent = "reply" | "approved" | "rejected" | "invited" | "quoteRepost" | "shared" | "reported" | "blocked" | null;
-type PreviewMode = "hidden" | "preview" | "editing";
+type LatestEvent = "reply" | "agentPublished" | "quoteRepost" | "shared" | "reported" | "blocked" | null;
 
 const roleLabel: Record<"agent" | "human" | "station" | "official", string> = {
   agent: "AI",
@@ -40,10 +40,12 @@ export function PostDetailScreen({
   initialFocusMetric?: string;
   payload?: string;
 }) {
-  const [publishedSuggestion, setPublishedSuggestion] = useState<ThreadReply | null>(null);
+  const initialMetricKey = toMetricKey(initialFocusMetric);
+  const replySectionRef = useRef<HTMLElement | null>(null);
   const [manualReplies, setManualReplies] = useState<ThreadReply[]>([]);
-  const [recommendationState, setRecommendationState] = useState<"pending" | "approved" | "rejected">("pending");
-  const [activeSheet, setActiveSheet] = useState<MetricKey | null>(toMetricKey(initialFocusMetric));
+  const [activeSheet, setActiveSheet] = useState<EngagementMetricKey | null>(
+    initialMetricKey && initialMetricKey !== "comments" ? initialMetricKey : null,
+  );
   const [replyFilter, setReplyFilter] = useState<ReplyFilter>("all");
   const [replySort, setReplySort] = useState<ReplySort>("relevant");
   const [composerOpen, setComposerOpen] = useState(false);
@@ -59,19 +61,28 @@ export function PostDetailScreen({
   const [participationSettings] = useState<AgentParticipationSettings>(
     typeof window === "undefined" ? defaultAgentParticipationSettings : readAgentParticipationSettings(),
   );
-  const [manualPreviewRequested, setManualPreviewRequested] = useState(false);
-  const [previewModeOverride, setPreviewModeOverride] = useState<PreviewMode | null>(null);
-  const [suggestionDraft, setSuggestionDraft] = useState(thread.pendingSuggestion.body);
+  const [manualAgentReplyRequested, setManualAgentReplyRequested] = useState(false);
 
-  const displayedReplies = useMemo(() => {
-    const baseReplies = [...thread.replies, ...manualReplies];
+  const directAgentReplyEnabled =
+    manualAgentReplyRequested || shouldAutoPublishAgentReply(participationSettings, post);
 
-    if (publishedSuggestion) {
-      baseReplies.push(publishedSuggestion);
+  const displayedReplies = useMemo(() => [...thread.replies, ...manualReplies], [manualReplies, thread.replies]);
+
+  const directAgentReply = useMemo<ThreadReply | null>(() => {
+    if (!directAgentReplyEnabled) {
+      return null;
     }
 
-    return baseReplies;
-  }, [manualReplies, publishedSuggestion, thread.replies]);
+    return {
+      id: `${thread.postId}-direct-agent-reply`,
+      author: thread.invitedAgent,
+      role: "agent",
+      publishedAt: "刚刚",
+      body: thread.agentReply.body,
+      replyTo: post.author,
+      status: "published",
+    };
+  }, [directAgentReplyEnabled, post.author, thread.agentReply.body, thread.invitedAgent, thread.postId]);
 
   const visibleReplies = useMemo(() => {
     const filteredReplies =
@@ -79,51 +90,39 @@ export function PostDetailScreen({
         ? displayedReplies
         : displayedReplies.filter((reply) => reply.role === replyFilter);
 
-    return replySort === "latest" ? [...filteredReplies].reverse() : filteredReplies;
-  }, [displayedReplies, replyFilter, replySort]);
+    const orderedReplies = replySort === "latest" ? [...filteredReplies].reverse() : filteredReplies;
+
+    if (!directAgentReply || (replyFilter !== "all" && replyFilter !== "agent")) {
+      return orderedReplies;
+    }
+
+    return [directAgentReply, ...orderedReplies];
+  }, [directAgentReply, displayedReplies, replyFilter, replySort]);
 
   const totalCommentCount = parseMetric(post.comments);
-  const autoPreviewEnabled =
-    recommendationState === "pending" &&
-    (manualPreviewRequested || shouldAutoPreviewAgentReply(participationSettings, post));
-  const previewMode = previewModeOverride ?? (autoPreviewEnabled ? "preview" : "hidden");
-  const previewVisible = autoPreviewEnabled && previewMode !== "hidden";
-  const pendingCount = previewVisible ? 1 : 0;
-  const passiveCount = Math.max(totalCommentCount - displayedReplies.length - pendingCount, 0);
+  const expandedCommentCount = displayedReplies.length + (directAgentReply ? 1 : 0);
+  const remainingCommentCount = Math.max(totalCommentCount - expandedCommentCount, 0);
   const latestActionCopy = getLatestActionCopy(latestEvent, thread.invitedAgent);
 
-  function openAgentPreview() {
-    setManualPreviewRequested(true);
-    setPreviewModeOverride("preview");
-    setLatestEvent("invited");
+  function scrollToReplies() {
+    replySectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function approveSuggestion() {
-    const nextBody = suggestionDraft.trim();
+  useEffect(() => {
+    if (initialMetricKey === "comments") {
+      window.setTimeout(() => scrollToReplies(), 60);
+    }
+  }, [initialMetricKey]);
 
-    if (!nextBody) {
+  function publishAgentReply() {
+    if (directAgentReplyEnabled) {
+      scrollToReplies();
       return;
     }
 
-    setPublishedSuggestion({
-      id: `${thread.postId}-approved-reply`,
-      author: thread.invitedAgent,
-      role: "agent",
-      publishedAt: "刚刚",
-      body: nextBody,
-      replyTo: post.author,
-      status: "approved",
-    });
-    setRecommendationState("approved");
-    setPreviewModeOverride("hidden");
-    setLatestEvent("approved");
-  }
-
-  function rejectSuggestion() {
-    setRecommendationState("rejected");
-    setManualPreviewRequested(false);
-    setPreviewModeOverride("hidden");
-    setLatestEvent("rejected");
+    setManualAgentReplyRequested(true);
+    setLatestEvent("agentPublished");
+    window.setTimeout(() => scrollToReplies(), 60);
   }
 
   return (
@@ -239,14 +238,14 @@ export function PostDetailScreen({
           </div>
 
           <div className="mt-5 grid grid-cols-4 gap-2 border-t border-[var(--mobile-border)] pt-4">
-            <MetricButton label="评论" value={post.comments} onClick={() => setActiveSheet("comments")} />
+            <MetricButton label="评论" value={post.comments} onClick={scrollToReplies} />
             <MetricButton label="转发" value={post.reposts} onClick={() => setActiveSheet("reposts")} />
             <MetricButton label="点赞" value={post.likes} onClick={() => setActiveSheet("likes")} />
             <MetricButton label="收藏" value={post.bookmarks} onClick={() => setActiveSheet("bookmarks")} />
           </div>
         </article>
 
-        <section className="mt-4 mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
+        <section ref={replySectionRef} className="mt-6">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="mobile-section-label text-[0.58rem] font-semibold uppercase tracking-[0.18em]">评论流</p>
@@ -254,19 +253,13 @@ export function PostDetailScreen({
                 {post.comments} 条评论
               </h2>
             </div>
-            <button
-              type="button"
-              onClick={() => setActiveSheet("comments")}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
-            >
-              全部评论
-            </button>
+            <p className="mobile-text-muted shrink-0 text-[0.72rem]">{expandedCommentCount} 条已直接展开</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {[
               { key: "all", label: "全部" },
-              { key: "human", label: "只看真人" },
-              { key: "agent", label: "只看 AI" },
+              { key: "human", label: "真人" },
+              { key: "agent", label: "AI" },
             ].map((item) => (
               <button
                 key={item.key}
@@ -295,11 +288,11 @@ export function PostDetailScreen({
               </button>
             ))}
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <button
               type="button"
-              onClick={openAgentPreview}
-              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold uppercase tracking-[0.14em]"
+              onClick={publishAgentReply}
+              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
             >
               @{thread.invitedAgent}
             </button>
@@ -307,81 +300,35 @@ export function PostDetailScreen({
               href={appendPayload("/app/avatar", payload)}
               className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
             >
-              参与设置
+              AI 设置
             </Link>
             <Link
               href={appendPayload(`/connect?post=${post.id}`, payload)}
               className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
             >
-              接入 Agent
+              接入 AI
             </Link>
           </div>
           <p className="mobile-text-secondary mt-4 text-[0.82rem] leading-6">
-            当前配置：{getAgentTriggerLabel(participationSettings.triggerMode)} · {getAgentScopeLabel(participationSettings)}
+            AI 发言：{getAgentTriggerLabel(participationSettings.triggerMode)} · {getAgentScopeLabel(participationSettings)} · 发出后只用 AI 标识区分。
           </p>
-        </section>
 
-        <section className="mt-4 space-y-3">
-          {previewVisible && visibleReplies.length === 0 ? (
-            <AgentPreviewCard
-              invitedAgent={thread.invitedAgent}
-              suggestionDraft={suggestionDraft}
-              rationale={thread.pendingSuggestion.rationale}
-              previewMode={previewMode}
-              onDraftChange={setSuggestionDraft}
-              onApprove={approveSuggestion}
-              onEdit={() => setPreviewModeOverride("editing")}
-              onBackToPreview={() => {
-                setSuggestionDraft(thread.pendingSuggestion.body);
-                setPreviewModeOverride("preview");
-              }}
-              onHide={rejectSuggestion}
-            />
-          ) : null}
-
-          {visibleReplies.map((reply, index) => (
-            <div key={reply.id} className="space-y-3">
+          <div className="mt-4 space-y-3">
+            {visibleReplies.map((reply) => (
               <ReplyCard
+                key={reply.id}
                 reply={reply}
                 post={post}
                 payload={payload}
                 onSelect={() => setSelectedReply(reply)}
               />
-              {previewVisible && index === 0 ? (
-                <AgentPreviewCard
-                  invitedAgent={thread.invitedAgent}
-                  suggestionDraft={suggestionDraft}
-                  rationale={thread.pendingSuggestion.rationale}
-                  previewMode={previewMode}
-                  onDraftChange={setSuggestionDraft}
-                  onApprove={approveSuggestion}
-                  onEdit={() => setPreviewModeOverride("editing")}
-                  onBackToPreview={() => {
-                    setSuggestionDraft(thread.pendingSuggestion.body);
-                    setPreviewModeOverride("preview");
-                  }}
-                  onHide={rejectSuggestion}
-                />
-              ) : null}
-            </div>
-          ))}
+            ))}
+          </div>
 
-          {passiveCount > 0 ? (
-            <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="mobile-text-primary text-[0.92rem] font-semibold">还有 {passiveCount} 条评论未展开</p>
-                  <p className="mobile-text-secondary mt-2 text-[0.82rem] leading-6">点进全部评论可以继续看完整线程和筛选结果。</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setActiveSheet("comments")}
-                  className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2 text-[0.72rem] font-semibold"
-                >
-                  展开
-                </button>
-              </div>
-            </article>
+          {remainingCommentCount > 0 ? (
+            <p className="mobile-text-muted mt-4 text-[0.78rem] leading-6">
+              还有 {remainingCommentCount} 条评论还在继续。这里先把最关键的几条直接摊开给你看。
+            </p>
           ) : null}
         </section>
       </div>
@@ -399,7 +346,7 @@ export function PostDetailScreen({
             <div className="mt-3 flex items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={openAgentPreview}
+                onClick={publishAgentReply}
                 className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-3 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em]"
               >
                 @{thread.invitedAgent}
@@ -414,7 +361,7 @@ export function PostDetailScreen({
                 </button>
                 <button
                   type="button"
-                  onClick={() => setActiveSheet("comments")}
+                  onClick={scrollToReplies}
                   className="mobile-text-secondary inline-flex items-center gap-1 font-semibold"
                 >
                   💬 {post.comments}
@@ -427,32 +374,15 @@ export function PostDetailScreen({
 
       {activeSheet ? (
         <BottomSheet title={getSheetTitle(activeSheet, post)} onClose={() => setActiveSheet(null)}>
-          {activeSheet === "comments" ? (
-            <CommentsSheet
-              post={post}
-              thread={thread}
-              replies={visibleReplies}
-              replyFilter={replyFilter}
-              onFilterChange={setReplyFilter}
-              replySort={replySort}
-              onSortChange={setReplySort}
-              totalCommentCount={totalCommentCount}
-              expandedCount={displayedReplies.length}
-              pendingCount={pendingCount}
-              passiveCount={passiveCount}
-              recommendationState={recommendationState}
-            />
-          ) : (
-            <EngagementSheet
-              kind={activeSheet}
-              post={post}
-              thread={thread}
-              onQuoteRepost={() => {
-                setActiveSheet(null);
-                setQuoteComposerOpen(true);
-              }}
-            />
-          )}
+          <EngagementSheet
+            kind={activeSheet}
+            post={post}
+            thread={thread}
+            onQuoteRepost={() => {
+              setActiveSheet(null);
+              setQuoteComposerOpen(true);
+            }}
+          />
         </BottomSheet>
       ) : null}
 
@@ -695,11 +625,6 @@ function ReplyCard({
                 <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
                   {roleLabel[reply.role]}
                 </span>
-                {reply.status ? (
-                  <span className="mobile-chip-accent rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-                    {reply.status === "approved" ? "已公开" : reply.status === "pending" ? "待确认" : "已发布"}
-                  </span>
-                ) : null}
               </div>
             </div>
             <button
@@ -729,247 +654,13 @@ function ReplyCard({
   );
 }
 
-function AgentPreviewCard({
-  invitedAgent,
-  suggestionDraft,
-  rationale,
-  previewMode,
-  onDraftChange,
-  onApprove,
-  onEdit,
-  onBackToPreview,
-  onHide,
-}: {
-  invitedAgent: string;
-  suggestionDraft: string;
-  rationale: string;
-  previewMode: PreviewMode;
-  onDraftChange: (value: string) => void;
-  onApprove: () => void;
-  onEdit: () => void;
-  onBackToPreview: () => void;
-  onHide: () => void;
-}) {
-  return (
-    <article className="mobile-soft-card mobile-ghost-border rounded-[1.25rem] px-4 py-4">
-      <div className="flex items-start gap-3">
-        <AvatarSeal label={invitedAgent.slice(0, 2)} role="agent" />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="mobile-text-primary text-[0.92rem] font-semibold">{invitedAgent}</p>
-            <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-              AI
-            </span>
-            <span className="mobile-chip-accent rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-              待你确认
-            </span>
-          </div>
-          <p className="mobile-text-secondary mt-2 text-[0.8rem] leading-6">{rationale}</p>
-        </div>
-      </div>
-
-      {previewMode === "editing" ? (
-        <textarea
-          value={suggestionDraft}
-          onChange={(event) => onDraftChange(event.target.value)}
-          rows={5}
-          className="mobile-ghost-border mobile-surface-strong mobile-text-primary mt-4 w-full resize-none rounded-[1rem] px-4 py-4 text-[0.84rem] leading-6 outline-none"
-        />
-      ) : (
-        <div className="mobile-ghost-border mobile-surface-muted mt-4 rounded-[1rem] px-4 py-4">
-          <p className="mobile-text-secondary text-[0.84rem] leading-7">{suggestionDraft}</p>
-        </div>
-      )}
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {previewMode === "editing" ? (
-          <>
-            <button
-              type="button"
-              onClick={onApprove}
-              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              公开
-            </button>
-            <button
-              type="button"
-              onClick={onBackToPreview}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              取消
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              type="button"
-              onClick={onApprove}
-              className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              同意公开
-            </button>
-            <button
-              type="button"
-              onClick={onEdit}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              改一下
-            </button>
-            <button
-              type="button"
-              onClick={onHide}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
-            >
-              隐藏
-            </button>
-          </>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function CommentsSheet({
-  post,
-  thread,
-  replies,
-  replyFilter,
-  onFilterChange,
-  replySort,
-  onSortChange,
-  totalCommentCount,
-  expandedCount,
-  pendingCount,
-  passiveCount,
-  recommendationState,
-}: {
-  post: FeedPost;
-  thread: DiscussionThread;
-  replies: ThreadReply[];
-  replyFilter: ReplyFilter;
-  onFilterChange: (filter: ReplyFilter) => void;
-  replySort: ReplySort;
-  onSortChange: (sort: ReplySort) => void;
-  totalCommentCount: number;
-  expandedCount: number;
-  pendingCount: number;
-  passiveCount: number;
-  recommendationState: "pending" | "approved" | "rejected";
-}) {
-  const [showPassiveSummary, setShowPassiveSummary] = useState(false);
-  const passiveSignals = buildPassiveSignals(post, thread, passiveCount);
-
-  return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-2">
-        <StatMini label="总评论" value={`${totalCommentCount}`} />
-        <StatMini label="已展开" value={`${expandedCount}`} />
-        <StatMini label="待确认" value={`${pendingCount}`} />
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {[
-          { key: "relevant", label: "推荐" },
-          { key: "latest", label: "最新" },
-          { key: "all", label: "全部" },
-          { key: "human", label: "真人" },
-          { key: "agent", label: "AI" },
-          { key: "station", label: "基站" },
-        ].map((item) => {
-          const isActive =
-            item.key === "relevant" || item.key === "latest"
-              ? replySort === item.key
-              : replyFilter === item.key;
-
-          return (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => {
-                if (item.key === "relevant" || item.key === "latest") {
-                  onSortChange(item.key as ReplySort);
-                } else {
-                  onFilterChange(item.key as ReplyFilter);
-                }
-              }}
-              className={`rounded-full px-3 py-2 text-[0.72rem] font-semibold ${
-                isActive ? "mobile-button-primary" : "mobile-button-secondary"
-              }`}
-            >
-              {item.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {recommendationState === "pending" ? (
-        <article className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
-          <div className="flex items-center justify-between gap-3">
-            <p className="mobile-text-primary text-[0.88rem] font-semibold">AI 预览仍在等待确认</p>
-            <span className="mobile-chip-accent rounded-full px-2 py-1 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-              {pendingCount} 条
-            </span>
-          </div>
-          <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{thread.pendingSuggestion.body}</p>
-        </article>
-      ) : null}
-
-      <div className="space-y-3">
-        {replies.map((reply) => (
-          <article key={reply.id} className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="mobile-text-primary text-[0.84rem] font-semibold">{reply.author}</p>
-              <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
-                {roleLabel[reply.role]}
-              </span>
-              <span className="mobile-text-muted text-[0.68rem]">{reply.publishedAt}</span>
-            </div>
-            <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{reply.body}</p>
-          </article>
-        ))}
-      </div>
-
-      {passiveCount > 0 ? (
-        <article className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <p className="mobile-text-primary text-[0.88rem] font-semibold">其余评论已折叠</p>
-              <p className="mobile-text-secondary mt-2 text-[0.8rem] leading-6">还有 {passiveCount} 条评论留在折叠区。</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowPassiveSummary((value) => !value)}
-              className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-3 py-2 text-[0.72rem] font-semibold"
-            >
-              {showPassiveSummary ? "收起" : "查看"}
-            </button>
-          </div>
-          {showPassiveSummary ? (
-            <div className="mt-4 space-y-3">
-              {passiveSignals.map((item) => (
-                <div key={item.title} className="mobile-ghost-border mobile-surface-muted rounded-[0.95rem] px-4 py-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="mobile-text-primary text-[0.84rem] font-semibold">{item.title}</p>
-                    <span className="mobile-chip rounded-full px-2 py-1 text-[0.54rem] font-semibold">{item.count}</span>
-                  </div>
-                  <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">{item.body}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </article>
-      ) : null}
-    </div>
-  );
-}
-
 function EngagementSheet({
   kind,
   post,
   thread,
   onQuoteRepost,
 }: {
-  kind: Exclude<MetricKey, "comments">;
+  kind: EngagementMetricKey;
   post: FeedPost;
   thread: DiscussionThread;
   onQuoteRepost: () => void;
@@ -1054,15 +745,6 @@ function MetricButton({
   );
 }
 
-function StatMini({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="mobile-ghost-border mobile-surface-muted rounded-[0.95rem] px-3 py-3 text-center">
-      <p className="mobile-text-primary text-[0.92rem] font-semibold">{value}</p>
-      <p className="mobile-text-muted mt-1 text-[0.62rem] uppercase tracking-[0.14em]">{label}</p>
-    </div>
-  );
-}
-
 function BottomSheet({
   title,
   children,
@@ -1107,24 +789,10 @@ function getLatestActionCopy(event: LatestEvent, invitedAgent: string) {
     };
   }
 
-  if (event === "approved") {
+  if (event === "agentPublished") {
     return {
-      title: "AI 回复已公开",
-      body: "这条 AI 回应已经带着标记出现在评论里。",
-    };
-  }
-
-  if (event === "rejected") {
-    return {
-      title: "AI 预览已隐藏",
-      body: "它不会出现在公开评论里。",
-    };
-  }
-
-  if (event === "invited") {
-    return {
-      title: `${invitedAgent} 已加入讨论`,
-      body: "新的 AI 回复会先以预览状态出现。",
+      title: `${invitedAgent} 已发出 AI 回复`,
+      body: "这条回复已经带着 AI 标识进入公开评论流。",
     };
   }
 
@@ -1210,26 +878,6 @@ function buildEngagementItems(kind: Exclude<MetricKey, "comments">, post: FeedPo
     {
       title: "收藏更接近沉淀信号",
       body: "这通常意味着它后面还会被重新翻出来继续讨论。",
-    },
-  ];
-}
-
-function buildPassiveSignals(post: FeedPost, thread: DiscussionThread, passiveCount: number) {
-  return [
-    {
-      title: "更多人在补自己的立场",
-      count: `${Math.max(Math.ceil(passiveCount * 0.45), 1)} 条`,
-      body: `他们大多还在围绕“${thread.focusQuestion}”补充自己的角度。`,
-    },
-    {
-      title: "有人在继续追问细节",
-      count: `${Math.max(Math.ceil(passiveCount * 0.33), 1)} 条`,
-      body: `这部分评论更关心 ${post.author} 的原帖到底还能往哪里展开。`,
-    },
-    {
-      title: "少量评论偏向收藏留档",
-      count: `${Math.max(passiveCount - Math.ceil(passiveCount * 0.45) - Math.ceil(passiveCount * 0.33), 1)} 条`,
-      body: "它们更像补充资料，而不是继续把主线程往前推。",
     },
   ];
 }

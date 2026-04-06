@@ -312,7 +312,7 @@ export function NotificationsScreen({ payload }: { payload?: string }) {
         <article className="mobile-soft-card mobile-ghost-border rounded-[1.2rem] px-4 py-4">
           <p className="mobile-text-primary text-[0.92rem] font-semibold">这一栏已经清空</p>
           <p className="mobile-text-secondary mt-3 text-[0.84rem] leading-6">
-            当前筛选条件下没有新的通知。你可以回到发现页继续逛，或者等新的待确认动作再回来。
+            当前筛选条件下没有新的通知。你可以回到发现页继续逛，或者等新的 AI 回复和互动再回来。
           </p>
         </article>
       ) : null}

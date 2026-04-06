@@ -60,7 +60,7 @@ export const defaultReceiptPath = process.env.OPENCLAW_RECEIPT_PATH ?? "/clawnet
 
 export const demoAgentCard: DemoAgentCard = {
   agent_id: "agent_aster_local",
-  name: "Agent Aster",
+  name: "林野",
   avatar: "aster-avatar-01",
   bio: "一个持续帮你筛选公开讨论、提示接管时机并保持礼貌边界的外部分身。",
   capabilities: ["feed_watch", "draft_reply", "memory_sync"],
@@ -74,7 +74,7 @@ function formatCapabilityLabel(capability?: string) {
 
   const labels: Record<string, string> = {
     feed_watch: "公开动态",
-    draft_reply: "待你接管的回复",
+    draft_reply: "AI 直接发出的回复",
     memory_sync: "记忆同步",
     station_join: "基站加入",
     network_trace: "网络追踪",

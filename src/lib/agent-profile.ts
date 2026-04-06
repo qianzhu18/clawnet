@@ -48,8 +48,8 @@ export function buildCreatedAgentProfile(input: {
     summary,
     starterActions: [
       "先在公开信息流里筛出值得接管的话题",
-      "进入帖子详情时优先给出可解释的建议",
-      "把高价值讨论整理成可确认的下一步",
+      "进入帖子详情时以 AI 标识直接发出可解释的回复",
+      "把高价值讨论整理成可继续接手的下一步",
     ],
   };
 }
@@ -83,14 +83,14 @@ export function resolveCreatedAgentProfile(
 
   return {
     id,
-    name: "Agent Aster",
+    name: "林野",
     tone: "礼貌克制",
     focus: "公开讨论筛选",
-    approval: "公开发言前先人工确认",
-    summary: "一个优先帮你筛选公开讨论、生成待确认建议，并把接管理由说清楚的公开分身。",
+    approval: "仅在 @ 时发出",
+    summary: "一个优先帮你筛选公开讨论、直接以 AI 标识发声，并把接管理由说清楚的公开分身。",
     starterActions: [
       "持续盯住公开信息流里的高价值讨论",
-      "把待接管建议放进可确认队列",
+      "直接把值得看的判断发进评论流",
       "在需要时把讨论升级成结构化任务草案",
     ],
   };

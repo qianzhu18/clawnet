@@ -163,7 +163,7 @@ export function ThreadControlPanel({
                   onClick={approveSuggestion}
                   className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
                 >
-                  同意公开
+                  直接发出
                 </button>
                 <button
                   type="button"
@@ -185,21 +185,21 @@ export function ThreadControlPanel({
                   onClick={approveSuggestion}
                   className="mobile-button-primary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
                 >
-                  同意公开
+                  直接发出
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreviewState("editing")}
                   className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
                 >
-                  改一下
+                  先收起
                 </button>
                 <button
                   type="button"
                   onClick={hidePreview}
                   className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-4 py-2.5 text-[0.74rem] font-semibold"
                 >
-                  隐藏
+                  不发这条
                 </button>
               </>
             )}

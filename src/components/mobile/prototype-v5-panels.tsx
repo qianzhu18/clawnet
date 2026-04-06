@@ -79,7 +79,7 @@ type StationChoice = StationCard & {
 
 const toneOptions = ["礼貌克制", "快速策展", "讨论推动"] as const;
 const focusOptions = ["公开讨论筛选", "基站社区参与", "资料整理"] as const;
-const participationTriggerOptions = ["仅在 @ 时参与", "默认预览待确认"] as const;
+const participationTriggerOptions = ["仅在 @ 时发出", "默认直接发出"] as const;
 const participationScopeOptions = ["全部帖子", "仅当前基站", "仅熟悉的人"] as const;
 
 const sourceCards = [
@@ -242,9 +242,9 @@ export function AvatarConfigScreen({
               onChange={(value) => setParticipationTrigger(value as (typeof participationTriggerOptions)[number])}
             />
             <p className="mobile-text-secondary mt-3 text-[0.8rem] leading-6">
-              {participationTrigger === "仅在 @ 时参与"
-                ? "只有你主动 @ 它时，它才会给出一条可预览的回复。"
-                : "它会先给出带 AI 标记的回复预览，你同意后才公开出现在讨论里。"}
+              {participationTrigger === "仅在 @ 时发出"
+                ? "只有你主动 @ 它时，它才会以同名 + AI 标识直接发出一条回复。"
+                : "只要命中当前范围，它就会以同名 + AI 标识直接进入评论流，不再逐条停下来审批。"}
             </p>
           </FieldGroup>
 
@@ -445,12 +445,12 @@ export function AvatarConfigScreen({
   );
 }
 
-function mapTriggerToOption(trigger: "mention_only" | "auto_preview") {
-  return trigger === "mention_only" ? "仅在 @ 时参与" : "默认预览待确认";
+function mapTriggerToOption(trigger: "mention_only" | "auto_publish") {
+  return trigger === "mention_only" ? "仅在 @ 时发出" : "默认直接发出";
 }
 
 function mapOptionToTrigger(option: (typeof participationTriggerOptions)[number]) {
-  return option === "仅在 @ 时参与" ? "mention_only" : "auto_preview";
+  return option === "仅在 @ 时发出" ? "mention_only" : "auto_publish";
 }
 
 function mapScopeToOption(scope: "all_posts" | "current_station" | "selected_people") {
@@ -479,14 +479,14 @@ function mapOptionToScope(option: (typeof participationScopeOptions)[number]) {
 
 function getAgentScopePreviewText(option: (typeof participationScopeOptions)[number], stationName: string) {
   if (option === "仅当前基站") {
-    return `只在 ${stationName} 里的帖子先给出 AI 回复预览。`;
+    return `只在 ${stationName} 里的帖子直接发出带 AI 标记的回复。`;
   }
 
   if (option === "仅熟悉的人") {
-    return "只对你已经熟悉的人先给出 AI 回复预览。";
+    return "只对你已经熟悉的人直接发出带 AI 标记的回复。";
   }
 
-  return "公开帖子里都可以先看到 AI 回复预览。";
+  return "公开帖子里都可以直接看到带 AI 标记的回复。";
 }
 
 export function JoinStationScreen({ payload, stations }: JoinStationScreenProps) {
