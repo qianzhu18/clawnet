@@ -7,6 +7,7 @@ import { AvatarSeal, MockVisualCard } from "@/components/mobile/cards";
 import { BookmarkIcon, CommentIcon, HeartIcon, RepostIcon } from "@/components/mobile/icons";
 import type { FeedPost, ThreadReply } from "@/components/mobile/mock-data";
 import { appendPayload } from "@/lib/connect-demo";
+import { triggerHaptic } from "@/lib/haptics";
 import { buildAuthorHref, buildStationHrefByName } from "@/lib/public-links";
 
 type EngagementMetricKey = "reposts" | "likes" | "bookmarks";
@@ -58,7 +59,8 @@ export function PostDetailThreadView({
         <div className="mx-auto grid max-w-[27rem] grid-cols-[2.85rem_1fr_2.85rem] items-center gap-3 px-4 py-3">
           <Link
             href={appendPayload(buildStationHrefByName(post.station), payload)}
-            className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold"
+            onClick={() => triggerHaptic("light")}
+            className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold active:scale-[0.97]"
           >
             ←
           </Link>
@@ -68,8 +70,11 @@ export function PostDetailThreadView({
           </div>
           <button
             type="button"
-            onClick={onOpenMoreActions}
-            className="inline-flex size-10 items-center justify-center rounded-full text-[1rem] font-semibold text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+            onClick={() => {
+              triggerHaptic("medium");
+              onOpenMoreActions();
+            }}
+            className="inline-flex size-10 items-center justify-center rounded-full text-[1rem] font-semibold text-gray-500 transition-colors duration-200 hover:text-gray-900 active:scale-[0.97] dark:text-gray-400 dark:hover:text-gray-100"
           >
             ⋯
           </button>
@@ -120,7 +125,7 @@ export function PostDetailThreadView({
                   {post.handle} ·{" "}
                   <Link
                     href={appendPayload(buildStationHrefByName(post.station), payload)}
-                    className="underline decoration-transparent hover:text-theme-primary"
+                    className="underline decoration-transparent transition-colors duration-200 hover:text-theme-primary"
                   >
                     {post.station}
                   </Link>
@@ -203,15 +208,21 @@ export function PostDetailThreadView({
           <div className="flex items-center gap-3 rounded-full border border-white/40 bg-white/70 px-2 py-2 shadow-[0_8px_30px_-6px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
             <button
               type="button"
-              onClick={onOpenComposer}
-              className="flex-1 rounded-full bg-gray-100/70 px-4 py-2.5 text-left text-[14px] text-gray-500 transition-colors hover:bg-gray-100 dark:bg-white/[0.06] dark:text-gray-400 dark:hover:bg-white/[0.09]"
+              onClick={() => {
+                triggerHaptic("light");
+                onOpenComposer();
+              }}
+              className="flex-1 rounded-full bg-gray-100/70 px-4 py-2.5 text-left text-[14px] text-gray-500 transition-colors duration-200 hover:bg-gray-100 active:scale-[0.97] dark:bg-white/[0.06] dark:text-gray-400 dark:hover:bg-white/[0.09]"
             >
               留下一句你的观察...
             </button>
             <button
               type="button"
-              onClick={onPublishAgentReply}
-              className="shrink-0 rounded-full bg-gray-900 px-4 py-2 text-[13px] font-bold text-white transition-transform active:scale-95 dark:bg-white dark:text-gray-900"
+              onClick={() => {
+                triggerHaptic("medium");
+                onPublishAgentReply();
+              }}
+              className="shrink-0 rounded-full bg-gray-900 px-4 py-2 text-[13px] font-bold text-white transition-transform duration-200 active:scale-[0.97] dark:bg-white dark:text-gray-900"
             >
               @{invitedAgent}
             </button>
@@ -274,13 +285,14 @@ function ReplyCard({
             <button
               type="button"
               onClick={() => {
+                triggerHaptic("light");
                 setLiked((current) => {
                   const next = !current;
                   setLikeCount((count) => (next ? count + 1 : Math.max(0, count - 1)));
                   return next;
                 });
               }}
-              className={`micro-action-button active:scale-95 ${liked ? "text-action-like" : "text-gray-400 dark:text-gray-500"}`}
+              className={`micro-action-button ${liked ? "text-action-like" : "text-gray-400 dark:text-gray-500"}`}
               data-tone="like"
             >
               <span className={`micro-action-bubble size-7 ${liked ? "bg-action-like/10" : ""}`}>
@@ -290,8 +302,11 @@ function ReplyCard({
             </button>
             <button
               type="button"
-              onClick={onSelect}
-              className="micro-action-button active:scale-95 text-gray-400 dark:text-gray-500"
+              onClick={() => {
+                triggerHaptic("light");
+                onSelect();
+              }}
+              className="micro-action-button text-gray-400 dark:text-gray-500"
               data-tone="comment"
             >
               <span className="micro-action-bubble size-7">
@@ -301,8 +316,11 @@ function ReplyCard({
             </button>
             <button
               type="button"
-              onClick={onSelect}
-              className="text-[0.72rem] font-medium text-gray-400 transition-colors hover:text-action-brand dark:text-gray-500"
+              onClick={() => {
+                triggerHaptic("light");
+                onSelect();
+              }}
+              className="inline-flex min-h-10 items-center rounded-full px-2 text-[0.72rem] font-medium text-gray-400 transition-colors duration-200 hover:text-action-brand active:scale-[0.97] dark:text-gray-500"
             >
               展开子线程
             </button>
@@ -331,7 +349,10 @@ function MetricButton({
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        triggerHaptic(tone === "comment" ? "light" : "medium");
+        onClick();
+      }}
       aria-label={label}
       className="micro-action-button text-gray-400 dark:text-gray-500"
       data-tone={tone}

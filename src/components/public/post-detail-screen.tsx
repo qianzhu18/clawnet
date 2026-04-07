@@ -10,6 +10,7 @@ import {
   shouldAutoPublishAgentReply,
   type AgentParticipationSettings,
 } from "@/lib/agent-participation";
+import { triggerHaptic } from "@/lib/haptics";
 
 type MetricKey = "comments" | "reposts" | "likes" | "bookmarks";
 type EngagementMetricKey = Exclude<MetricKey, "comments">;
@@ -157,6 +158,7 @@ export function PostDetailScreen({
                     return;
                   }
 
+                  triggerHaptic("medium");
                   setManualReplies((current) => [
                     ...current,
                     {
@@ -209,6 +211,7 @@ export function PostDetailScreen({
                     return;
                   }
 
+                  triggerHaptic("medium");
                   setQuotedRepost(nextDraft);
                   setQuoteDraft("");
                   setQuoteComposerOpen(false);
@@ -244,6 +247,7 @@ export function PostDetailScreen({
                 title: "复制帖子链接",
                 body: "把这条帖子带去别的地方继续聊。",
                 onClick: () => {
+                  triggerHaptic("light");
                   setMoreActionsOpen(false);
                   setLatestEvent("shared");
                 },
@@ -252,6 +256,7 @@ export function PostDetailScreen({
                 title: "写一句自己的转发语",
                 body: "连同你的判断一起带走这条帖子。",
                 onClick: () => {
+                  triggerHaptic("light");
                   setMoreActionsOpen(false);
                   setQuoteComposerOpen(true);
                 },
@@ -260,6 +265,7 @@ export function PostDetailScreen({
                 title: "举报",
                 body: "把这条内容送进治理队列。",
                 onClick: () => {
+                  triggerHaptic("medium");
                   setMoreActionsOpen(false);
                   setReportSheetOpen(true);
                 },
@@ -268,6 +274,7 @@ export function PostDetailScreen({
                 title: "屏蔽此作者",
                 body: "后续先不再看同一作者的内容。",
                 onClick: () => {
+                  triggerHaptic("medium");
                   setMoreActionsOpen(false);
                   setBlockSheetOpen(true);
                 },
@@ -299,6 +306,7 @@ export function PostDetailScreen({
                 key={item.title}
                 type="button"
                 onClick={() => {
+                  triggerHaptic("medium");
                   setReportSheetOpen(false);
                   setLatestEvent("reported");
                 }}
@@ -324,6 +332,7 @@ export function PostDetailScreen({
                 key={item.title}
                 type="button"
                 onClick={() => {
+                  triggerHaptic("medium");
                   setBlockSheetOpen(false);
                   setLatestEvent("blocked");
                 }}
@@ -368,7 +377,10 @@ function EngagementSheet({
         {kind === "reposts" ? (
           <button
             type="button"
-            onClick={onQuoteRepost}
+            onClick={() => {
+              triggerHaptic("light");
+              onQuoteRepost();
+            }}
             className="mobile-button-secondary mt-3 inline-flex w-full items-center justify-center rounded-[1rem] px-4 py-3 text-[0.8rem] font-semibold"
           >
             写一句自己的转发语

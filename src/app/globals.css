@@ -381,6 +381,15 @@ body {
   backdrop-filter: blur(24px) saturate(1.12);
 }
 
+.mobile-floating-nav {
+  border: 1px solid color-mix(in srgb, var(--mobile-border-strong) 82%, rgba(255, 255, 255, 0.14));
+  background: color-mix(in srgb, var(--mobile-panel-strong) 82%, transparent);
+  box-shadow:
+    0 22px 40px -26px rgba(15, 20, 25, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  backdrop-filter: blur(26px) saturate(1.12);
+}
+
 .mobile-fab-shadow {
   box-shadow: 0 18px 38px -18px hsl(var(--surface-glow) / 0.38);
 }
@@ -431,11 +440,11 @@ body {
 .mobile-app-root button,
 .mobile-app-root a {
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -465,7 +474,7 @@ body {
 .mobile-button-primary:active,
 .mobile-button-secondary:active,
 .mobile-button-muted:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .mobile-touch-target {
@@ -491,8 +500,13 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  min-height: 2.5rem;
+  padding: 0.125rem 0.35rem;
+  border-radius: 9999px;
   color: var(--content-secondary);
-  transition: color 160ms ease;
+  transition:
+    color 200ms ease,
+    transform 200ms ease;
 }
 
 .micro-action-bubble {
@@ -503,11 +517,15 @@ body {
   transition:
     background-color 160ms ease,
     color 160ms ease,
-    transform 160ms ease;
+    transform 200ms ease;
 }
 
 .micro-action-button:hover .micro-action-bubble {
   transform: translateY(-1px);
+}
+
+.micro-action-button:active {
+  transform: scale(0.97);
 }
 
 .micro-action-value {

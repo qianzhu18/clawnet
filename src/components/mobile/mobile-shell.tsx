@@ -21,6 +21,7 @@ import {
   notificationUpdateEvent,
   readNotifications,
 } from "@/lib/notification-center";
+import { triggerHaptic } from "@/lib/haptics";
 
 export type MobileNavKey =
   | "dynamic"
@@ -160,7 +161,7 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
 
   return (
     <div className="mobile-app-root" data-mobile-theme={theme} suppressHydrationWarning>
-      <div className="mobile-app-shell pb-[calc(env(safe-area-inset-bottom)+7.35rem)]">
+      <div className="mobile-app-shell pb-[calc(env(safe-area-inset-bottom)+8.4rem)]">
         <header className="sticky top-0 z-30 px-3 pt-3">
           <div className="mobile-shell-panel flex items-start justify-between gap-3 rounded-[1.7rem] px-4 py-4">
             <div className="mobile-text-primary min-w-0">
@@ -182,7 +183,10 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
                 <button
                   type="button"
                   aria-label="light mode"
-                  onClick={() => setTheme("light")}
+                  onClick={() => {
+                    triggerHaptic("light");
+                    setTheme("light");
+                  }}
                   className={`inline-flex size-[1.9rem] items-center justify-center rounded-full ${
                     theme === "light" ? "mobile-button-primary" : "mobile-text-muted"
                   }`}
@@ -192,7 +196,10 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
                 <button
                   type="button"
                   aria-label="dark mode"
-                  onClick={() => setTheme("dark")}
+                  onClick={() => {
+                    triggerHaptic("light");
+                    setTheme("dark");
+                  }}
                   className={`inline-flex size-[1.9rem] items-center justify-center rounded-full ${
                     theme === "dark" ? "mobile-button-primary" : "mobile-text-muted"
                   }`}
@@ -202,14 +209,16 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
               </div>
               <Link
                 href={appendPayload("/app/discover", pairingPayload)}
-                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full"
+                onClick={() => triggerHaptic("light")}
+                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full active:scale-[0.97]"
                 aria-label="discover"
               >
                 <SearchIcon className="size-[0.88rem]" />
               </Link>
               <Link
                 href={appendPayload("/app/notifications", pairingPayload)}
-                className="mobile-button-secondary mobile-text-primary relative inline-flex size-10 items-center justify-center rounded-full"
+                onClick={() => triggerHaptic("light")}
+                className="mobile-button-secondary mobile-text-primary relative inline-flex size-10 items-center justify-center rounded-full active:scale-[0.97]"
                 aria-label="notifications"
               >
                 <BellIcon className="size-[0.88rem]" />
@@ -221,8 +230,11 @@ export function MobileShell({ activeNav, children, pairingPayload, statusLabel }
               </Link>
               <button
                 type="button"
-                onClick={() => setOpenPanel("profile")}
-                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full"
+                onClick={() => {
+                  triggerHaptic("medium");
+                  setOpenPanel("profile");
+                }}
+                className="mobile-button-secondary mobile-text-primary inline-flex size-10 items-center justify-center rounded-full active:scale-[0.97]"
                 aria-label="profile"
               >
                 <UserIcon className="size-[0.88rem]" />
@@ -276,7 +288,10 @@ function MobileDrawer({
         <button
           type="button"
           aria-label="close actions"
-          onClick={onClose}
+          onClick={() => {
+            triggerHaptic("light");
+            onClose();
+          }}
           className="absolute inset-0 bg-[rgba(22,20,18,0.32)]"
         />
         <div className="absolute inset-x-0 bottom-0 px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
@@ -295,8 +310,11 @@ function MobileDrawer({
               </div>
               <button
                 type="button"
-                onClick={onClose}
-                className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold"
+                onClick={() => {
+                  triggerHaptic("light");
+                  onClose();
+                }}
+                className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold active:scale-[0.97]"
               >
                 关
               </button>
@@ -308,8 +326,11 @@ function MobileDrawer({
               <p className="mobile-text-secondary mt-2 text-sm leading-6">{guide.body}</p>
               <Link
                 href={guide.href}
-                onClick={onClose}
-                className="mobile-button-primary mt-4 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold"
+                onClick={() => {
+                  triggerHaptic("light");
+                  onClose();
+                }}
+                className="mobile-button-primary mt-4 inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold active:scale-[0.97]"
               >
                 {guide.label}
               </Link>
@@ -320,8 +341,11 @@ function MobileDrawer({
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={onClose}
-                  className="mobile-button-secondary flex items-center justify-between rounded-[1.2rem] px-4 py-4 text-sm font-semibold"
+                  onClick={() => {
+                    triggerHaptic("light");
+                    onClose();
+                  }}
+                  className="mobile-button-secondary flex items-center justify-between rounded-[1.2rem] px-4 py-4 text-sm font-semibold active:scale-[0.97]"
                 >
                   <span>{item.label}</span>
                   <span className="text-base">→</span>
@@ -339,7 +363,10 @@ function MobileDrawer({
                     <Link
                       key={item.key}
                       href={appendPayload(item.href, pairingPayload)}
-                      onClick={onClose}
+                      onClick={() => {
+                        triggerHaptic("light");
+                        onClose();
+                      }}
                       className={`flex items-center justify-between rounded-[1.05rem] border px-4 py-3 text-sm font-semibold ${
                         active
                           ? "mobile-button-primary border-transparent"
@@ -381,7 +408,10 @@ function MobileDrawer({
       <button
         type="button"
         aria-label="close panel"
-        onClick={onClose}
+        onClick={() => {
+          triggerHaptic("light");
+          onClose();
+        }}
         className="absolute inset-0 bg-[rgba(22,20,18,0.38)] backdrop-blur-[2px]"
       />
       <div className="absolute inset-y-0 right-0 flex w-[min(86vw,22rem)]">
@@ -400,8 +430,11 @@ function MobileDrawer({
             </div>
             <button
               type="button"
-              onClick={onClose}
-              className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold"
+              onClick={() => {
+                triggerHaptic("light");
+                onClose();
+              }}
+              className="mobile-button-secondary inline-flex size-10 items-center justify-center rounded-full text-sm font-semibold active:scale-[0.97]"
             >
               关
             </button>
@@ -438,8 +471,11 @@ function MobileDrawer({
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={onClose}
-                  className="mobile-button-secondary flex items-center justify-between rounded-[1.25rem] px-4 py-4 text-sm font-semibold"
+                  onClick={() => {
+                    triggerHaptic("light");
+                    onClose();
+                  }}
+                  className="mobile-button-secondary flex items-center justify-between rounded-[1.25rem] px-4 py-4 text-sm font-semibold active:scale-[0.97]"
                 >
                   <span>{item.label}</span>
                   <span className="text-base">→</span>
@@ -469,9 +505,12 @@ function MobileActionFab({ onClick }: { onClick: () => void }) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        triggerHaptic("medium");
+        onClick();
+      }}
       aria-label="actions"
-      className="mobile-button-primary mobile-touch-target mobile-fab-shadow fixed bottom-[calc(env(safe-area-inset-bottom)+5.75rem)] right-4 z-40 inline-flex items-center gap-1.5 rounded-[1.2rem] px-4 text-[0.88rem] font-semibold"
+      className="mobile-button-primary mobile-touch-target mobile-fab-shadow fixed bottom-[calc(env(safe-area-inset-bottom)+6.55rem)] right-4 z-40 inline-flex items-center gap-1.5 rounded-[1.2rem] px-4 text-[0.88rem] font-semibold active:scale-[0.97]"
     >
       <SparkIcon className="size-[0.95rem]" />
       <span>下一步</span>
@@ -651,50 +690,50 @@ function MobileBottomNav({
   pairingPayload?: string;
 }) {
   return (
-    <nav className="pointer-events-none fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+0.55rem)] z-40">
-      <div className="mobile-app-shell px-3">
-        <div className="mobile-dock pointer-events-auto rounded-[1.65rem] px-3 pb-2 pt-[0.45rem]">
-          <div className="grid grid-cols-5 items-end gap-0.5">
+    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 pb-[calc(env(safe-area-inset-bottom)+0.35rem)]">
+      <div
+        className="absolute inset-x-0 bottom-0 h-32"
+        style={{
+          background:
+            "linear-gradient(to top, color-mix(in srgb, var(--app-bg) 96%, transparent) 0%, color-mix(in srgb, var(--app-bg) 78%, transparent) 42%, transparent 100%)",
+        }}
+      />
+      <div className="mobile-app-shell px-4">
+        <div className="pointer-events-auto mx-auto mb-3 max-w-[23rem]">
+          <div className="mobile-floating-nav flex items-end justify-between gap-1 rounded-full px-2 py-2">
             {navItems.map((item) => {
-              if (item.key === "station") {
-                const active = activeNav === item.key;
-                return (
-                  <Link
-                    key={item.key}
-                    href={appendPayload(item.href, pairingPayload)}
-                    className="mobile-touch-target relative z-10 flex min-h-[3.35rem] flex-col items-center justify-end gap-1 text-center"
-                  >
-                    <span
-                      className={`inline-flex size-[2.9rem] items-center justify-center rounded-full border transition-transform ${
-                        active
-                          ? "-translate-y-[0.55rem] border-transparent mobile-button-primary"
-                          : "-translate-y-[0.7rem] border-[var(--mobile-border)] mobile-surface-strong mobile-text-primary hover:scale-[1.03]"
-                      }`}
-                    >
-                      {item.icon}
-                    </span>
-                    <span
-                      className={`text-[0.54rem] font-semibold tracking-[0.12em] ${
-                        active ? "mobile-text-primary" : "mobile-text-muted"
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                );
-              }
-
               const active = activeNav === item.key;
+              const primary = item.key === "station";
+
               return (
                 <Link
                   key={item.key}
                   href={appendPayload(item.href, pairingPayload)}
-                  className={`mobile-touch-target relative z-10 flex min-h-[3rem] flex-col items-center justify-center gap-[0.3rem] rounded-[0.95rem] px-1 pb-1 pt-[0.3125rem] text-center transition-colors ${
+                  onClick={() => triggerHaptic("light")}
+                  className={`mobile-touch-target relative flex flex-1 flex-col items-center justify-end gap-1 rounded-full px-1 py-2 text-center transition-[color,transform] duration-200 active:scale-[0.97] ${
                     active ? "mobile-text-primary" : "mobile-text-muted hover:text-[var(--mobile-text)]"
                   }`}
                 >
-                  <span className={active ? "" : "opacity-78"}>{item.icon}</span>
-                  <span className="text-[0.54rem] font-semibold tracking-[0.12em]">{item.label}</span>
+                  <span
+                    className={`inline-flex items-center justify-center rounded-full border transition-[background-color,border-color,color,transform] duration-200 ${
+                      primary
+                        ? active
+                          ? "mobile-button-primary size-11 -translate-y-[0.35rem] border-transparent"
+                          : "mobile-surface-strong mobile-text-primary size-11 -translate-y-[0.35rem] border-[var(--mobile-border)]"
+                        : active
+                          ? "size-9 border-transparent bg-[color:var(--mobile-accent-soft)] text-[color:var(--mobile-accent)]"
+                          : "size-9 border-transparent"
+                    }`}
+                  >
+                    {item.icon}
+                  </span>
+                  <span
+                    className={`text-[0.54rem] font-semibold tracking-[0.12em] ${
+                      primary ? "-mt-1" : ""
+                    } ${active ? "" : "opacity-90"}`}
+                  >
+                    {item.label}
+                  </span>
                 </Link>
               );
             })}
