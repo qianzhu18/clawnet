@@ -144,7 +144,7 @@ export function PostDetailScreen({
               onChange={(event) => setReplyDraft(event.target.value)}
               rows={6}
               placeholder="写下你现在最想补上的一句回应..."
-              className="mobile-ghost-border mobile-surface-strong mobile-text-primary min-h-[9rem] w-full rounded-[1rem] px-4 py-4 text-[0.88rem] leading-6 outline-none"
+              className="min-h-[9rem] w-full rounded-[1.1rem] border border-gray-200/80 bg-gray-50/70 px-4 py-4 text-[0.88rem] leading-6 text-gray-900 outline-none placeholder:text-gray-400 dark:border-white/10 dark:bg-white/[0.05] dark:text-gray-100 dark:placeholder:text-gray-500"
             />
             <div className="flex flex-wrap gap-3">
               <button
@@ -196,7 +196,7 @@ export function PostDetailScreen({
               onChange={(event) => setQuoteDraft(event.target.value)}
               rows={5}
               placeholder="补一句你为什么想转发这条帖子..."
-              className="mobile-ghost-border mobile-surface-strong mobile-text-primary min-h-[8rem] w-full rounded-[1rem] px-4 py-4 text-[0.88rem] leading-6 outline-none"
+              className="min-h-[8rem] w-full rounded-[1.1rem] border border-gray-200/80 bg-gray-50/70 px-4 py-4 text-[0.88rem] leading-6 text-gray-900 outline-none placeholder:text-gray-400 dark:border-white/10 dark:bg-white/[0.05] dark:text-gray-100 dark:placeholder:text-gray-500"
             />
             <div className="flex flex-wrap gap-3">
               <button
@@ -277,10 +277,10 @@ export function PostDetailScreen({
                 key={item.title}
                 type="button"
                 onClick={item.onClick}
-                className="mobile-soft-card mobile-ghost-border block w-full rounded-[1rem] px-4 py-4 text-left"
+                className="block w-full rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 text-left transition-colors hover:bg-gray-100/75 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.06]"
               >
-                <p className="mobile-text-primary text-[0.88rem] font-semibold">{item.title}</p>
-                <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{item.body}</p>
+                <p className="text-[0.88rem] font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+                <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{item.body}</p>
               </button>
             ))}
           </div>
@@ -302,10 +302,10 @@ export function PostDetailScreen({
                   setReportSheetOpen(false);
                   setLatestEvent("reported");
                 }}
-                className="mobile-soft-card mobile-ghost-border block w-full rounded-[1rem] px-4 py-4 text-left"
+                className="block w-full rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 text-left transition-colors hover:bg-gray-100/75 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.06]"
               >
-                <p className="mobile-text-primary text-[0.88rem] font-semibold">{item.title}</p>
-                <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{item.body}</p>
+                <p className="text-[0.88rem] font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+                <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{item.body}</p>
               </button>
             ))}
           </div>
@@ -327,10 +327,10 @@ export function PostDetailScreen({
                   setBlockSheetOpen(false);
                   setLatestEvent("blocked");
                 }}
-                className="mobile-soft-card mobile-ghost-border block w-full rounded-[1rem] px-4 py-4 text-left"
+                className="block w-full rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 text-left transition-colors hover:bg-gray-100/75 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.06]"
               >
-                <p className="mobile-text-primary text-[0.88rem] font-semibold">{item.title}</p>
-                <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{item.body}</p>
+                <p className="text-[0.88rem] font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+                <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{item.body}</p>
               </button>
             ))}
           </div>
@@ -356,9 +356,12 @@ function EngagementSheet({
   return (
     <div className="space-y-3">
       {items.map((item) => (
-        <article key={item.title} className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
-          <p className="mobile-text-primary text-[0.88rem] font-semibold">{item.title}</p>
-          <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{item.body}</p>
+        <article
+          key={item.title}
+          className="rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 dark:border-white/10 dark:bg-white/[0.04]"
+        >
+          <p className="text-[0.88rem] font-semibold text-gray-900 dark:text-gray-100">{item.title}</p>
+          <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{item.body}</p>
         </article>
       ))}
       <div className="pt-1">
@@ -389,20 +392,20 @@ function ReplyThreadSheet({
 
   return (
     <div className="space-y-4">
-      <article className="mobile-ghost-border mobile-surface-muted rounded-[1rem] px-4 py-4">
-        <p className="mobile-text-primary text-[0.88rem] font-semibold">{reply.author}</p>
-        <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{reply.body}</p>
+      <article className="rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 dark:border-white/10 dark:bg-white/[0.04]">
+        <p className="text-[0.88rem] font-semibold text-gray-900 dark:text-gray-100">{reply.author}</p>
+        <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{reply.body}</p>
       </article>
       <div className="space-y-3">
         {subthreadItems.map((item) => (
-          <article key={item.id} className="mobile-soft-card mobile-ghost-border rounded-[1rem] px-4 py-4">
+          <article key={item.id} className="rounded-[1rem] border border-gray-100/80 bg-gray-50/60 px-4 py-4 dark:border-white/10 dark:bg-white/[0.04]">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="mobile-text-primary text-[0.84rem] font-semibold">{item.author}</p>
+              <p className="text-[0.84rem] font-semibold text-gray-900 dark:text-gray-100">{item.author}</p>
               <span className="mobile-chip rounded-full px-2 py-0.5 text-[0.54rem] font-semibold uppercase tracking-[0.14em]">
                 {roleLabel[item.role]}
               </span>
             </div>
-            <p className="mobile-text-secondary mt-3 text-[0.82rem] leading-6">{item.body}</p>
+            <p className="mt-3 text-[0.82rem] leading-6 text-gray-500 dark:text-gray-400">{item.body}</p>
           </article>
         ))}
       </div>
@@ -421,26 +424,22 @@ function BottomSheet({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <button
         type="button"
         onClick={onClose}
-        className="absolute inset-0 bg-[rgba(10,12,17,0.34)] backdrop-blur-[1px]"
+        className="absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity"
         aria-label="close sheet"
       />
-      <div className="absolute inset-x-0 bottom-0 px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">
-        <section className="mobile-app-shell mobile-shell-panel max-h-[78vh] overflow-y-auto rounded-[1.6rem] px-5 py-5">
-          <div className="flex items-center justify-between gap-3">
-            <h3 className="mobile-text-primary text-[1rem] font-semibold tracking-[-0.04em]">{title}</h3>
-            <button
-              type="button"
-              onClick={onClose}
-              className="mobile-button-secondary inline-flex size-9 items-center justify-center rounded-full text-sm font-semibold"
-            >
-              关
-            </button>
+      <div className="relative mx-auto w-full max-w-[27rem] px-4 pb-[env(safe-area-inset-bottom)]">
+        <section className="max-h-[75vh] overflow-y-auto rounded-t-[1.75rem] border border-white/40 bg-white/[0.88] shadow-[0_-18px_48px_-24px_rgba(15,20,25,0.28)] backdrop-blur-xl dark:border-white/10 dark:bg-[rgba(17,24,32,0.92)]">
+          <div className="flex w-full justify-center pt-3 pb-1">
+            <div className="h-1.5 w-10 rounded-full bg-gray-200 dark:bg-white/15" />
           </div>
-          <div className="mt-4">{children}</div>
+          <div className="px-5 py-3 text-center">
+            <h3 className="text-[16px] font-bold text-gray-900 dark:text-gray-100">{title}</h3>
+          </div>
+          <div className="px-5 pb-6">{children}</div>
         </section>
       </div>
     </div>

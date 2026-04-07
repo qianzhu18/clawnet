@@ -63,34 +63,37 @@ export function PostDetailThreadView({
             ←
           </Link>
           <div className="text-center">
-            <p className="mobile-text-primary text-[1rem] font-semibold tracking-[-0.04em]">帖子详情</p>
-            <p className="mobile-text-muted mt-1 text-[0.68rem] uppercase tracking-[0.14em]">{post.station}</p>
+            <p className="text-[1rem] font-bold tracking-[-0.04em] text-gray-900 dark:text-gray-100">帖子详情</p>
+            <p className="mt-1 text-[0.68rem] uppercase tracking-[0.14em] text-gray-500 dark:text-gray-400">{post.station}</p>
           </div>
           <button
             type="button"
             onClick={onOpenMoreActions}
-            className="inline-flex size-10 items-center justify-center rounded-full text-[1rem] font-semibold text-content-secondary transition-colors hover:text-content-primary"
+            className="inline-flex size-10 items-center justify-center rounded-full text-[1rem] font-semibold text-gray-500 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
           >
             ⋯
           </button>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[27rem] pb-[calc(env(safe-area-inset-bottom)+7.5rem)] mobile-text-primary">
+      <div className="mx-auto max-w-[27rem] pb-[calc(env(safe-area-inset-bottom)+6.75rem)]">
         {latestActionCopy || quotedRepost ? (
           <article className="micro-feed-divider border-b px-4 py-3">
-            <p className="mobile-text-primary text-[0.8rem] font-semibold">
+            <p className="text-[0.8rem] font-semibold text-gray-900 dark:text-gray-100">
               {quotedRepost ? "已带语境转发" : latestActionCopy?.title}
             </p>
-            <p className="mobile-text-secondary mt-1.5 text-[0.8rem] leading-6">
+            <p className="mt-1.5 text-[0.8rem] leading-6 text-gray-500 dark:text-gray-400">
               {quotedRepost ?? latestActionCopy?.body}
             </p>
           </article>
         ) : null}
 
         <article className="micro-feed-divider border-b px-4 py-4">
-          <div className="flex items-start gap-3">
-            <AvatarSeal label={post.avatarLabel} role={post.role} />
+          <div className="flex items-stretch gap-3">
+            <div className="shrink-0 flex flex-col items-center self-stretch">
+              <AvatarSeal label={post.avatarLabel} role={post.role} />
+              <div className="mt-1 w-[1.5px] min-h-[2rem] flex-1 rounded-full bg-[color:var(--feed-divider)] opacity-90" />
+            </div>
             <div className="min-w-0 flex-1">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
@@ -101,7 +104,7 @@ export function PostDetailThreadView({
                       handle: post.handle,
                       stationName: post.station,
                     })}
-                    className="block truncate text-[0.98rem] font-bold text-content-primary"
+                    className="block truncate text-[0.98rem] font-bold text-gray-900 dark:text-gray-100"
                   >
                     {post.author}
                   </Link>
@@ -111,9 +114,9 @@ export function PostDetailThreadView({
                       {post.badge}
                     </span>
                   ) : null}
-                  <span className="text-[0.78rem] text-content-secondary">· {post.publishedAt}</span>
+                  <span className="text-[13px] text-gray-500 dark:text-gray-400">· {post.publishedAt}</span>
                 </div>
-                <p className="mt-1 text-[0.78rem] text-content-secondary">
+                <p className="mt-1 text-[13px] text-gray-500 dark:text-gray-400">
                   {post.handle} ·{" "}
                   <Link
                     href={appendPayload(buildStationHrefByName(post.station), payload)}
@@ -125,10 +128,10 @@ export function PostDetailThreadView({
               </div>
 
               <div className="mt-3 space-y-2">
-                <h1 className="text-[1.14rem] font-bold leading-[1.22] tracking-[-0.04em] text-content-primary">
+                <h1 className="text-[1.14rem] font-bold leading-[1.22] tracking-[-0.04em] text-gray-900 dark:text-gray-100">
                   {post.title}
                 </h1>
-                <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-content-primary">{post.body}</p>
+                <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-gray-800 dark:text-gray-100">{post.body}</p>
               </div>
 
               {post.media ? (
@@ -176,55 +179,42 @@ export function PostDetailThreadView({
         </article>
 
         <section ref={replySectionRef} className="bg-transparent">
-          {visibleReplies.map((reply) => (
+          {visibleReplies.map((reply, index) => (
             <ReplyCard
               key={reply.id}
               reply={reply}
               post={post}
               payload={payload}
+              showConnector={index < visibleReplies.length - 1}
               onSelect={() => onSelectReply(reply)}
             />
           ))}
         </section>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom)+0.9rem)]">
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(env(safe-area-inset-bottom)+12px)] pt-6"
+        style={{
+          background:
+            "linear-gradient(to top, color-mix(in srgb, var(--app-bg) 96%, transparent) 0%, color-mix(in srgb, var(--app-bg) 80%, transparent) 38%, transparent 100%)",
+        }}
+      >
         <div className="pointer-events-auto mx-auto max-w-[27rem]">
-          <div className="mobile-app-shell mobile-shell-panel rounded-[1.55rem] px-4 py-4 shadow-[0_18px_42px_rgba(20,24,33,0.14)]">
+          <div className="flex items-center gap-3 rounded-full border border-white/40 bg-white/70 px-2 py-2 shadow-[0_8px_30px_-6px_rgba(0,0,0,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
             <button
               type="button"
               onClick={onOpenComposer}
-              className="micro-feed-divider flex w-full items-center rounded-[1.1rem] border bg-app-bg px-4 py-3.5 text-left text-[0.88rem] text-content-tertiary"
+              className="flex-1 rounded-full bg-gray-100/70 px-4 py-2.5 text-left text-[14px] text-gray-500 transition-colors hover:bg-gray-100 dark:bg-white/[0.06] dark:text-gray-400 dark:hover:bg-white/[0.09]"
             >
-              留下一句你的观察吧
+              留下一句你的观察...
             </button>
-            <div className="mt-3 flex items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={onPublishAgentReply}
-                className="mobile-button-secondary inline-flex items-center justify-center rounded-full px-3 py-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em]"
-              >
-                @{invitedAgent}
-              </button>
-              <div className="flex items-center gap-2 text-[0.8rem]">
-                <MetricButton
-                  label="点赞"
-                  value={post.likes}
-                  tone="like"
-                  compact
-                  icon={<HeartIcon className="size-[0.95rem]" />}
-                  onClick={() => onOpenMetricSheet("likes")}
-                />
-                <MetricButton
-                  label="评论"
-                  value={post.comments}
-                  tone="comment"
-                  compact
-                  icon={<CommentIcon className="size-[0.95rem]" />}
-                  onClick={onScrollToReplies}
-                />
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={onPublishAgentReply}
+              className="shrink-0 rounded-full bg-gray-900 px-4 py-2 text-[13px] font-bold text-white transition-transform active:scale-95 dark:bg-white dark:text-gray-900"
+            >
+              @{invitedAgent}
+            </button>
           </div>
         </div>
       </div>
@@ -236,11 +226,13 @@ function ReplyCard({
   reply,
   post,
   payload,
+  showConnector,
   onSelect,
 }: {
   reply: ThreadReply;
   post: FeedPost;
   payload?: string;
+  showConnector: boolean;
   onSelect: () => void;
 }) {
   const badge = getInlineRoleBadge(reply.role);
@@ -249,11 +241,14 @@ function ReplyCard({
 
   return (
     <article className="micro-feed-divider border-b px-4 py-3">
-      <div className="group flex gap-3">
-        <div className="shrink-0">
+      <div className="group flex items-stretch gap-3">
+        <div className="shrink-0 flex flex-col items-center self-stretch">
           <AvatarSeal label={reply.author.slice(0, 2)} role={reply.role} small />
+          {showConnector ? (
+            <div className="my-1 w-[1.5px] min-h-[1.5rem] flex-1 rounded-full bg-[color:var(--feed-divider)] opacity-90" />
+          ) : null}
         </div>
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 pb-3">
           <div className="min-w-0 flex flex-wrap items-center gap-2">
             <Link
               href={appendPayload(
@@ -264,18 +259,18 @@ function ReplyCard({
                 }),
                 payload,
               )}
-              className="truncate text-[0.88rem] font-semibold text-content-primary"
+              className="truncate text-[14px] font-bold text-gray-900 dark:text-gray-100"
             >
               {reply.author}
             </Link>
             {badge}
-            <span className="text-[0.78rem] text-content-tertiary">· {reply.publishedAt}</span>
+            <span className="text-[13px] text-gray-500 dark:text-gray-400">· {reply.publishedAt}</span>
           </div>
           {reply.replyTo ? (
-            <p className="mt-1 text-[0.72rem] text-content-secondary">回复 {reply.replyTo}</p>
+            <p className="mt-1 text-[13px] text-gray-500 dark:text-gray-400">回复 {reply.replyTo}</p>
           ) : null}
-          <p className="mt-1.5 whitespace-pre-wrap text-[14px] leading-relaxed text-content-primary">{reply.body}</p>
-          <div className="mt-2 flex items-center gap-4 text-[0.74rem]">
+          <p className="mt-1.5 whitespace-pre-wrap text-[14px] leading-relaxed text-gray-800 dark:text-gray-100">{reply.body}</p>
+          <div className="mt-2 flex items-center gap-4 text-[0.74rem] text-gray-400 dark:text-gray-500">
             <button
               type="button"
               onClick={() => {
@@ -285,7 +280,7 @@ function ReplyCard({
                   return next;
                 });
               }}
-              className={`micro-action-button active:scale-95 ${liked ? "text-action-like" : ""}`}
+              className={`micro-action-button active:scale-95 ${liked ? "text-action-like" : "text-gray-400 dark:text-gray-500"}`}
               data-tone="like"
             >
               <span className={`micro-action-bubble size-7 ${liked ? "bg-action-like/10" : ""}`}>
@@ -296,7 +291,7 @@ function ReplyCard({
             <button
               type="button"
               onClick={onSelect}
-              className="micro-action-button active:scale-95"
+              className="micro-action-button active:scale-95 text-gray-400 dark:text-gray-500"
               data-tone="comment"
             >
               <span className="micro-action-bubble size-7">
@@ -307,7 +302,7 @@ function ReplyCard({
             <button
               type="button"
               onClick={onSelect}
-              className="text-[0.72rem] font-medium text-content-secondary transition-colors hover:text-action-brand"
+              className="text-[0.72rem] font-medium text-gray-400 transition-colors hover:text-action-brand dark:text-gray-500"
             >
               展开子线程
             </button>
@@ -338,7 +333,7 @@ function MetricButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="micro-action-button"
+      className="micro-action-button text-gray-400 dark:text-gray-500"
       data-tone={tone}
     >
       <span className={`micro-action-bubble ${compact ? "size-8" : "size-9"}`}>{icon}</span>
